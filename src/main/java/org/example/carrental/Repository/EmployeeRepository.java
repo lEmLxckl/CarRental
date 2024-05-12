@@ -2,6 +2,7 @@ package org.example.carrental.Repository;
 
 import org.example.carrental.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,20 +14,34 @@ import java.util.List;
 public class EmployeeRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    // custom rowmapper, som opretter et nyt Employee-objekt
-    // og den setter dens properties fra database rowsne
-    private final RowMapper<Employee> employeeRowMapper = (rs, rowNum) -> {
-        Employee employee = new Employee();
-        employee.setId(rs.getString("id"));
-        employee.setUserName(rs.getString("username"));
-        employee.setUserPassword(rs.getString("password"));
-        return employee;
-    };
+    private final RowMapper<Employee> employeeRowMapper = new BeanPropertyRowMapper<>(Employee.class);
 
     @Autowired
     // constructor til at injicere JdbcTemplate-dependency
     public EmployeeRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    // finder alle employees
+    public List<Employee> getEmployees() {
+        String query = "SELECT * FROM employees;";
+        return jdbcTemplate.query(query, employeeRowMapper);
+    }
+
+    // finder employess via id
+    public Employee getEmployee(int id) {
+        String query = "SELECT * FROM employees WHERE id = ?;";
+        try {
+            return jdbcTemplate.queryForObject(query, employeeRowMapper, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    // sletter employees via id
+    public void delete(int id) {
+        String query = "DELETE FROM employees WHERE id = ?;";
+        jdbcTemplate.update(query, id);
     }
 
 
@@ -40,22 +55,15 @@ public class EmployeeRepository {
         return employees.isEmpty() ? null : employees.get(0);
     }
 
-    public void save(Employee newEmployee) {
-        // Metod til at gemme en ny employee i databasen
-        // Den bruger SQL insert statement
-        String query = "INSERT INTO employees (id, username, userpassword) VALUES (?, ?, ?) ";
-        jdbcTemplate.update(query, newEmployee.getId(), newEmployee.getUserName(), newEmployee.getUserPassword());
+    public void saveOrUpdate(Employee employee) {
+        if (employee.getId()== null) {
+            String insertQuery = "INSERT INTO employees(username, userPassword) VALUES (?, ?);";
+            jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword());
+        } else {
+            String updateQuery = "UPDATE employees SET username = ?, userpassword = ? WHERE id = ?";
+            jdbcTemplate.update(updateQuery, employee.getUserName(), employee.getUserPassword(), employee.getId());
+        }
     }
 
-    public void  update(Employee employee) {
-        // Metode til at opdatere en existerende employee's username og password i databasen
-        String query = "UPDATE employees SET username = ?, userpassword = ? WHERE id = ?";
-        jdbcTemplate.update(query, employee.getUserName(), employee.getUserPassword(), employee.getId());
-    }
 
-    public void delete(String id) {
-        // Metode til at delete employee fra databasen by deres ID
-        String query = "DELETE FROM employees WHERE id = ?";
-        jdbcTemplate.update(query,id);
-    }
 }

@@ -24,8 +24,8 @@ public class LoginController {
     }
 
     @PostMapping("/employeeLogin")
-    public String login(@RequestParam("userName") String userName,
-                        @RequestParam("userPassword") String userPassword,
+    public String login(@RequestParam String userName,
+                        @RequestParam String userPassword,
                         Model model, HttpSession session) {
         Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
 
@@ -40,16 +40,15 @@ public class LoginController {
 
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
-        Employee loggedInUser = (Employee) session.getAttribute("employee");
-
-        if (loggedInUser == null) {
-            // der er ingen user i session, redirect til login page
+      Employee employee = (Employee) session.getAttribute("employee");
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "home/dashboard";
+        } else {
             return "redirect:/";
         }
-        model.addAttribute("employee", loggedInUser);
-        return "home/dashboard";
-    }
 
+    }
 
     @GetMapping("/registration")
     public String showRegistrationForm(Model model){

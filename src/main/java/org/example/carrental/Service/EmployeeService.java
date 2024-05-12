@@ -10,9 +10,12 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+    private  final EmployeeRepository employeeRepository;
 
     @Autowired
-    EmployeeRepository employeeRepository;
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public Employee authenticate(String userName, String passWord) {
         // altså leder den efter employee i databasen, så hvis employee username og password ikke
@@ -34,7 +37,7 @@ public class EmployeeService {
         // den finder alle employees by username, hvis den returnere null gemmer
         //den den nye employee
         if (findEmployeeByUsername(newEmployee.getUserName()) == null) {
-            employeeRepository.save(newEmployee);
+            employeeRepository.saveOrUpdate(newEmployee);
         }
     }
 }
