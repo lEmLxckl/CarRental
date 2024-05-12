@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
-public class LoginController {
+public class EmployeeManagementController {
 
     @Autowired
     private EmployeeService employeeService;
@@ -71,11 +73,42 @@ public class LoginController {
 
     }
 
+    @GetMapping("/deleteEmployee")
+    public String showAllEmployees(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee != null && employeeService.isAdmin(employee.getId())) {
+            List<Employee> employees = employeeService.getEmployees();
+            model.addAttribute("employees", employees);
+            return "home/employeeList";
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping("/deleteEmployee")
+    public String deleteEmployee(@RequestParam("id") int id, HttpSession session) {
+        Employee requestingEmployee = (Employee) session.getAttribute("employee");
+        if (requestingEmployee != null && employeeService.isAdmin(requestingEmployee.getId())) {
+           System.out.println("Admin deleting employee with ID: " + id);
+            employeeService.delete(id);
+            return "redirect:/dashboard";
+        } else {
+            System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
+        }
+        return "redirect:/employees"; // Redirect back to the employee list
+    }
+
+    @GetMapping("/employeeList")
+    public String showAllEmployees(Model model) {
+        List<Employee> employees = employeeService.getEmployees();
+        model.addAttribute("employees", employees);
+        return "home/employeeList"; // Ensure the view name matches your HTML file
+    }
+
     @GetMapping("/dataRegistration")
     public String showDataRegistration(Model model) {
         return "home/dataRegistration";
     }
-
 
     @GetMapping("/damageReport")
     public String showDamageReport(Model model) {

@@ -56,7 +56,7 @@ public class EmployeeRepository {
     }
 
     public void saveOrUpdate(Employee employee) {
-        if (employee.getId()== null) {
+        if (employee.getId() == 0) {
             String insertQuery = "INSERT INTO employees(username, userPassword) VALUES (?, ?);";
             jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword());
         } else {

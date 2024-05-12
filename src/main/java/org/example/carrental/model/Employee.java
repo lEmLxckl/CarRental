@@ -1,12 +1,12 @@
 package org.example.carrental.model;
 
 public class Employee {
-    private String id;
+    private int id;
     private String userName;
     private String userPassword;
 
 
-    public Employee(String id, String userName,String userPassword ) {
+    public Employee(int id, String userName,String userPassword ) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -16,11 +16,11 @@ public class Employee {
 
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -43,7 +43,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
                 '}';

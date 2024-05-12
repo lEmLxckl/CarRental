@@ -5,8 +5,8 @@ import org.example.carrental.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class EmployeeService {
@@ -15,6 +15,22 @@ public class EmployeeService {
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
+    }
+
+    public boolean isAdmin(int id) {
+        return id == 1 || id == 2 || id == 3 || id ==4 || id ==6;
+    }
+
+    public List<Employee> getEmployees() {
+        return employeeRepository.getEmployees();
+    }
+
+    public Employee getEmployee(int id) {
+        return employeeRepository.getEmployee(id);
+    }
+
+    public void delete(int id) {
+        employeeRepository.delete(id);
     }
 
     public Employee authenticate(String userName, String passWord) {
