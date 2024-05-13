@@ -1,4 +1,4 @@
-package org.example.carrental.controllers;
+/*package org.example.carrental.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,7 @@ public class HomeController {
     }
     @GetMapping("/Login")
     public String login(){
-        return "home/Login";
+        return "employeeLogin";
     }
 }
+*/
