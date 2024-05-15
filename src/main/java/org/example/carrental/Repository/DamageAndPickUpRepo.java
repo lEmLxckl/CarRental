@@ -1,4 +1,4 @@
-package org.example.carrental.DamageRepo;
+package org.example.carrental.Repository;
 import org.example.carrental.model.DamageReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -32,7 +32,7 @@ public class DamageAndPickUpRepo {
     }
 
     public void updateDamageAndPickUp(DamageReport damageReport) {
-        String query = "UPDATE skade_og_udbedring SET Describtion = ?, price = ? WHERE id = ?";
+        String query = "UPDATE damage_report SET Describtion = ?, price = ? WHERE id = ?";
         jdbcTemplate.update(query, damageReport.getDescription(), damageReport.getPrice(), damageReport.getId());
     }
 

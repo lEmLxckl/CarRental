@@ -2,10 +2,10 @@ package org.example.carrental.model;
 
 public class DamageReport {
     private String description;
-    private double price;
+    private String price;
     private int id;
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
     public int getId() {
@@ -15,7 +15,7 @@ public class DamageReport {
         return description;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

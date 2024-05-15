@@ -1,6 +1,6 @@
-package org.example.carrental.DamageService;
+package org.example.carrental.Service;
 
-import org.example.carrental.DamageRepo.DamageAndPickUpRepo;
+import org.example.carrental.Repository.DamageAndPickUpRepo;
 import org.example.carrental.model.DamageReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

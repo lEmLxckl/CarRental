@@ -110,11 +110,6 @@ public class EmployeeManagementController {
         return "home/dataRegistration";
     }
 
-    @GetMapping("/damageReport")
-    public String showDamageReport(Model model) {
-        return "home/damageReport";
-    }
-
     @GetMapping("/businessDevelopment")
     public String showBusinessDevelopment(Model model) {
         return "home/businessDevelopment";
