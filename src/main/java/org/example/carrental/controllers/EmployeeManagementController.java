@@ -128,7 +128,7 @@ public class EmployeeManagementController {
             case DATAREGISTRATOR:
                 return "redirect:/dataRegistration";
             case DAMAGEREPORTER:
-                return "redirect:/damageReport";
+                return "redirect:/damageAndPickUp";
             case BUSINESSDEVELOPER:
                 return "redirect:/businessDevelopment";
             case ADMIN:
