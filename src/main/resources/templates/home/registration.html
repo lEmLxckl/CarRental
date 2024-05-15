@@ -7,7 +7,6 @@
 <body>
 <div class="container">
     <h2>Employee Registration</h2>
-    <body>
     <main>
         <h1>Registration</h1>
         <form th:action="@{/registration}" method="post" th:object="${newEmployee}">
@@ -17,10 +16,15 @@
             <label for="userPassword">Password:</label>
             <input type="password" id="userPassword" name="userPassword" th:field="*{userPassword}" aria-required="true" required>
 
+            <label for="usertype">User Type:</label>
+            <select id="usertype" name="usertype" th:field="*{usertype}">
+                <option th:each="type : ${allUserTypes}" th:value="${type}" th:text="${type}"></option>
+            </select>
+
             <button type="submit">Register</button>
             <div th:if="${registrationError}" th:text="${registrationError}" role="alert"></div>
         </form>
     </main>
-    </body>
-
+</div>
+</body>
 </html>

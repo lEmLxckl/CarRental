@@ -3,6 +3,7 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
+import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,8 @@ public class EmployeeManagementController {
 
         if (loggedInEmployee != null) {
             session.setAttribute("employee", loggedInEmployee);
-            return "redirect:/dashboard"; // sender til dashboard, hvor man kan vælge en usertype
+            session.setAttribute("userType", loggedInEmployee.getUsertype());
+            return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
         } else {
             model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
             return "home/employeeLogin";
@@ -43,8 +45,11 @@ public class EmployeeManagementController {
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
       Employee employee = (Employee) session.getAttribute("employee");
+      Usertype userType = (Usertype) session.getAttribute("userType");
+
         if (employee != null) {
             model.addAttribute("employee", employee);
+            model.addAttribute("userType", userType);
             return "home/dashboard";
         } else {
             return "redirect:/";
@@ -55,12 +60,15 @@ public class EmployeeManagementController {
     @GetMapping("/registration")
     public String showRegistrationForm(Model model){
         model.addAttribute("newEmployee", new Employee());
+        model.addAttribute("allUserTypes", Usertype.values());
         return "home/registration";
     }
 
 
     @PostMapping("/registration")
     public String createNewEmployee(@ModelAttribute("newEmployee") Employee newEmployee, Model model) {
+        System.out.println("Usertype: " + newEmployee.getUsertype());
+
         Employee existingEmployee = employeeService.findEmployeeByUsername(newEmployee.getUserName());
         if (existingEmployee != null) {
             model.addAttribute("registrationError", "An employee with that username already exists. ");
@@ -76,8 +84,8 @@ public class EmployeeManagementController {
     @GetMapping("/deleteEmployee")
     public String showAllEmployees(HttpSession session, Model model) {
         Employee employee = (Employee) session.getAttribute("employee");
-        if (employee != null && employeeService.isAdmin(employee.getId())) {
-            List<Employee> employees = employeeService.getEmployees();
+        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
+         List<Employee> employees = employeeService.getEmployees();
             model.addAttribute("employees", employees);
             return "home/employeeList";
         } else {
@@ -88,7 +96,7 @@ public class EmployeeManagementController {
     @PostMapping("/deleteEmployee")
     public String deleteEmployee(@RequestParam("id") int id, HttpSession session) {
         Employee requestingEmployee = (Employee) session.getAttribute("employee");
-        if (requestingEmployee != null && employeeService.isAdmin(requestingEmployee.getId())) {
+        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
            System.out.println("Admin deleting employee with ID: " + id);
             employeeService.delete(id);
             return "redirect:/dashboard";
@@ -113,5 +121,20 @@ public class EmployeeManagementController {
     @GetMapping("/businessDevelopment")
     public String showBusinessDevelopment(Model model) {
         return "home/businessDevelopment";
+    }
+
+    private String redirectToUserSpecificPage(Usertype userType) {
+        switch (userType) {
+            case DATAREGISTRATOR:
+                return "redirect:/dataRegistration";
+            case DAMAGEREPORTER:
+                return "redirect:/damageReport";
+            case BUSINESSDEVELOPER:
+                return "redirect:/businessDevelopment";
+            case ADMIN:
+                return "redirect:dashboard";
+            default:
+                return "redirect:/dashboard";
+        }
     }
 }

@@ -17,9 +17,6 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public boolean isAdmin(int id) {
-        return id == 1 || id == 2 || id == 3 || id ==4 || id ==6;
-    }
 
     public List<Employee> getEmployees() {
         return employeeRepository.getEmployees();

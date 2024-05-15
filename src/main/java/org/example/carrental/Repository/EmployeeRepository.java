@@ -57,11 +57,11 @@ public class EmployeeRepository {
 
     public void saveOrUpdate(Employee employee) {
         if (employee.getId() == 0) {
-            String insertQuery = "INSERT INTO employees(username, userPassword) VALUES (?, ?);";
-            jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword());
+            String insertQuery = "INSERT INTO employees(username, userPassword, usertype) VALUES (?, ?, ?);";
+            jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword(), employee.getUsertype());
         } else {
-            String updateQuery = "UPDATE employees SET username = ?, userpassword = ? WHERE id = ?";
-            jdbcTemplate.update(updateQuery, employee.getUserName(), employee.getUserPassword(), employee.getId());
+            String updateQuery = "UPDATE employees SET username = ?, userpassword = ?, usertype = ? WHERE id = ?";
+            jdbcTemplate.update(updateQuery, employee.getUserName(), employee.getUserPassword(), employee.getId(), employee.getUsertype());
         }
     }
 

@@ -4,12 +4,14 @@ public class Employee {
     private int id;
     private String userName;
     private String userPassword;
+    private Usertype usertype;
 
 
-    public Employee(int id, String userName,String userPassword ) {
+    public Employee(int id, String userName,String userPassword, Usertype usertype ) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
+        this.usertype = usertype;
     }
 
     public Employee () {
@@ -40,12 +42,21 @@ public class Employee {
         this.userPassword = userPassword;
     }
 
+    public Usertype getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(Usertype usertype) {
+        this.usertype = usertype;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
+                ", usertype=" + usertype +
                 '}';
     }
 }

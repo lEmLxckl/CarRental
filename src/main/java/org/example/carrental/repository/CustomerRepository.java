@@ -11,6 +11,10 @@ import java.util.List;
 @Repository
 public class CustomerRepository {
 
+    // måske lave en final rowmapper attribut
+    // for at gøre det mere clean code
+    //private final RowMapper<Customer> customerRowMapper = new BeanPropertyRowMapper
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
