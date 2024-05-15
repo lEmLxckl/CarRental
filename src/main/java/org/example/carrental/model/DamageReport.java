@@ -5,6 +5,16 @@ public class DamageReport {
     private String price;
     private int id;
 
+    public DamageReport(String description, String price, int id) {
+        this.description = description;
+        this.price = price;
+        this.id = id;
+    }
+
+    public DamageReport() {
+
+    }
+
     public String getPrice() {
         return price;
     }
@@ -25,6 +35,15 @@ public class DamageReport {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "DamageReport{" +
+                "description='" + description + '\'' +
+                ", price='" + price + '\'' +
+                ", id=" + id +
+                '}';
     }
 }
 
