@@ -1,27 +1,31 @@
 package org.example.carrental.model;
 
 public class Customer {
-    private int customerID;
+    private int customerId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
     private String address;
 
-    public Customer(int customerID, String firstName, String lastName, String email, String phone, String address) {
-        this.customerID = customerID;
+    public Customer(int customerId, String firstName, String lastName, String email, String phone, String address) {
+        this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.address = address;
     }
-    public int getCustomerID() {
-        return customerID;
+
+    public Customer() {
+
+    }
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {

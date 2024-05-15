@@ -32,7 +32,7 @@ public class CustomerRepository {
     }
 
     public Customer save(Customer customer) {
-        String query = "INSERT INTO customer (first_name, last_name, email, phone, address) " +
+        String query = "INSERT INTO customer (firstName, lastName, email, phone, address) " +
                 "VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(query, customer.getFirstName(), customer.getLastName(), customer.getEmail(),
                 customer.getPhone(), customer.getAddress());
@@ -40,9 +40,9 @@ public class CustomerRepository {
     }
 
     public void update(int id, Customer customer) {
-        String query = "UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ?, address = ? " +
+        String query = "UPDATE customer SET firstName = ?, lastName = ?, email = ?, phone = ?, address = ? " +
                 "WHERE customer_id = ?";
         jdbcTemplate.update(query, customer.getFirstName(), customer.getLastName(), customer.getEmail(),
-                customer.getPhone(), customer.getAddress(), customer.getCustomerID());
+                customer.getPhone(), customer.getAddress(), customer.getCustomerId());
     }
 }

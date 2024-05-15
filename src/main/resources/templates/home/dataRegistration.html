@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Data registration</title>
@@ -8,7 +8,8 @@
 <h1>Data registration</h1>
 
 <ul>
-<li><a href="/createLeaseForm" th:href="@{/createLeaseForm}">Create Lease</a></li>
+    <li><a href="/createLeaseForm" th:href="@{/createLeaseForm}">Create Lease</a></li>
+    <li><a href="/addCustomerForm" th:href="@{/addCustomerForm}">Add Customer</a></li>
 </ul>
 <form action="/dashboard" method="get">
     <button type="submit">Cancel</button>
