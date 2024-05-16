@@ -1,6 +1,6 @@
 package org.example.carrental.model;
 
-public class Car {
+public class Vehicle {
 
     private int id;
 
@@ -10,17 +10,16 @@ public class Car {
     private boolean leased;
 
 
-    public Car() {
+    public Vehicle() {
     }
 
-    public Car(String make, String model, double price, boolean leased) {
+    public Vehicle(String make, String model, double price, boolean leased) {
         this.make = make;
         this.model = model;
         this.price = price;
         this.leased = leased;
     }
 
-    // Getters and setters
 
     public int getId() {
         return id;
@@ -61,4 +60,5 @@ public class Car {
     public void setLeased(boolean leased) {
         this.leased = leased;
     }
+
 }
