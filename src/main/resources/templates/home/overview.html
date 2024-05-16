@@ -6,7 +6,17 @@
 </head>
 <body>
 <h1>Overview</h1>
-<table>
+
+<!-- Display buttons to sort and filter data -->
+<div>
+    <a href="/overview" th:href="@{/overview}">Show All</a> |
+    <a href="/overview/price" th:href="@{/overview/price}">Sort by Price</a> |
+    <a href="/overview/leased" th:href="@{/overview/leased}">Show Leased</a> |
+    <a href="/overview/model" th:href="@{/overview/model}">Sort by Model</a>
+</div>
+
+<!-- Display a table of vehicle information -->
+<table border="1">
     <thead>
     <tr>
         <th>Model</th>
@@ -15,10 +25,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="car : ${cars}">
-        <td th:text="${car.model}"></td>
-        <td th:text="${car.price}"></td>
-        <td th:text="${car.leased ? 'Yes' : 'No'}"></td>
+    <!-- Iterate over the list of vehicles -->
+    <tr th:each="vehicle : ${vehicles}">
+        <!-- Display vehicle model, price, and leased status -->
+        <td th:text="${vehicle.model}"></td>
+        <td th:text="${vehicle.price}"></td>
+        <td th:text="${vehicle.leased} ? 'Leased' : 'Available'"></td>
     </tr>
     </tbody>
 </table>
