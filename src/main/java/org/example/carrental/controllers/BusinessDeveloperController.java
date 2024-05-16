@@ -48,5 +48,6 @@ public class BusinessDeveloperController {
         List<Vehicle> vehicles = businessDeveloperService.getAllVehiclesSortedByModel();
         model.addAttribute("vehicles", vehicles);
         return "overview";
+
     }
 }

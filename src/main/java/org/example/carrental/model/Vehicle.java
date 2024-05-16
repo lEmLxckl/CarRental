@@ -60,4 +60,5 @@ public class Vehicle {
     public void setLeased(boolean leased) {
         this.leased = leased;
     }
+
 }
