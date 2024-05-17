@@ -11,17 +11,33 @@
 <body>
 <main>
     <h1>Welcome to Your Dashboard, <span th:text="${employee.userName}">User</span>!</h1>
-    <h1>Your Role: <span th:text="${employee.usertype}">User Type</span> </h1>
+    <h1>Your Role: <span th:text="${employee.usertype}">User Type</span></h1>
     <section>
         <h2>Dashboard Options</h2>
         <ul>
-            <li><a href="/dataRegistration" th:href="@{/dataRegistration}">Data Registration</a></li>
-            <li><a href="/damageAndPickUp" th:href="@{/damageAndPickUp}">Damage And Pick Up Report</a></li>
-            <li><a href="/businessDevelopment" th:href="@{/businessDevelopment}">Business Development</a></li>
-            <li><a href="/deleteEmployee" th:href="@{/deleteEmployee(id=${employee.id})}">Delete Employee</a></li>
-            <a th:href="@{/registration}">Create Employee</a>
+            <li th:if="${employee.usertype == 'DATAREGISTRATOR' or employee.usertype == 'ADMIN'}">
+                <a href="/dataRegistration" th:href="@{/dataRegistration}">Data Registration</a>
+            </li>
+            <li th:if="${employee.usertype == 'DAMAGEREPORTER' or employee.usertype == 'ADMIN'}">
+                <a href="/damageAndPickUp" th:href="@{/damageAndPickUp}">Damage And Pickup Report</a>
+            </li>
+            <li th:if="${employee.usertype == 'BUSINESSDEVELOPER' or employee.usertype == 'ADMIN'}">
+                <a href="/businessDevelopment" th:href="@{/businessDevelopment}">Business Development</a>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+                <a href="/employeeList" th:href="@{/employeeList}">Manage Employees</a>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+                <a href="/deleteEmployee" th:href="@{/deleteEmployee}">Delete Employee</a>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+                <a href="/registration" th:href="@{/registration}">Create Employee</a>
+            </li>
         </ul>
     </section>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 </main>
 </body>
 </html>

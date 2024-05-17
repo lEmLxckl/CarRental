@@ -113,28 +113,73 @@ public class EmployeeManagementController {
         return "home/employeeList"; // Ensure the view name matches your HTML file
     }
 
+    @GetMapping("/updateEmployee")
+    public String showUpdateForm(@RequestParam("id") int id, Model model) {
+        Employee employee = employeeService.getEmployee(id);
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            model.addAttribute("allUserTypes", Usertype.values());
+            return "home/updateEmployee";
+        } else {
+            return "redirect:/employeeList";
+        }
+
+    }
+
+    @PostMapping("/updateEmployee")
+    public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model) {
+        employeeService.saveEmployee(employee);
+        model.addAttribute("updateSucces", "Employee updated successfully. ");
+        return "redirect:/employeeList";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @GetMapping("/dataRegistration")
-    public String showDataRegistration(Model model) {
-        return "home/dataRegistration";
+    public String showDataRegistration(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        Usertype usertype = (Usertype) session.getAttribute("userType");
+
+        if (employee != null && hasAccess(usertype, Usertype.DATAREGISTRATOR)) {
+            return "home/dataRegistration"; }
+     else {
+         model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
+            return "home/dashboard";
+        }
     }
 
     @GetMapping("/businessDevelopment")
-    public String showBusinessDevelopment(Model model) {
-        return "home/businessDevelopment";
+    public String showBusinessDevelopment(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        Usertype usertype = (Usertype) session.getAttribute("userType");
+
+        if (employee != null && hasAccess(usertype, Usertype.BUSINESSDEVELOPER)) {
+            return "home/businessDevelopment"; }
+        else {
+            model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
+            return "home/dashboard";
+        }
     }
 
     private String redirectToUserSpecificPage(Usertype userType) {
-        switch (userType) {
-            case DATAREGISTRATOR:
-                return "redirect:/dataRegistration";
-            case DAMAGEREPORTER:
-                return "redirect:/damageAndPickUp";
-            case BUSINESSDEVELOPER:
-                return "redirect:/businessDevelopment";
-            case ADMIN:
-                return "redirect:dashboard";
-            default:
-                return "redirect:/dashboard";
+        return switch (userType) {
+            case DATAREGISTRATOR -> "redirect:/dataRegistration";
+            case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
+            case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
+            case ADMIN -> "redirect:dashboard";
+            default -> "redirect:/dashboard";
+        };
+    }
+
+
+    private boolean hasAccess(Usertype usertype, Usertype requiredUserType) {
+        if (usertype == Usertype.ADMIN) {
+            return true;
         }
+        return usertype == requiredUserType;
     }
 }

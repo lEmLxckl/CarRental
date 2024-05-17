@@ -28,13 +28,14 @@
                 <input type="hidden" name="id" th:value="${employee.id}">
                 <button type="submit">Delete</button>
             </form>
+            <button type="button" onclick="location.href='@{/updateEmployee(id=${employee.id})}'">Update</button>
         </td>
     </tr>
     </tbody>
 </table>
 
-<a href="/dashboard">Back to dashboard</a>
-</body>
-</html>
+<form action="/dashboard" method="get">
+    <button type="submit">Go back to dashboard</button>
+</form>
 </body>
 </html>

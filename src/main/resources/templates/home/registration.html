@@ -24,6 +24,10 @@
             <button type="submit">Register</button>
             <div th:if="${registrationError}" th:text="${registrationError}" role="alert"></div>
         </form>
+
+        <form action="/dashboard" method="get">
+            <button type="submit">Go back to dashboard</button>
+        </form>
     </main>
 </div>
 </body>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+</head>
+<body>
+<h1>Update Employee</h1>
+
+<form th:action="@{/updateEmployee}" th:action="@{/updateEmployee}" method="post" th:object="${employee}">
+    <input type="hidden" th:field="*{id}" />
+    <label>Username:</label>
+    <input type="text" th:field="*{userName}" />
+    <label>Password:</label>
+    <input type="password" th:field="*{userPassword}" />
+    <label>User Type:</label>
+    <select th:field="*{usertype}">
+        <option th:each="type : ${allUserTypes}" th:value="${type}" th:text="${type}"></option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
