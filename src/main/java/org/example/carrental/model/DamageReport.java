@@ -1,49 +1,53 @@
 package org.example.carrental.model;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+
 public class DamageReport {
-    private String description;
-    private String price;
     private int id;
+    private String description;
+    private BigDecimal cost;
+    private Date dateReported;
+    private int vehicleId;
 
-    public DamageReport(String description, String price, int id) {
-        this.description = description;
-        this.price = price;
-        this.id = id;
-    }
-
-    public DamageReport() {
-
-    }
-
-    public String getPrice() {
-        return price;
-    }
+    // Getters and setters
     public int getId() {
         return id;
-    }
-    public String getDescription() {
-        return description;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "DamageReport{" +
-                "description='" + description + '\'' +
-                ", price='" + price + '\'' +
-                ", id=" + id +
-                '}';
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
+
+    public Date getDateReported() {
+        return dateReported;
+    }
+
+    public void setDateReported(Date dateReported) {
+        this.dateReported = dateReported;
+    }
+
+    public int getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
     }
 }
-

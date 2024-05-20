@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Damage Report</title>
+    <title>Update Damage Report</title>
 </head>
 <body>
-<h1>Add Damage Report</h1>
+<h1>Update Damage Report</h1>
 
-<form th:action="@{/saveDamageAndPickUp}" method="post" th:object="${damageReport}">
+<form th:action="@{/updateDamageAndPickUp}" method="post" th:object="${damageReport}">
+    <input type="hidden" th:field="*{id}">
     <label for="description">Description:</label><br>
     <input type="text" id="description" name="description" th:field="*{description}"><br>
     <label for="cost">Cost:</label><br>
-    <input type="number" id="cost" name="cost" th:field="*{cost}"><br>
+    <input type="text" id="cost" name="cost" th:field="*{cost}"><br>
     <label for="dateReported">Date Reported:</label><br>
     <input type="date" id="dateReported" name="dateReported" th:field="*{dateReported}"><br>
     <label for="vehicleId">Vehicle ID:</label><br>
-    <input type="number" id="vehicleId" name="vehicleId" th:field="*{vehicleId}"><br><br>
-    <button type="submit">Save Damage Report</button>
+    <input type="text" id="vehicleId" name="vehicleId" th:field="*{vehicleId}"><br><br>
+    <button type="submit">Update Damage Report</button>
 </form>
 
-<form action="/showAll" method="get">
+<form th:action="@{/showAll}" method="get">
     <button type="submit">Cancel</button>
 </form>
 

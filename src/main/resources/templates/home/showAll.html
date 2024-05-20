@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Damage Reports</title>
+</head>
+<body>
+<h1>All Damage Reports</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+        <th>Cost</th>
+        <th>Date Reported</th>
+        <th>Vehicle ID</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="report : ${damageReports}">
+        <td th:text="${report.id}">ID</td>
+        <td th:text="${report.description}">Description</td>
+        <td th:text="${report.cost}">Cost</td>
+        <td th:text="${report.dateReported}">Date Reported</td>
+        <td th:text="${report.vehicleId}">Vehicle ID</td>
+        <td>
+            <form th:action="@{/delete}" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${report.id}">
+                <button type="submit">Delete</button>
+            </form>
+            <form th:action="@{/update}" method="get" style="display:inline;">
+                <input type="hidden" name="id" th:value="${report.id}">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/damageAndPickUp}">Add New Damage Report</a>
+
+</body>
+</html>
