@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Damage Report</title>
+</head>
+<body>
+<h1>Add Damage Report</h1>
+<form th:action="@{/saveDamageAndPickUp}" method="post" th:object="${damageReport}">
+    <label for="description">Description:</label><br>
+    <input type="text" id="description" name="description" th:field="*{description}"><br>
+    <label for="price">Price:</label><br>
+    <input type="text" id="price" name="price" th:field="*{price}"><br><br>
+    <button type="submit">Save Damage Report</button>
+</form>
+
+<form action="/dashboard" method="get">
+    <button type="submit">Cancel</button>
+</form>
+
+</body>
+</html>

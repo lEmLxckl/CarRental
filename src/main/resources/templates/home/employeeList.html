@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee List</title>
+</head>
+<body>
+<h1>Employee List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>UserType</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.id}"></td>
+        <td th:text="${employee.userName}"></td>
+        <td>******</td> <!-- Det er bare userPassword --->
+        <td th:text="${employee.usertype}"></td>
+        <td>
+            <!-- Her sletter man -->
+            <form th:action="@{/deleteEmployee}" method="post" onsubmit="return confirm('Are you sure you want to delete this employee?');">
+                <input type="hidden" name="id" th:value="${employee.id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/dashboard">Back to dashboard</a>
+</body>
+</html>
+</body>
+</html>

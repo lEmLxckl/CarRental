@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Login</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<main>
+    <h1>Employee Login</h1>
+    <form th:action="@{/employeeLogin}" method="post">
+        <label for="userName">Username:</label>
+        <input type="text" id="userName" name="userName" aria-required="true" required>
+
+        <label for="userPassword">Password:</label>
+        <input type="password" id="userPassword" name="userPassword" aria-required="true" required>
+
+        <button type="submit">Login</button>
+        <div th:if="${loginError}" th:text="${loginError}" role="alert"></div>
+    </form>
+</main>
+</body>
+</html>
