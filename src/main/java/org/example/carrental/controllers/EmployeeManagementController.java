@@ -35,6 +35,7 @@ public class EmployeeManagementController {
         if (loggedInEmployee != null) {
             session.setAttribute("employee", loggedInEmployee);
             session.setAttribute("userType", loggedInEmployee.getUsertype());
+           // return "redirect:/dashboard";
             return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
         } else {
             model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
@@ -48,10 +49,13 @@ public class EmployeeManagementController {
       Usertype userType = (Usertype) session.getAttribute("userType");
 
         if (employee != null) {
+            System.out.println("Employee object: " + employee);
             model.addAttribute("employee", employee);
             model.addAttribute("userType", userType);
             return "home/dashboard";
         } else {
+            model.addAttribute("employeeNotFound", true);
+            // den plejede at hedde "redirect:/"
             return "redirect:/";
         }
 
@@ -65,9 +69,10 @@ public class EmployeeManagementController {
     }
 
 
+
     @PostMapping("/registration")
     public String createNewEmployee(@ModelAttribute("newEmployee") Employee newEmployee, Model model) {
-        System.out.println("Usertype: " + newEmployee.getUsertype());
+        //System.out.println("Usertype: " + newEmployee.getUsertype());
 
         Employee existingEmployee = employeeService.findEmployeeByUsername(newEmployee.getUserName());
         if (existingEmployee != null) {
@@ -103,7 +108,8 @@ public class EmployeeManagementController {
         } else {
             System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
         }
-        return "redirect:/employees"; // Redirect back to the employee list
+        //ændret herunder 18:57
+        return "redirect:/employeeList"; // Redirect back to the employee list
     }
 
     @GetMapping("/employeeList")
@@ -133,37 +139,37 @@ public class EmployeeManagementController {
         return "redirect:/employeeList";
     }
 
+
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
 
+
     @GetMapping("/dataRegistration")
     public String showDataRegistration(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        Usertype usertype = (Usertype) session.getAttribute("userType");
-
-        if (employee != null && hasAccess(usertype, Usertype.DATAREGISTRATOR)) {
-            return "home/dataRegistration"; }
-     else {
-         model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "home/dashboard";
+        if (employee != null && (employee.getUsertype() == Usertype.DATAREGISTRATOR || employee.getUsertype() == Usertype.ADMIN)) {
+            return "home/dataRegistration";
+        } else {
+            model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
+            return "redirect:/dashboard";
         }
     }
+
 
     @GetMapping("/businessDevelopment")
     public String showBusinessDevelopment(Model model, HttpSession session) {
         Employee employee = (Employee) session.getAttribute("employee");
-        Usertype usertype = (Usertype) session.getAttribute("userType");
-
-        if (employee != null && hasAccess(usertype, Usertype.BUSINESSDEVELOPER)) {
-            return "home/businessDevelopment"; }
-        else {
+        if (employee != null && (employee.getUsertype() == Usertype.BUSINESSDEVELOPER || employee.getUsertype() == Usertype.ADMIN)) {
+            return "home/businessDevelopment";
+        } else {
             model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "home/dashboard";
+            return "redirect:/dashboard";
         }
     }
+
 
     private String redirectToUserSpecificPage(Usertype userType) {
         return switch (userType) {
@@ -175,11 +181,4 @@ public class EmployeeManagementController {
         };
     }
 
-
-    private boolean hasAccess(Usertype usertype, Usertype requiredUserType) {
-        if (usertype == Usertype.ADMIN) {
-            return true;
-        }
-        return usertype == requiredUserType;
-    }
 }
