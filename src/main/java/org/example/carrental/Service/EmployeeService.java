@@ -52,5 +52,6 @@ public class EmployeeService {
         if (findEmployeeByUsername(newEmployee.getUserName()) == null) {
             employeeRepository.saveOrUpdate(newEmployee);
         }
+
     }
 }
