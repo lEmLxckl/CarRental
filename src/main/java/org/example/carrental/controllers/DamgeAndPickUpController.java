@@ -48,7 +48,7 @@ public class DamgeAndPickUpController {
     }
 
     @PostMapping("/updateDamageAndPickUp")
-    public String update(@ModelAttribute DamageReport damageReport) {
+    public String updateDamageAndPickUp(@ModelAttribute DamageReport damageReport) {
         service.updateDamageAndPickUp(damageReport);
         return "redirect:/showAll";
     }

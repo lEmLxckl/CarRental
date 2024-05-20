@@ -20,22 +20,21 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="report : ${damageReports}">
-        <td th:text="${report.id}">ID</td>
-        <td th:text="${report.description}">Description</td>
-        <td th:text="${report.cost}">Cost</td>
-        <td th:text="${report.dateReported}">Date Reported</td>
-        <td th:text="${report.vehicleId}">Vehicle ID</td>
+    <tr th:each="damageReport : ${damageReports}">
+        <td th:text="${damageReport.id}">ID</td>
+        <td th:text="${damageReport.description}">Description</td>
+        <td th:text="${damageReport.cost}">Cost</td>
+        <td th:text="${damageReport.dateReported}">Date Reported</td>
+        <td th:text="${damageReport.vehicleId}">Vehicle ID</td>
         <td>
             <form th:action="@{/delete}" method="post" style="display:inline;">
-                <input type="hidden" name="id" th:value="${report.id}">
+                <input type="hidden" name="id" th:value="${damageReport.id}">
                 <button type="submit">Delete</button>
             </form>
             <form th:action="@{/update}" method="get" style="display:inline;">
-                <input type="hidden" name="id" th:value="${report.id}">
+                <input type="hidden" name="id" th:value="${damageReport.id}">
                 <button type="submit">Update</button>
             </form>
-
         </td>
     </tr>
     </tbody>
