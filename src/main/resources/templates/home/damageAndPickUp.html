@@ -19,5 +19,10 @@
     <button type="submit">Cancel</button>
 </form>
 
+<form th:action="@{/delete}" method="post">
+    <input type="hidden" name="id" th:value="${Damage.ID}">
+    <button type="submit">Delete</button>
+</form>
+
 </body>
 </html>

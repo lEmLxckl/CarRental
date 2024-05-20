@@ -21,11 +21,27 @@ public class DamgeAndPickUpController {
             return "home/damageAndPickUp";
         }
 
+        @GetMapping("/delete")
+        public String delete(Model model) {
+            model.addAttribute("damageReport", new DamageReport());
+            return "home/delete";
+        }
+
+        @PostMapping("/delete")
+        public String delete(Model model, @ModelAttribute("damageReport") DamageReport damageReport) {
+            return "home/damageAndPickUp";
+        }
+
 
         @PostMapping("/saveDamageAndPickUp")
         public String save(@ModelAttribute DamageReport damageReport) {
             service.saveDamageAndPickUp(damageReport);
             return "redirect:/";
 
+        }
+
+        @PostMapping("/ShowAll")
+    public String showAll(@ModelAttribute("damageReport") DamageReport damageReport) {
+            return "home/damageAndPickUp";
         }
     }
