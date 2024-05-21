@@ -129,17 +129,7 @@ public class EmployeeManagementController {
         return "redirect:/dashboard"; // Redirect back to the employee list
     }
 
-   /* @GetMapping("/employeeList")
-    public String showAllEmployees(Model model, HttpSession session, Employee employee) {
-        employee = (Employee) session.getAttribute("employee");
-        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-            List<Employee> employees = employeeService.getEmployees();
-            model.addAttribute("employees", employees);
-            return "home/employeeList";
-        } else {
-            return "redirect:/dashboard";
-        }
-    }*/
+
 
     @GetMapping("/employeeList")
     public String showAllEmployees(Model model, HttpSession session) {
@@ -153,12 +143,6 @@ public class EmployeeManagementController {
         }
     }
 
-    /* @GetMapping("/employeeList")
-    public String showAllEmployees(Model model) {
-        List<Employee> employees = employeeService.getEmployees();
-        model.addAttribute("employees", employees);
-        return "home/employeeList"; // Ensure the view name matches your HTML file
-    }*/
 
     @GetMapping("/updateEmployee")
     public String showUpdateForm(@RequestParam("id") int id, Model model, HttpSession session) {
@@ -173,18 +157,7 @@ public class EmployeeManagementController {
         }
         return "redirect:/dashboard"; // Redirect non-admin users to dashboard
     }
-    /*
-    @GetMapping("/updateEmployee")
-    public String showUpdateForm(@RequestParam("id") int id, Model model) {
-        Employee employee = employeeService.getEmployee(id);
-            if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-            model.addAttribute("employee", employee);
-            model.addAttribute("allUserTypes", Usertype.values());
-            return "home/updateEmployee";
-        }
-        return "redirect:/dashboard";
 
-}*/
 
     @PostMapping("/updateEmployee")
     public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, HttpSession session) {
