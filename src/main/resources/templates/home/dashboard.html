@@ -17,22 +17,22 @@
         <h2>Dashboard Options</h2>
         <ul>
             <li th:if="${employee.usertype == 'DATAREGISTRATOR' or employee.usertype == 'ADMIN'}">
-                <a th:href="@{/dataRegistration}">Data Registration</a>
+                <li><a th:href="@{/dataRegistration}">Data Registration</a></li>
             </li>
             <li th:if="${employee.usertype == 'DAMAGEREPORTER' or employee.usertype == 'ADMIN'}">
-                <a th:href="@{/damageAndPickUp}">Damage And Pickup Report</a>
+                <li><a th:href="@{/damageAndPickUp}">Damage And Pickup Report</a></li>
             </li>
             <li th:if="${employee.usertype == 'BUSINESSDEVELOPER' or employee.usertype == 'ADMIN'}">
-                <a th:href="@{/businessDevelopment}">Business Development</a>
+            <li> <a th:href="@{/businessDevelopment}">Business Development</a> </li>
             </li>
             <li th:if="${employee.usertype == 'ADMIN'}">
-                <a th:href="@{/employeeList}">Manage Employees</a>
+            <li><a th:href="@{/employeeList}">Manage Employees</a> </li>
             </li>
             <li th:if="${employee.usertype == 'ADMIN'}">
-                <a th:href="@{/deleteEmployee}">Delete Employee</a>
+             <a th:href="@{/deleteEmployee}">Delete Employee</a>
             </li>
             <li th:if="${employee.usertype == 'ADMIN'}">
-                <a th:href="@{/registration}">Create Employee</a>
+            <li> <a th:href="@{/registration}">Create Employee</a> </li>
             </li>
         </ul>
     </section>

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -20,6 +22,8 @@ public class EmployeeManagementController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    private final Map<String, Integer> loginAttempts = new HashMap<>();
 
     @GetMapping("/")
     public String showLoginForm(Model model) {
@@ -31,60 +35,72 @@ public class EmployeeManagementController {
     public String login(@RequestParam String userName,
                         @RequestParam String userPassword,
                         Model model, HttpSession session) {
+        loginAttempts.put(userName, loginAttempts.getOrDefault(userName, 0) + 1);
+
         Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
 
         if (loggedInEmployee != null) {
             session.setAttribute("employee", loggedInEmployee);
             session.setAttribute("userType", loggedInEmployee.getUsertype());
-           // return "redirect:/dashboard";
+            // return "redirect:/dashboard";
+            loginAttempts.put(userName, 0); // Reset login attempts on successful login
             return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
         } else {
-            model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
+            if (loginAttempts.get(userName) >= 3) {
+                model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
+            }
             return "home/employeeLogin";
         }
     }
 
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
-      Employee employee = (Employee) session.getAttribute("employee");
-      Usertype userType = (Usertype) session.getAttribute("userType");
+        Employee employee = (Employee) session.getAttribute("employee");
+        Usertype userType = (Usertype) session.getAttribute("userType");
 
         if (employee != null) {
-            System.out.println("Employee object: " + employee);
             model.addAttribute("employee", employee);
             model.addAttribute("userType", userType);
             return "home/dashboard";
         } else {
             model.addAttribute("employeeNotFound", true);
-            // den plejede at hedde "redirect:/"
             return "redirect:/";
         }
-
     }
 
     @GetMapping("/registration")
-    public String showRegistrationForm(Model model){
-        model.addAttribute("newEmployee", new Employee());
-        model.addAttribute("allUserTypes", Usertype.values());
-        return "home/registration";
+    public String showRegistrationForm(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
+            model.addAttribute("newEmployee", new Employee());
+            model.addAttribute("allUserTypes", Usertype.values());
+            return "home/registration";
+        } else {
+            return "redirect:/dashboard";
+
+        }
+
     }
 
 
-
     @PostMapping("/registration")
-    public String createNewEmployee(@ModelAttribute("newEmployee") Employee newEmployee, Model model) {
+    public String createNewEmployee(@ModelAttribute("newEmployee") Employee newEmployee, Model model, HttpSession session) {
         //System.out.println("Usertype: " + newEmployee.getUsertype());
+        Employee employee = (Employee) session.getAttribute("employee");
 
-        Employee existingEmployee = employeeService.findEmployeeByUsername(newEmployee.getUserName());
-        if (existingEmployee != null) {
-            model.addAttribute("registrationError", "An employee with that username already exists. ");
+        // Check if the current user is an admin
+        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
+            Employee existingEmployee = employeeService.findEmployeeByUsername(newEmployee.getUserName());
+            if (existingEmployee != null) {
+                model.addAttribute("registrationError", "An employee with that username already exists.");
+                return "home/registration";
+            }
+            employeeService.saveEmployee(newEmployee);
+            model.addAttribute("registrationSuccess", "Employee registered successfully.");
             return "home/registration";
+        } else {
+            return "redirect:/dashboard"; // Redirect non-admin users to dashboard
         }
-
-        employeeService.saveEmployee(newEmployee);
-        model.addAttribute("registrationSuccess", "Employee registered successfully. ");
-        return "home/registration";
-
     }
 
     @GetMapping("/deleteEmployee")
@@ -95,7 +111,7 @@ public class EmployeeManagementController {
             model.addAttribute("employees", employees);
             return "home/employeeList";
         } else {
-            return "redirect:/";
+            return "redirect:/dashboard";
         }
     }
 
@@ -110,35 +126,64 @@ public class EmployeeManagementController {
             System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
         }
         //ændret herunder 18:57
-        return "redirect:/employeeList"; // Redirect back to the employee list
+        return "redirect:/dashboard"; // Redirect back to the employee list
     }
 
     @GetMapping("/employeeList")
+    public String showAllEmployees(Model model, HttpSession session, Employee employee) {
+        employee = (Employee) session.getAttribute("employee");
+        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
+            List<Employee> employees = employeeService.getEmployees();
+            model.addAttribute("employees", employees);
+            return "home/employeeList";
+        } else {
+            return "redirect:/dashboard";
+        }
+    }
+
+    /* @GetMapping("/employeeList")
     public String showAllEmployees(Model model) {
         List<Employee> employees = employeeService.getEmployees();
         model.addAttribute("employees", employees);
         return "home/employeeList"; // Ensure the view name matches your HTML file
-    }
+    }*/
 
+    @GetMapping("/updateEmployee")
+    public String showUpdateForm(@RequestParam("id") int id, Model model, HttpSession session) {
+        Employee requestingEmployee = (Employee) session.getAttribute("employee");
+        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
+            Employee employee = employeeService.getEmployee(id);
+            if (employee != null) {
+                model.addAttribute("employee", employee);
+                model.addAttribute("allUserTypes", Usertype.values());
+                return "home/updateEmployee";
+            }
+        }
+        return "redirect:/dashboard"; // Redirect non-admin users to dashboard
+    }
+    /*
     @GetMapping("/updateEmployee")
     public String showUpdateForm(@RequestParam("id") int id, Model model) {
         Employee employee = employeeService.getEmployee(id);
-        if (employee != null) {
+            if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
             model.addAttribute("employee", employee);
             model.addAttribute("allUserTypes", Usertype.values());
             return "home/updateEmployee";
-        } else {
-            return "redirect:/employeeList";
         }
+        return "redirect:/dashboard";
 
-    }
+}*/
 
     @PostMapping("/updateEmployee")
-    public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model) {
-        employeeService.saveEmployee(employee);
-        model.addAttribute("updateSucces", "Employee updated successfully. ");
-        return "redirect:/employeeList";
+    public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, HttpSession session) {
+        Employee requestingEmployee = (Employee) session.getAttribute("employee");
+        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
+            employeeService.saveEmployee(employee);
+            model.addAttribute("updateSuccess", "Employee updated successfully.");
+        }
+        return "redirect:/dashboard"; // Redirect non-admin users to dashboard
     }
+
 
 
     @PostMapping("/logout")
@@ -170,6 +215,7 @@ public class EmployeeManagementController {
             return "redirect:/dashboard";
         }
     }
+
 
 
     private String redirectToUserSpecificPage(Usertype userType) {
