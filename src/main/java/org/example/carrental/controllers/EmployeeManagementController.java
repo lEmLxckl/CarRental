@@ -20,8 +20,12 @@ import java.util.Map;
 @Controller
 public class EmployeeManagementController {
 
+    private final EmployeeService employeeService;
+
     @Autowired
-    private EmployeeService employeeService;
+    EmployeeManagementController (EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     private final Map<String, Integer> loginAttempts = new HashMap<>();
 
@@ -104,8 +108,8 @@ public class EmployeeManagementController {
     }
 
     @GetMapping("/deleteEmployee")
-    public String showAllEmployees(HttpSession session, Model model) {
-        Employee employee = (Employee) session.getAttribute("employee");
+    public String showAllEmployees(HttpSession session, Model model, Employee employee) {
+        employee = (Employee) session.getAttribute("employee");
         if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
          List<Employee> employees = employeeService.getEmployees();
             model.addAttribute("employees", employees);
@@ -122,9 +126,9 @@ public class EmployeeManagementController {
            System.out.println("Admin deleting employee with ID: " + id);
             employeeService.delete(id);
             return "redirect:/dashboard";
-        } else {
-            System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
         }
+            //System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
+
         //ændret herunder 18:57
         return "redirect:/dashboard"; // Redirect back to the employee list
     }
@@ -209,7 +213,7 @@ public class EmployeeManagementController {
             case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
             case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
             case ADMIN -> "redirect:dashboard";
-            default -> "redirect:/dashboard";
+            //default -> "redirect:/dashboard";
         };
     }
 
