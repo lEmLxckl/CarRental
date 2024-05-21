@@ -2,7 +2,6 @@ package org.example.carrental.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.DamageAndPickUpService;
-import org.example.carrental.model.Customer;
 import org.example.carrental.model.DamageReport;
 import org.example.carrental.model.Employee;
 import org.example.carrental.model.Usertype;
@@ -14,9 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class DamgeAndPickUpController {
+public class DamageAndPickUpController {
+
+        private final DamageAndPickUpService service;
+
         @Autowired
-        DamageAndPickUpService service;
+        DamageAndPickUpController(DamageAndPickUpService service) {
+            this.service = service;
+        }
 
         @GetMapping("/damageAndPickUp")
         public String getDamageAndPickUp(Model model, HttpSession session) {
