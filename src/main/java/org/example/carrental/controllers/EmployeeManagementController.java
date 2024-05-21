@@ -129,9 +129,21 @@ public class EmployeeManagementController {
         return "redirect:/dashboard"; // Redirect back to the employee list
     }
 
-    @GetMapping("/employeeList")
+   /* @GetMapping("/employeeList")
     public String showAllEmployees(Model model, HttpSession session, Employee employee) {
         employee = (Employee) session.getAttribute("employee");
+        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
+            List<Employee> employees = employeeService.getEmployees();
+            model.addAttribute("employees", employees);
+            return "home/employeeList";
+        } else {
+            return "redirect:/dashboard";
+        }
+    }*/
+
+    @GetMapping("/employeeList")
+    public String showAllEmployees(Model model, HttpSession session) {
+        Employee employee = (Employee) session.getAttribute("employee");
         if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
             List<Employee> employees = employeeService.getEmployees();
             model.addAttribute("employees", employees);
