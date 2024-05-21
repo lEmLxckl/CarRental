@@ -61,7 +61,6 @@ public class EmployeeRepository {
         }
     }
 
-
     // sletter employees via id
     public void delete(int id) {
         String query = "DELETE FROM employees WHERE id = ?;";
