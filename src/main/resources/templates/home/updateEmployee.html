@@ -11,8 +11,14 @@
     <input type="hidden" th:field="*{id}" />
     <label>Username:</label>
     <input type="text" th:field="*{userName}" />
+
     <label>Password:</label>
     <input type="password" th:field="*{userPassword}" />
+
+    <label>Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" />
+
+
     <label>User Type:</label>
     <select th:field="*{usertype}">
         <option th:each="type : ${allUserTypes}" th:value="${type}" th:text="${type}"></option>
@@ -21,8 +27,17 @@
 </form>
 
 
-<form action="/dashboard" method="get">
+<form action="/employeeList" method="get">
     <button type="submit">Cancel</button>
 </form>
+
+<div th:if="${passwordError != null}" style="color: red;">
+    <p th:text="${passwordError}"></p>
+</div>
+
+<div th:if="${updateSuccess != null}" style="color: green;">
+    <p th:text="${updateSuccess}"></p>
+</div>
+
 </body>
 </html>

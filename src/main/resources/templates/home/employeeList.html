@@ -20,7 +20,7 @@
     <tr th:each="employee : ${employees}">
         <td th:text="${employee.id}"></td>
         <td th:text="${employee.userName}"></td>
-        <td>******</td> <!-- Placeholder for password -->
+        <td th:text="${employee.userPassword}"></td> <!-- Placeholder for password -->
         <td th:text="${employee.usertype}"></td>
         <td>
             <!-- Delete action -->

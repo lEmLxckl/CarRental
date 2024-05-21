@@ -164,9 +164,15 @@ public class EmployeeManagementController {
 
 
     @PostMapping("/updateEmployee")
-    public String updateEmployee(@ModelAttribute("employee") Employee employee, Model model, HttpSession session) {
+    public String updateEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("confirmPassword") String confirmPassword, Model model, HttpSession session) {
         Employee requestingEmployee = (Employee) session.getAttribute("employee");
         if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
+            if (!employee.getUserPassword().equals(confirmPassword)) {
+                model.addAttribute("passwordError", "Passwords do not match.");
+                model.addAttribute("employee", employee);
+                model.addAttribute("allUserTypes", Usertype.values());
+                return "home/updateEmployee";
+            }
             employeeService.saveEmployee(employee);
             model.addAttribute("updateSuccess", "Employee updated successfully.");
         }
