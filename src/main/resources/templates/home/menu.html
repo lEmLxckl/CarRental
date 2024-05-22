@@ -97,7 +97,7 @@
                 <li><a th:href="@{/dataRegistration}">Data Registration</a></li>
             </li>
             <li th:if="${employee.usertype == 'DAMAGEREPORTER' or employee.usertype == 'ADMIN'}">
-                <li><a th:href="@{/damageAndPickUp}">Damage And Pickup Report</a></li>
+                <li><a th:href="@{/damageReport}">Damage Report</a></li>
             </li>
             <li th:if="${employee.usertype == 'BUSINESSDEVELOPER' or employee.usertype == 'ADMIN'}">
             <li> <a th:href="@{/businessDevelopment}">Business Development</a> </li>
