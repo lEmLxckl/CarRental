@@ -1,5 +1,6 @@
 package org.example.carrental.Service;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Repository.EmployeeRepository;
 import org.example.carrental.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,4 +50,8 @@ public class EmployeeService {
         // gemmer den nye employee, så der ikke er to af de samme employees
         employeeRepository.saveOrUpdate(newEmployee);
     }
+    public Boolean checkSession(HttpSession httpSession){
+        return httpSession.getAttribute("adminlogin") != null;
+    }
+
 }

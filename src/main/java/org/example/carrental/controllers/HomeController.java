@@ -31,6 +31,16 @@ public class HomeController {
         session.removeAttribute("adminlogin");
         return "redirect:/";
     }
+    //Homepage
+    @GetMapping("/Home")
+    public String home(HttpSession session, Model model) {
+        String value = (String) session.getAttribute("username");
+        model.addAttribute("username", value);
+        if (!employeeService.checkSession(session)){
+            return "redirect:/";
+        }
+        return "home/Home";
+    }
 
     @PostMapping("/employeeLogin")
     public String login(@RequestParam String userName,
