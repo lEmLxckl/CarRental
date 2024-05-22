@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("../../../../../bilabo/src/main/resources/static/images/Hero.jpg");
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    color: black;
+}
+
+.title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: normal;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+/* Car section styles */
+.car-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.car-pic {
+    width: 800px;
+    height: 600px;
+    object-fit: cover;
+    margin-right: 50px;
+}
+
+.car-info {
+    max-width: 500px;
+}
+
+.car-title {
+    margin-top: 0;
+}
+
+.car-slogan {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: darkblue;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.carousel {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel .car-pic {
+    display: none;
+}
+
+.carousel .car-pic.active {
+    display: block;
+}
+
+.car-info {
+    /* Add your styles for car-info here */
+}
+
+
+.footer {
+    background-color: darkgray;
+    padding: 20px;
+    text-align: center;
+    margin-top: 500px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+}
+
+.footer p span {
+    color: #aaa;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}

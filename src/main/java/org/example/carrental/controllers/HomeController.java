@@ -21,8 +21,49 @@ public class HomeController {
     @Autowired
     EmployeeService employeeService;
 
-
     @GetMapping("/")
+    public String index() {
+        return "home/index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("adminlogin");
+        return "redirect:/";
+    }
+
+    @PostMapping("/employeeLogin")
+    public String login(@RequestParam String userName,
+                        @RequestParam String userPassword,
+                        Model model, HttpSession session) {
+        loginAttempts.put(userName, loginAttempts.getOrDefault(userName, 0) + 1);
+
+        Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
+
+        if (loggedInEmployee != null) {
+            session.setAttribute("employee", loggedInEmployee);
+            session.setAttribute("userType", loggedInEmployee.getUsertype());
+            // return "redirect:/dashboard";
+            loginAttempts.put(userName, 0); // Reset login attempts on successful login
+            return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
+        } else {
+            if (loginAttempts.get(userName) >= 3) {
+                model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
+            }
+            return "home/employeeLogin";
+        }
+    }
+    private String redirectToUserSpecificPage(Usertype userType) {
+        return switch (userType) {
+            case DATAREGISTRATOR -> "redirect:/dataRegistration";
+            case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
+            case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
+            case ADMIN -> "redirect:menu";
+            //default -> "redirect:/dashboard";
+        };
+    }
+}
+    /*@GetMapping("/")
     public String showLoginForm(Model model) {
         model.addAttribute("employee", new Employee());
         return "home/employeeLogin";
@@ -59,5 +100,5 @@ public class HomeController {
             //default -> "redirect:/dashboard";
         };
     }
+    */
 
-}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BA</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+<div class="header">
+    <img class="logo" src="images/Logo-250x250.png" alt="Logo">
+    <a href="/login" class="login-button">Login</a>
+</div>
+
+<div class="car-section">
+    <div class="carousel">
+        <img src="images/car1.jpg" alt="Car Image 1" class="car-pic active">
+        <img src="images/arteum-ro-TVFx7iFAAdQ-unsplash.jpg" alt="Car Image 2" class="car-pic">
+        <img src="images/grahame-jenkins-p7tai9P7H-s-unsplash (1).jpg" alt="Car Image 3" class="car-pic">
+        <img src="images/joey-banks-YApiWyp0lqo-unsplash.jpg" alt="Car Image 4" class="car-pic">
+        <img src="images/oliur-ovrOPhu8vSw-unsplash.jpg" alt="Car Image 5" class="car-pic">
+        <img src="images/peugeot-3008-dashboard-view-848804.webp" alt="Car Image 6" class="car-pic">
+    </div>
+    <div class="car-info">
+        <h2 class="car-title">BILABONNEMENT</h2>
+        <p class="car-slogan">"Unleash Your Drive, Fuel Your Potential!"</p>
+        <a href="/login" class="login-button">Get Started</a>
+    </div>
+</div>
+
+<script>
+    // Get all car pictures
+    const carPics = document.querySelectorAll('.car-pic');
+
+    // Start the slide show
+    let slideIndex = 0;
+    carousel();
+
+    function carousel() {
+        // Hide all car pictures
+        for (let i = 0; i < carPics.length; i++) {
+            carPics[i].style.display = 'none';
+        }
+
+        // Show the current car picture
+        carPics[slideIndex].style.display = 'block';
+
+        // Increment the slide index
+        slideIndex++;
+
+        // Reset the slide index if it exceeds the number of car pictures
+        if (slideIndex >= carPics.length) {
+            slideIndex = 0;
+        }
+
+
+        setTimeout(carousel, 3000);
+    }
+</script>
+
+
+
+<div class="footer">
+    <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+
+</body>
+</html>
