@@ -10,7 +10,15 @@ public class Lease {
         private int customerID;
         private int vehicleID;
         private boolean status;
+        private double price;
 
+        public double getPrice() {
+                return price;
+        }
+
+        public void setPrice(int price) {
+                this.price = price;
+        }
 
         public int getLeaseID() {
                 return leaseID;

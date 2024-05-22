@@ -22,7 +22,7 @@ public class HomeController {
     EmployeeService employeeService;
 
     @GetMapping("/")
-    public String index() {
+    public String showLoginForm() {
         return "home/index";
     }
 
@@ -42,6 +42,11 @@ public class HomeController {
         return "home/Home";
     }
 
+    @GetMapping("/employeeLogin")
+    public String employeeLogin(HttpSession session, Model model) {
+        Employee employee = (Employee) session.getAttribute("employee");
+        return "home/employeeLogin";
+    }
     @PostMapping("/employeeLogin")
     public String login(@RequestParam String userName,
                         @RequestParam String userPassword,
@@ -60,7 +65,7 @@ public class HomeController {
             if (loginAttempts.get(userName) >= 3) {
                 model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
             }
-            return "home/employeeLogin";
+            return "home/index";
         }
     }
     private String redirectToUserSpecificPage(Usertype userType) {

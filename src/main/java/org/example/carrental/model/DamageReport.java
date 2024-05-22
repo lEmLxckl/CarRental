@@ -4,50 +4,49 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class DamageReport {
-    private int id;
-    private String description;
-    private BigDecimal cost;
-    private Date dateReported;
-    private int vehicleId;
+    private int report_id;
+    private double total_price;
+    private int contract_id;
+    private String username;
 
-    // Getters and setters
-    public int getId() {
-        return id;
+    public DamageReport() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public DamageReport(int report_id, double total_price, int contract_id, String username ) {
+        this.report_id = report_id;
+        this.total_price = total_price;
+        this.contract_id = contract_id;
+        this.username = username;
     }
 
-    public String getDescription() {
-        return description;
+    public String getUsername(){
+        return username;
+    }
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public int getReport_id() {
+        return report_id;
     }
 
-    public BigDecimal getCost() {
-        return cost;
+    public void setReport_id(int report_id) {
+        this.report_id = report_id;
     }
 
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
+    public double getTotal_price() {
+        return total_price;
     }
 
-    public Date getDateReported() {
-        return dateReported;
+    public void setTotal_price(double total_price) {
+        this.total_price = total_price;
     }
 
-    public void setDateReported(Date dateReported) {
-        this.dateReported = dateReported;
+    public int getContract_id() {
+        return contract_id;
     }
 
-    public int getVehicleId() {
-        return vehicleId;
-    }
-
-    public void setVehicleId(int vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setContract_id(int contract_id) {
+        this.contract_id = contract_id;
     }
 }
