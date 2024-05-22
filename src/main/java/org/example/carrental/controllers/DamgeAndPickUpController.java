@@ -61,4 +61,6 @@ public class DamgeAndPickUpController {
         service.updateDamageAndPickUp(damageReport);
         return "redirect:/showAll";
     }
+
+
 }
