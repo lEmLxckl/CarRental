@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        main {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: #666;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        ul li a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #04AA6D;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        ul li a:hover {
+            background-color: #028a5e;
+        }
+
+        button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #d73832;
+        }
+
+        .user-info {
+            margin-bottom: 30px;
+        }
+
+        .user-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div class="user-info">
+    <h1>Welcome to Your Menu, <span th:text="${employee.userName}">User</span>!</h1>
+    <h1>Your Role: <span th:text="${employee.usertype}">User Type</span></h1>
+    </div>
+
+    <section>
+        <h2>Menu Options</h2>
+        <ul>
+            <li th:if="${employee.usertype == 'DATAREGISTRATOR' or employee.usertype == 'ADMIN'}">
+                <li><a th:href="@{/dataRegistration}">Data Registration</a></li>
+            </li>
+            <li th:if="${employee.usertype == 'DAMAGEREPORTER' or employee.usertype == 'ADMIN'}">
+                <li><a th:href="@{/damageAndPickUp}">Damage And Pickup Report</a></li>
+            </li>
+            <li th:if="${employee.usertype == 'BUSINESSDEVELOPER' or employee.usertype == 'ADMIN'}">
+            <li> <a th:href="@{/businessDevelopment}">Business Development</a> </li>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+            <li><a th:href="@{/employeeList}">Manage Employees</a> </li>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+             <a th:href="@{/deleteEmployee}">Delete Employee</a>
+            </li>
+            <li th:if="${employee.usertype == 'ADMIN'}">
+            <li> <a th:href="@{/registration}">Create Employee</a> </li>
+            </li>
+        </ul>
+    </section>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+
+</main>
+</body>
+</html>

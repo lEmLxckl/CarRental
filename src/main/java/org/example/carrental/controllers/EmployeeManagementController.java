@@ -57,15 +57,15 @@ public class EmployeeManagementController {
         }
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model) {
+    @GetMapping("/menu")
+    public String Menu(HttpSession session, Model model) {
         Employee employee = (Employee) session.getAttribute("employee");
         Usertype userType = (Usertype) session.getAttribute("userType");
 
         if (employee != null) {
             model.addAttribute("employee", employee);
             model.addAttribute("userType", userType);
-            return "home/dashboard";
+            return "home/menu";
         } else {
             model.addAttribute("employeeNotFound", true);
             return "redirect:/";
@@ -80,7 +80,7 @@ public class EmployeeManagementController {
             model.addAttribute("allUserTypes", Usertype.values());
             return "home/registration";
         } else {
-            return "redirect:/dashboard";
+            return "redirect:/menu";
 
         }
 
@@ -103,7 +103,7 @@ public class EmployeeManagementController {
             model.addAttribute("registrationSuccess", "Employee registered successfully.");
             return "home/registration";
         } else {
-            return "redirect:/dashboard"; // Redirect non-admin users to dashboard
+            return "redirect:/menu"; // Redirect non-admin users to dashboard
         }
     }
 
@@ -115,7 +115,7 @@ public class EmployeeManagementController {
             model.addAttribute("employees", employees);
             return "home/employeeList";
         } else {
-            return "redirect:/dashboard";
+            return "redirect:/menu";
         }
     }
 
@@ -125,12 +125,12 @@ public class EmployeeManagementController {
         if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
            System.out.println("Admin deleting employee with ID: " + id);
             employeeService.delete(id);
-            return "redirect:/dashboard";
+            return "redirect:/menu";
         }
             //System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
 
         //ændret herunder 18:57
-        return "redirect:/dashboard"; // Redirect back to the employee list
+        return "redirect:/menu"; // Redirect back to the employee list
     }
 
 
@@ -143,7 +143,7 @@ public class EmployeeManagementController {
             model.addAttribute("employees", employees);
             return "home/employeeList";
         } else {
-            return "redirect:/dashboard";
+            return "redirect:/menu";
         }
     }
 
@@ -159,7 +159,7 @@ public class EmployeeManagementController {
                 return "home/updateEmployee";
             }
         }
-        return "redirect:/dashboard"; // Redirect non-admin users to dashboard
+        return "redirect:/menu"; // Redirect non-admin users to dashboard
     }
 
 
@@ -176,7 +176,7 @@ public class EmployeeManagementController {
             employeeService.saveEmployee(employee);
             model.addAttribute("updateSuccess", "Employee updated successfully.");
         }
-        return "redirect:/dashboard"; // Redirect non-admin users to dashboard
+        return "redirect:/menu"; // Redirect non-admin users to dashboard
     }
 
 
@@ -195,7 +195,7 @@ public class EmployeeManagementController {
             return "home/dataRegistration";
         } else {
             model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "redirect:/dashboard";
+            return "redirect:/menu";
         }
     }
 
@@ -207,7 +207,7 @@ public class EmployeeManagementController {
             return "home/businessDevelopment";
         } else {
             model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "redirect:/dashboard";
+            return "redirect:/menu";
         }
     }
 
@@ -218,7 +218,7 @@ public class EmployeeManagementController {
             case DATAREGISTRATOR -> "redirect:/dataRegistration";
             case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
             case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
-            case ADMIN -> "redirect:dashboard";
+            case ADMIN -> "redirect:menu";
             //default -> "redirect:/dashboard";
         };
     }

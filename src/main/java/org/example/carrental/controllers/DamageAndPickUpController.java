@@ -30,7 +30,7 @@ public class DamageAndPickUpController {
                 return "home/damageAndPickUp";
             } else {
                 model.addAttribute("accessDenied", "You don't have permission to access this page.");
-                return "redirect:/dashboard";
+                return "redirect:/menu";
             }
         }
 
