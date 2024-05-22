@@ -47,11 +47,6 @@ public class EmployeeService {
 
     public void saveEmployee(Employee newEmployee) {
         // gemmer den nye employee, så der ikke er to af de samme employees
-        // den finder alle employees by username, hvis den returnere null gemmer
-        //den den nye employee
-        if (findEmployeeByUsername(newEmployee.getUserName()) == null) {
-            employeeRepository.saveOrUpdate(newEmployee);
-        }
-
+        employeeRepository.saveOrUpdate(newEmployee);
     }
 }

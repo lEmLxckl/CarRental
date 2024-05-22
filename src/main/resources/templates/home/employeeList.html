@@ -3,10 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Employee List</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    main {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    button {
+        background-color: #04AA6D;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 2px;
+    }
+
+    button {
+        background-color: red;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 2px;
+    }
+
+    button:hover {
+        background-color: #028a5e;
+    }
+
+    form {
+        display: inline;
+    }
+
+    a button {
+        background-color: #028a5e;
+    }
+
+    a button:hover {
+        background-color: #02694b;
+    }
+
+    .back-button {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+</style>
 </head>
+
 <body>
 <h1>Employee List</h1>
-<table border="1">
+<main>
+
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -20,22 +124,28 @@
     <tr th:each="employee : ${employees}">
         <td th:text="${employee.id}"></td>
         <td th:text="${employee.userName}"></td>
-        <td>******</td> <!-- Det er bare userPassword --->
+        <td th:text="${employee.userPassword}"></td> <!-- Placeholder for password -->
         <td th:text="${employee.usertype}"></td>
         <td>
-            <!-- Her sletter man -->
+            <!-- Delete action -->
             <form th:action="@{/deleteEmployee}" method="post" onsubmit="return confirm('Are you sure you want to delete this employee?');">
                 <input type="hidden" name="id" th:value="${employee.id}">
                 <button type="submit">Delete</button>
             </form>
-            <button type="button" onclick="location.href='@{/updateEmployee(id=${employee.id})}'">Update</button>
+            <!-- Update action -->
+            <a th:href="@{/updateEmployee(id=${employee.id})}" style="text-decoration: none;">
+                <button type="button">Update</button>
+            </a>
         </td>
     </tr>
     </tbody>
 </table>
 
-<form action="/dashboard" method="get">
-    <button type="submit">Go back to dashboard</button>
+<div class="back-button">
+<form action="/menu" method="get">
+    <button type="submit">Go back to Menu</button>
 </form>
+</div>
+</main>
 </body>
 </html>
