@@ -29,7 +29,7 @@ public class EmployeeManagementController {
 
     private final Map<String, Integer> loginAttempts = new HashMap<>();
 
-    @GetMapping("/")
+   /* @GetMapping("/")
     public String showLoginForm(Model model) {
         model.addAttribute("employee", new Employee());
         return "home/employeeLogin";
@@ -55,7 +55,7 @@ public class EmployeeManagementController {
             }
             return "home/employeeLogin";
         }
-    }
+    }*/
 
     @GetMapping("/menu")
     public String Menu(HttpSession session, Model model) {
@@ -213,14 +213,6 @@ public class EmployeeManagementController {
 
 
 
-    private String redirectToUserSpecificPage(Usertype userType) {
-        return switch (userType) {
-            case DATAREGISTRATOR -> "redirect:/dataRegistration";
-            case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
-            case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
-            case ADMIN -> "redirect:menu";
-            //default -> "redirect:/dashboard";
-        };
-    }
+
 
 }
