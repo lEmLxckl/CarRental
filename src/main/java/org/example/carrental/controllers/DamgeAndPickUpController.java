@@ -18,6 +18,15 @@ public class DamgeAndPickUpController {
     @Autowired
     private DamageAndPickUpService service;
 
+    @GetMapping("/damageReport")
+    public String damageReport(Model model, HttpSession session, Employee employee) {
+    employee = (Employee) session.getAttribute("employee");
+        if (employee != null && (employee.getUsertype() == Usertype.DAMAGEREPORTER || employee.getUsertype() == Usertype.ADMIN)) {
+            return "home/damageReport";
+        }
+        return "home/damageReport";
+    }
+
     @GetMapping("/damageAndPickUp")
     public String getDamageAndPickUp(Model model, HttpSession session, Employee employee) {
          employee = (Employee) session.getAttribute("employee");
@@ -31,9 +40,15 @@ public class DamgeAndPickUpController {
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") int id) {
-        service.deleteDamageAndPickUp(id);
-        return "redirect:/showAll";
+    public String delete(@RequestParam("id") int id, HttpSession session, Model model) {
+        Employee requestingEmployee = (Employee) session.getAttribute("employee");
+        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN || requestingEmployee.getUsertype() == Usertype.DAMAGEREPORTER) {
+            model.addAttribute("accessDenied", "You don't have permission to access this page.");
+
+            service.deleteDamageAndPickUp(id);
+            return "redirect:/menu";
+        }
+        return "redirect:/menu";
     }
 
     @PostMapping("/saveDamageAndPickUp")
@@ -50,10 +65,16 @@ public class DamgeAndPickUpController {
     }
 
     @GetMapping("/update")
-    public String update(@RequestParam("id") int id, Model model) {
-        DamageReport damageReport = service.getDamageAndPickUp(id);
-        model.addAttribute("damageReport", damageReport);
-        return "home/updateDamageReport";
+    public String update(@RequestParam("id") int id, Model model, HttpSession session) {
+        Employee requestingEmployee = (Employee) session.getAttribute("employee");
+        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN || requestingEmployee.getUsertype() == Usertype.DAMAGEREPORTER) {
+            model.addAttribute("accessDenied", "You don't have permission to access this page.");
+
+            DamageReport damageReport = service.getDamageAndPickUp(id);
+            model.addAttribute("damageReport", damageReport);
+            return "home/updateDamageReport";
+        }
+        return "redirect:/showAll";
     }
 
     @PostMapping("/updateDamageAndPickUp")
@@ -61,4 +82,6 @@ public class DamgeAndPickUpController {
         service.updateDamageAndPickUp(damageReport);
         return "redirect:/showAll";
     }
+
+
 }
