@@ -2,7 +2,6 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
-import org.example.carrental.model.Usertype;
 import org.example.carrental.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

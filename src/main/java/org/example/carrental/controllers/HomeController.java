@@ -3,16 +3,11 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
-import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -38,14 +33,14 @@ public class HomeController {
     }
 
     //Homepage
-    @GetMapping("/home")
+    @GetMapping("/Home")
     public String home(HttpSession session, Model model) {
         String value = (String) session.getAttribute("username");
         model.addAttribute("username", value);
         if (!employeeService.checkSession(session)){
-            return "redirect:/home";
+            return "redirect:/Home";
         }
-        return "home/home";
+        return "home/Home";
     }
 
     // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
