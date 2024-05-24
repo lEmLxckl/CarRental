@@ -39,7 +39,7 @@ public class DamgeAndPickUpController {
         }
         List<Damage_report> damage_reports = damage_reportService.showReport();
         model.addAttribute("damage_report", damage_reports);
-        return "home/skaderapport";
+        return "skaderapport";
 
     }
 
@@ -53,7 +53,7 @@ public class DamgeAndPickUpController {
         model.addAttribute("contract", leasing_contracts);
 
 
-        return "home/skaderapportopret";
+        return "skaderapportopret";
 
     }
 
@@ -82,7 +82,7 @@ public class DamgeAndPickUpController {
         model.addAttribute("category", damage_category);
         model.addAttribute("contractid", integer);
         session.setAttribute("contractid", integer);
-        return "home/opretskaderapport";
+        return "opretskaderapport";
     }
 
     // vælg skade og Udregn totalprisen for skaderapport
@@ -130,7 +130,7 @@ public class DamgeAndPickUpController {
         model.addAttribute("username", username);
         model.addAttribute("totalprisen", totalpris);
         model.addAttribute("contractid", contractId);
-        return "home/kvitteringSkadeRapport";
+        return "kvitteringSkadeRapport";
     }
 
     // bekræft din kvittering og tilføj din skaderapport
@@ -150,7 +150,7 @@ public class DamgeAndPickUpController {
         }
         Damage_report damageReport = damage_reportService.findSpecifikReport(report_id);
         model.addAttribute("opdater", damageReport);
-        return "home/opdaterSkadeRapport";
+        return "opdaterSkadeRapport";
     }
 
     // opdater skaderapporten

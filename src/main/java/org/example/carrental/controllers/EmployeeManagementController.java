@@ -37,7 +37,7 @@ public class EmployeeManagementController {
        som bruges til at opdatere visningen.*/
         model.addAttribute("employees", employees);
 
-        return "home/personale";
+        return "personale";
     }
 
     @GetMapping("/opretPersonale")
@@ -51,7 +51,7 @@ public class EmployeeManagementController {
             return "redirect:/personale";
         } else {
 
-            return "home/opretPersonale";
+            return "opretPersonale";
         }
 
     }
@@ -87,7 +87,7 @@ public class EmployeeManagementController {
         Employee employee = employeeService.findByUsername(username);
         model.addAttribute("employee", employee);
         session.setAttribute("urlusername", employee.getUsername());
-        return "home/opdaterPersonale";
+        return "opdaterPersonale";
     }
 
 

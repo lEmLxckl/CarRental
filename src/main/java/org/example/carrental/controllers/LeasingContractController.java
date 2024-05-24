@@ -41,7 +41,7 @@ public class LeasingContractController {
         List<Car> availableCars = carService.fetchAvailable();
         model.addAttribute("available", availableCars);
 
-        return "home/opretKontrakt";
+        return "opretKontrakt";
     }
 
     //viderefortsættelse af øvre metode hvor der bliver inputvaliderde.
@@ -60,7 +60,7 @@ public class LeasingContractController {
                 redirectAttributes.addFlashAttribute("flowerror", "Bilen er allerede lejet ud");
                 return "redirect:/opretKontrakt";
             } else {
-                return "home/bilValgt";
+                return "bilValgt";
             }
         }
     }
@@ -76,7 +76,7 @@ public class LeasingContractController {
         System.out.println(LC.size());
         double totalPrice = leasing_contractService.calculateTotalPriceOfLeasingContracts();
         model.addAttribute("totalPriceRent", totalPrice);
-        return "home/seLejekontrakt";
+        return "seLejekontrakt";
     }
 
 
@@ -94,10 +94,10 @@ public class LeasingContractController {
             model.addAttribute("opdater", car);
             model.addAttribute("username", username);
             model.addAttribute("customers", customers);
-            return "home/lej";
+            return "lej";
         } else {
             // handle case where numb is null
-            return "home/error";
+            return "error";
         }
     }
 
@@ -170,7 +170,7 @@ public class LeasingContractController {
         model.addAttribute("customer", customer);
         model.addAttribute("totalPriceRent", totalprice);
         model.addAttribute("customername", customername);
-        return "home/leaseconfirm";
+        return "leaseconfirm";
     }
 
     //videreførelse af tidligere metode, hvor man bliver vist en html side, og man kan trykke på confirm for at færdiggøre opretning

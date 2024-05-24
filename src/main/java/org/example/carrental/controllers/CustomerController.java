@@ -33,7 +33,7 @@ public class CustomerController {
         List<Customer> customers = customerService.fetchAll();
         session.setAttribute("customersInLej", customers);
         model.addAttribute("customers", customers);
-        return "home/opretLejekontrakt";
+        return "opretLejekontrakt";
     }
 
     // Opretter kunde, returnere bekræftelse ved oprettelse af kunde
@@ -52,7 +52,7 @@ public class CustomerController {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-        return "home/opretNyKunde";
+        return "opretNyKunde";
     }
 
     // Returnere den oprettede kunde
@@ -66,7 +66,7 @@ public class CustomerController {
         String value = customerService.findCustomerid(c.getEmail());
         model.addAttribute("customer", c);
         model.addAttribute("customerid",value);
-        return "home/opretNyKundeConfirmed";
+        return "opretNyKundeConfirmed";
 
     }
 
@@ -79,7 +79,7 @@ public class CustomerController {
         }
         Customer customer=customerService.findId(customer_id);
         model.addAttribute("opdater", customer);
-        return "home/opdaterKunde";
+        return "opdaterKunde";
     }
 
     // Modtager opdateret kundeinfo, kalder opdatermetode og redirecter til opretlejekontrakt ved udførelse

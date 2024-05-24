@@ -17,13 +17,13 @@ public class HomeController {
     //Start page
     @GetMapping("/")
     public String index() {
-        return "home/index";
+        return "index";
     }
     //login
     @GetMapping("/login")
     public String login() {
 
-        return "home/login";
+        return "login";
     }
 
     @GetMapping("/logout")
@@ -33,14 +33,14 @@ public class HomeController {
     }
 
     //Homepage
-    @GetMapping("/Home")
+    @GetMapping("/home")
     public String home(HttpSession session, Model model) {
         String value = (String) session.getAttribute("username");
         model.addAttribute("username", value);
         if (!employeeService.checkSession(session)){
-            return "redirect:/Home";
+            return "redirect:/home";
         }
-        return "home/Home";
+        return "home";
     }
 
     // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
@@ -63,7 +63,7 @@ public class HomeController {
             // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
             model.addAttribute("invalid", "bruger findes ikke");
             // Returnerer login-siden.
-            return "home/login";
+            return "login";
 
         }
     }
