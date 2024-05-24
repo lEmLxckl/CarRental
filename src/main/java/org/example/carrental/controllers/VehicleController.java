@@ -35,7 +35,7 @@ public class VehicleController {
         }
         List<Car> cars = carService.fetchAll();
         model.addAttribute("cars", cars);
-        return "seallebiler";
+        return "home/seallebiler";
     }
 
 
@@ -48,7 +48,7 @@ public class VehicleController {
         }
         List <Car> availableCars = carService.fetchAvailable();
         model.addAttribute("available", availableCars);
-        return "ledigbiler";
+        return "home/ledigbiler";
     }
 
     // Metoden sender dig til en side hvor du kan tilføje en bil
@@ -57,7 +57,7 @@ public class VehicleController {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-        return "tilføjBiler";
+        return "home/tilføjBiler";
     }
 
     // Her kan du udfylde informationer om en bil og den bliver gemt i listen i databasen
@@ -88,7 +88,7 @@ public class VehicleController {
         }
         Car car = carService.findId(vehicle_number);
         model.addAttribute("opdater", car);
-        return "opdaterBil";
+        return "home/opdaterBil";
     }
 
     // Denne metode håndtere selve oplysningerne af en bil, når formularen bliver sendt
@@ -117,6 +117,6 @@ public class VehicleController {
         List<Map<String, Object>> rentedCars = carService.TotalpriceData(); //sammenlagt bil pris pr måned
         model.addAttribute("rentedCars", rentedCars);
 
-        return "sammenlagtpris";
+        return "home/sammenlagtpris";
     }
 }

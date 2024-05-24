@@ -29,7 +29,7 @@ public class DamageController {
         List<Damage_category> damage_category =  damageService.fetchAllDamageCategories();
         model.addAttribute("category", damage_category);
 
-        return "skader";
+        return "home/skader";
     }
 
     // metode som anvendes til at tilføje en ekstra skade
@@ -38,7 +38,7 @@ public class DamageController {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-        return "tilføjSkade";
+        return "home/tilføjSkade";
     }
     // en fortsættelse og af overnævnte tilføje metode, hvor en html login forum displays
     @PostMapping("/createNewDamage")
@@ -55,7 +55,7 @@ public class DamageController {
         }
         Damage_category damage = damageService.findSpecifikDamage(category_id);
         model.addAttribute("opdater", damage);
-        return "opdaterSkade";
+        return "home/opdaterSkade";
     }
 
     //fortsættelse af overstående metode, hvor man ajourføre oplysningerne af den tildelte kategori.

@@ -22,13 +22,13 @@ public class HomeController {
     //Start page
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "home/index";
     }
     //login
     @GetMapping("/login")
     public String login() {
 
-        return "login";
+        return "home/login";
     }
 
     @GetMapping("/logout")
@@ -45,7 +45,7 @@ public class HomeController {
         if (!employeeService.checkSession(session)){
             return "redirect:/home";
         }
-        return "home";
+        return "home/home";
     }
 
     // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
@@ -68,7 +68,7 @@ public class HomeController {
             // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
             model.addAttribute("invalid", "bruger findes ikke");
             // Returnerer login-siden.
-            return "login";
+            return "home/login";
 
         }
     }
