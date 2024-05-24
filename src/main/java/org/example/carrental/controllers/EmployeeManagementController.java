@@ -40,7 +40,7 @@ public class EmployeeManagementController {
         return "personale";
     }
 
-    @GetMapping("/opretPersonale")
+    @GetMapping("/opretPersonaler")
     public String opretPersonale(HttpSession session) {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
@@ -51,7 +51,7 @@ public class EmployeeManagementController {
             return "redirect:/personale";
         } else {
 
-            return "opretPersonale";
+            return "opretPersonaler";
         }
 
     }

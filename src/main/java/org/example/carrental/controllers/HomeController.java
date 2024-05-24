@@ -28,8 +28,8 @@ public class HomeController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
-        session.removeAttribute("adminlogin");
-        return "redirect:/home";
+        session.invalidate();
+        return "redirect:/";
     }
 
     //Homepage
