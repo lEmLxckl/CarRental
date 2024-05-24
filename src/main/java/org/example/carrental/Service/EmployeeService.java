@@ -11,47 +11,44 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    private  final EmployeeRepository employeeRepository;
-
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    EmployeeRepository employeeRepo;
+
+    public List <Employee> fetchAllEmployees(){
+        return employeeRepo.fetchAll();
     }
 
-
-    public List<Employee> getEmployees() {
-        return employeeRepository.getEmployees();
+    public void createEmployee(Employee employee){
+        employeeRepo.addEmployee(employee);
     }
 
-    public Employee getEmployee(int id) {
-        return employeeRepository.getEmployee(id);
+    public void fireEmployee(String username){
+        employeeRepo.fireEmployee(username);
     }
 
-    public void delete(int id) {
-        employeeRepository.delete(id);
+    public void updateEmployee(Employee employee){
+        employeeRepo.updateEmployee(employee);
+
     }
 
-    public Employee authenticate(String userName, String passWord) {
-        // altså leder den efter employee i databasen, så hvis employee username og password ikke
-        // er lig med null så kunne man autentificere brugeren
-        Employee employee = employeeRepository.findByUserName(userName);
-        if (employee != null && employee.getUserPassword().equals(passWord)) {
-            return employee; // succes autentificering
-        }
-        return null; // employee kunne ikke autentificeres
+    public Employee findAdminUser(String username){
+        return employeeRepo.findAdmin(username);
     }
 
-    public Employee findEmployeeByUsername(String userName) {
-        // tjekker hvis employee exists
-        return  employeeRepository.findByUserName(userName);
+    public Employee findByUsername(String username){
+        return employeeRepo.findByUsername(username);
+
+
     }
 
-    public void saveEmployee(Employee newEmployee) {
-        // gemmer den nye employee, så der ikke er to af de samme employees
-        employeeRepository.saveOrUpdate(newEmployee);
+    public Employee findbyuserandpassword(String username, String user_password){
+        return employeeRepo.findByUserAndPassword(username, user_password);
+
     }
+
     public Boolean checkSession(HttpSession httpSession){
         return httpSession.getAttribute("adminlogin") != null;
     }
+
 
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leasing Contract Confirmation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            background-color: #57a3ee;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        td:first-child {
+            font-weight: bold;
+            text-align: right;
+            width: 40%;
+        }
+        td:last-child {
+            text-align: left;
+        }
+        form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+        input[type="submit"] {
+            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bekræftelse af lejekontrakt</h1>
+<p>Bekræft venligt detaljerne nedenfor:</p>
+<table>
+    <tr>
+        <td>Vehicle Number:</td>
+        <td th:text="${opdater.getVehicle_number()}"></td>
+    </tr>
+    <tr>
+        <td>Bil:</td>
+        <td th:text="${opdater.getBrand() + ' ' + opdater.getModel() +' ' + opdater.getMake()}"></td>
+    </tr>
+    <tr>
+        <td>Customer id:</td>
+        <td th:text="${customer}"></td>
+    </tr>
+    <tr>
+        <td>Kundens navn:</td>
+        <td th:text="${customername}"></td>
+    </tr>
+    <tr>
+        <td>Start Date:</td>
+        <td th:text="${startDate}"></td>
+    </tr>
+    <tr>
+        <td>End Date:</td>
+        <td th:text="${endDate}"></td>
+    </tr>
+    <tr>
+        <td>Total Price:</td>
+        <td th:text="${totalPriceRent} + ' kr'"></td>
+    </tr>
+    <tr>
+        <td>Employee Username:</td>
+        <td th:text="${username}"></td>
+    </tr>
+
+
+
+
+</table>
+<form method="post" action="/createLeasingContractConfirmed">
+    <input type="submit" value="Confirm">
+    <input type="hidden" name="start_date" id="start_date" th:value="${startDate}"><br><br>
+    <input type="hidden" name="end_date" id="end_date" th:value="${endDate}"><br><br>
+    <input type="hidden" name="vehicle_number" id="vehicle_number" th:value="${opdater.vehicle_number}"><br><br>
+    <input type="hidden" name="username" id="username" th:value="${username}"><br><br>
+    <input type="hidden" name="customer_id" id="customer_id" th:value="${customer}"><br><br>
+    <input type="hidden" name="price" id="price" th:value="${totalPriceRent}"><br><br>
+</form>
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+</body>
+</html>

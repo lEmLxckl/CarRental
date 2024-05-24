@@ -1,47 +1,39 @@
 package org.example.carrental.model;
 
 public class Customer {
-    private int customerId;
-    private String firstName;
-    private String lastName;
+    private int customer_id;
+    private String full_name;
     private String email;
     private String phone;
     private String address;
+    private String cpr;
 
-    public Customer(int customerId, String firstName, String lastName, String email, String phone, String address) {
-        this.customerId = customerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Customer() {
+    }
+
+    public Customer(int customer_id, String full_name, String email, String phone, String address, String cpr) {
+        this.customer_id = customer_id;
+        this.full_name = full_name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.cpr = cpr;
     }
 
-    public Customer() {
-
-    }
-    public int getCustomerId() {
-        return customerId;
+    public int getCustomer_id() {
+        return customer_id;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
     public String getEmail() {
@@ -68,17 +60,11 @@ public class Customer {
         this.address = address;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+    public String getCpr() {
+        return cpr;
     }
 
+    public void setCpr(String cpr) {
+        this.cpr = cpr;
+    }
 }
-

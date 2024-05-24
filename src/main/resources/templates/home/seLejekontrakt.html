@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Se lejekontrakt</title>
+    <link rel="stylesheet" href="home.css">
+    <div th:include="navbar.html"></div>
+    <link rel="stylesheet" href="table.css">
+
+    <style>
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>Lejekontrakter</h1>
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Søg...">
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Contract ID</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Price</th>
+        <th>Vehicle Number</th>
+        <th>Username</th>
+        <th>Customer ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="leasingContract : ${LC}">
+        <td th:text="${leasingContract.contract_id}"></td>
+        <td th:text="${leasingContract.start_date}"></td>
+        <td th:text="${leasingContract.end_date}"></td>
+        <td th:text="${leasingContract.price}"></td>
+        <td th:text="${leasingContract.vehicle_number}"></td>
+        <td th:text="${leasingContract.username}"></td>
+        <td th:text="${leasingContract.customer_id}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<h1 th:text="${username}"></h1>
+
+
+<div class="footer">
+    <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+</body>
+</html>

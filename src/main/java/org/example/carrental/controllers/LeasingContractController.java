@@ -2,32 +2,30 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Customer;
-import org.example.carrental.model.Lease;
-import org.example.carrental.model.Vehicle;
-import org.example.carrental.service.VehicleService;
+import org.example.carrental.model.Leasing_contract;
+import org.example.carrental.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.example.carrental.service.CustomerService;
-import org.example.carrental.service.LeaseService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.math.BigDecimal;
+import org.example.carrental.service.Leasing_contractService;
 import java.time.LocalDate;
+import org.example.carrental.service.VehicleService;
 import java.time.Period;
 import java.util.List;
 
 @Controller
-public class UserTypeDataController {
+public class LeasingContractController {
 
 
     int number;
     @Autowired
-    LeaseService leaseService;
+    Leasing_contractService leasing_contractService;
     @Autowired
-    VehicleService vehicleService;
+    VehicleService carService;
     @Autowired
     CustomerService customerService;
 
@@ -40,7 +38,7 @@ public class UserTypeDataController {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-        List<Vehicle> availableCars = vehicleService.fetchAvailable();
+        List<Car> availableCars = carService.fetchAvailable();
         model.addAttribute("available", availableCars);
 
         return "opretKontrakt";
@@ -50,15 +48,15 @@ public class UserTypeDataController {
 
     @PostMapping("/chooseCar")
     public String seBiler(Model model, int vehicle_number, HttpSession session, RedirectAttributes redirectAttributes) {
-        Vehicle vehicle = vehicleService.findVehicleById(vehicle_number);
-        if (vehicle == null) {
+        Car car = carService.findId(vehicle_number);
+        if (car == null) {
             redirectAttributes.addFlashAttribute("error", "Bilen med det angivne vognnummer kunne ikke findes");
             return "redirect:/opretKontrakt";
         } else {
-            model.addAttribute("opdater", vehicle);
+            model.addAttribute("opdater", car);
             model.addAttribute("model", "");
-            session.setAttribute("numb", vehicle.getSerialNumber());
-            if (vehicle.getFlow() == 1) {
+            session.setAttribute("numb", car.getVehicle_number());
+            if (car.getFlow() == 1) {
                 redirectAttributes.addFlashAttribute("flowerror", "Bilen er allerede lejet ud");
                 return "redirect:/opretKontrakt";
             } else {
@@ -73,10 +71,10 @@ public class UserTypeDataController {
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-        List<Lease> LC = leaseService.fetchAll();
+        List<Leasing_contract> LC = leasing_contractService.fetchAll();
         model.addAttribute("LC",LC );
         System.out.println(LC.size());
-        double totalPrice = leaseService.calculateTotalPriceOfLeasingContracts();
+        double totalPrice = leasing_contractService.calculateTotalPriceOfLeasingContracts();
         model.addAttribute("totalPriceRent", totalPrice);
         return "seLejekontrakt";
     }
@@ -90,9 +88,9 @@ public class UserTypeDataController {
         }
         String username = (String) session.getAttribute("username");
         Integer numb = (Integer) session.getAttribute("numb");
-        List<Customer> customers = customerService.getAllCustomers();
+        List<Customer> customers = customerService.fetchAll();
         if (numb != null) {
-            Vehicle car = vehicleService.findVehicleById(numb);
+            Car car = carService.findId(numb);
             model.addAttribute("opdater", car);
             model.addAttribute("username", username);
             model.addAttribute("customers", customers);
@@ -108,7 +106,7 @@ public class UserTypeDataController {
     @PostMapping("/createLeasingContract")
     public String createLease(LocalDate start_date, LocalDate end_date, Model model, HttpSession session, int customer_id, String username, RedirectAttributes redirectAttributes) {
         int numb = (int) session.getAttribute("numb");
-        Vehicle car = vehicleService.findVehicleById(numb); // sekvens step 1.1.1
+        Car car = carService.findId(numb); // sekvens step 1.1.1
 
         model.addAttribute("opdater", car);
         model.addAttribute("username", username);
@@ -142,9 +140,9 @@ public class UserTypeDataController {
             session.setAttribute("endDate", end_date);
             session.setAttribute("customer", customer_id);
             session.setAttribute("username", username);
-            Customer customer = customerService.getCustomerById(customer_id); // sekvens 1.2 og efter
+            Customer customer = customerService.findId(customer_id); // sekvens 1.2 og efter
             session.setAttribute("customer_id", customer);
-            session.setAttribute("customername", customer.getFirstName() + " " + customer.getLastName());
+            session.setAttribute("customername", customer.getFull_name());
 
             return "redirect:/leaseconfirm";
         }
@@ -164,7 +162,7 @@ public class UserTypeDataController {
         int customer = (int) session.getAttribute("customer");
 
         Integer numb = (Integer) session.getAttribute("numb");
-        Vehicle car = vehicleService.findVehicleById(numb);
+        Car car = carService.findId(numb);
         model.addAttribute("opdater", car);
         model.addAttribute("username", username);
         model.addAttribute("startDate", startDate);
@@ -177,7 +175,7 @@ public class UserTypeDataController {
 
     //videreførelse af tidligere metode, hvor man bliver vist en html side, og man kan trykke på confirm for at færdiggøre opretning
     @PostMapping("/createLeasingContractConfirmed")
-    public String leasingAdd(Model model, HttpSession session, Lease leasing_contract) {
+    public String leasingAdd(Model model, HttpSession session, Leasing_contract leasing_contract) {
         String username = (String) session.getAttribute("username");
         LocalDate startDate = (LocalDate) session.getAttribute("startDate");
         String customername = (String) session.getAttribute("customername");
@@ -185,18 +183,20 @@ public class UserTypeDataController {
         double totalprice = (double) session.getAttribute("totalPriceRent");
         int customer = (int) session.getAttribute("customer");
         Integer numb = (Integer) session.getAttribute("numb");
-        Vehicle vehicle = vehicleService.findVehicleById(numb);
-        model.addAttribute("opdater", vehicle);
+        Car car = carService.findId(numb);
+        model.addAttribute("opdater", car);
         model.addAttribute("username", username);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("customer", customer);
         model.addAttribute("totalPriceRent", totalprice);
         model.addAttribute("customername", customername);
-        leaseService.addLeasingContract(leasing_contract);
-        vehicleService.updateAfterContract(numb);
+        leasing_contractService.addLeasingContract(leasing_contract);
+        carService.updateAfterContract(numb);
         return "redirect:/home";
     }
+
+
 
 
 }

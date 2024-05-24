@@ -1,6 +1,6 @@
 package org.example.carrental.service;
 
-import org.example.carrental.model.Vehicle;
+import org.example.carrental.model.Car;
 import org.example.carrental.repository.VehicleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,54 +10,52 @@ import java.util.Map;
 
 @Service
 public class VehicleService {
-
     @Autowired
-    private VehicleRepo vehicleRepo;
+    private VehicleRepo carRepo;
 
-    public List<Vehicle> fetchAll() {
-        return vehicleRepo.fetchAll();
+    public List<Car> fetchAll() {
+        return carRepo.fetchAll();
     }
 
-    public List<Vehicle> fetchAvailable() {
-        return vehicleRepo.fetchAvailable();
+    public List<Car>fetchAvailable(){
+        return carRepo.fetchAvailable();
+    }
+    public void addCar( Car car){
+        carRepo.addCar(car);
+    }
+    public boolean deleteCar(int id){
+        return carRepo.deleteCar(id);
     }
 
-    public void addVehicle(Vehicle vehicle) {
-        vehicleRepo.addVehicle(vehicle);
+    public void updateCar(Car car, int id){
+        carRepo.updateCar(car, id);
+    }
+    public void updateAfterContract(int id){
+        carRepo.updateAfterContract(id);
+    }
+    public Car findId(int id){
+        return carRepo.findCarByid(id);
     }
 
-    public boolean deleteVehicle(int id) {
-        return vehicleRepo.deleteVehicle(id);
-    }
-
-    public void updateVehicle(Vehicle vehicle, int id) {
-        vehicleRepo.updateVehicle(vehicle, id);
-    }
-
-    public void updateAfterContract(int id) {
-        vehicleRepo.updateAfterContract(id);
-    }
-
-    public Vehicle findVehicleById(int id) {
-        return vehicleRepo.findVehicleById(id);
-    }
-
-    public double calculateTotalPriceOfRentedVehicles() {
-        List<Vehicle> rentedVehicles = vehicleRepo.fetchRentedVehicles();
+    // bruger list til at indholde bilerne og udfra dette beregner og summere alle bilernes pris sammen.
+    public double calculateTotalPriceOfRentedCars() {
+        List<Car> rentedCars = carRepo.fetchRentedCars(); // Hent de udlejet biler
         double totalPrice = 0.0;
-        for (Vehicle vehicle : rentedVehicles) {
-            if (vehicle.getFlow() == 1) {
-                totalPrice += vehicle.getPrice();
+
+        for (Car car : rentedCars) {
+            if (car.getFlow() == 1) { // Tjek hvis bil er udlejet (flow = 1)
+                totalPrice += car.getPrice(); // Tilføj bilens pris til den totale pris
             }
         }
+
         return totalPrice;
     }
 
-    public void updateAfterDamageReport(int id) {
-        vehicleRepo.updateAfterDamageReport(id);
-    }
 
-    public List<Map<String, Object>> getTotalPricesData() {
-        return vehicleRepo.getTotalPricesData();
+    public void updateAfterDamageReport(int id){
+        carRepo.updateAfterDamageReport(id);
+    }
+    public List<Map<String, Object>> TotalpriceData() {
+        return carRepo.getTotalPricesData();
     }
 }

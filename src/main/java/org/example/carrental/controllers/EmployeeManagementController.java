@@ -7,10 +7,8 @@ import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,200 +17,111 @@ import java.util.Map;
 
 @Controller
 public class EmployeeManagementController {
-
-    private final EmployeeService employeeService;
-
     @Autowired
-    EmployeeManagementController (EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
+    EmployeeService employeeService;
 
-    private final Map<String, Integer> loginAttempts = new HashMap<>();
+    /* Denne metode bruges til at håndtere en GET-anmodning til "/personale" -ruten,
+     og den returnerer en visningsside kaldet "personale", der viser alle medarbejdere.
+    */
+    @GetMapping("/personale")
+    public String getAllEmployees(Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)){
 
-   /* @GetMapping("/")
-    public String showLoginForm(Model model) {
-        model.addAttribute("employee", new Employee());
-        return "home/employeeLogin";
-    }
-
-    @PostMapping("/employeeLogin")
-    public String login(@RequestParam String userName,
-                        @RequestParam String userPassword,
-                        Model model, HttpSession session) {
-        loginAttempts.put(userName, loginAttempts.getOrDefault(userName, 0) + 1);
-
-        Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
-
-        if (loggedInEmployee != null) {
-            session.setAttribute("employee", loggedInEmployee);
-            session.setAttribute("userType", loggedInEmployee.getUsertype());
-            // return "redirect:/dashboard";
-            loginAttempts.put(userName, 0); // Reset login attempts on successful login
-            return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
-        } else {
-            if (loginAttempts.get(userName) >= 3) {
-                model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
-            }
-            return "home/employeeLogin";
-        }
-    }*/
-
-    @GetMapping("/menu")
-    public String Menu(HttpSession session, Model model) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        Usertype userType = (Usertype) session.getAttribute("userType");
-
-        if (employee != null) {
-            model.addAttribute("employee", employee);
-            model.addAttribute("userType", userType);
-            return "home/menu";
-        } else {
-            model.addAttribute("employeeNotFound", true);
+            /* Før visningen kontrolleres sessionen for at sikre, at den er gyldig.
+      Hvis sessionen ikke er gyldig, omdirigeres brugeren til startsiden ("/").*/
             return "redirect:/";
         }
+        List<Employee> employees = employeeService.fetchAllEmployees();
+        Employee adminLogin = (Employee) session.getAttribute("adminlogin");
+
+        model.addAttribute("admin", adminLogin);
+
+        /*     Derudover tilføjes en administratorkonto og en liste med medarbejdere til modellen,
+       som bruges til at opdatere visningen.*/
+        model.addAttribute("employees", employees);
+
+        return "personale";
     }
 
-    @GetMapping("/registration")
-    public String showRegistrationForm(Model model, HttpSession session) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-            model.addAttribute("newEmployee", new Employee());
-            model.addAttribute("allUserTypes", Usertype.values());
-            return "home/registration";
+    @GetMapping("/opretPersonale")
+    public String opretPersonale(HttpSession session) {
+        if (!employeeService.checkSession(session)){
+            return "redirect:/";
+        }
+        String adminLogin = (String) session.getAttribute("username");
+        Employee adminEmployee = employeeService.findAdminUser(adminLogin);
+        if (adminEmployee == null) {
+            return "redirect:/personale";
         } else {
-            return "redirect:/menu";
 
+            return "opretPersonale";
         }
 
     }
 
+    @PostMapping("/opretPersonaler")
+    public String opretPersonaler(Employee employee, Model model, HttpSession session) {
+        employeeService.createEmployee(employee);
+        return "redirect:/personale";
 
-    @PostMapping("/registration")
-    public String createNewEmployee(@ModelAttribute("newEmployee") Employee newEmployee, Model model, HttpSession session) {
-        //System.out.println("Usertype: " + newEmployee.getUsertype());
-        Employee employee = (Employee) session.getAttribute("employee");
+    }
 
-        // Check if the current user is an admin
-        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-            Employee existingEmployee = employeeService.findEmployeeByUsername(newEmployee.getUserName());
-            if (existingEmployee != null) {
-                model.addAttribute("registrationError", "An employee with that username already exists.");
-                return "home/registration";
-            }
-            employeeService.saveEmployee(newEmployee);
-            model.addAttribute("registrationSuccess", "Employee registered successfully.");
-            return "home/registration";
+    @GetMapping("/personale/{username}")
+    public String fireEmployee(@PathVariable("username") String username,  HttpSession session){
+        if (!employeeService.checkSession(session)){
+            return "redirect:/";
+        }
+        String adminLogin = (String) session.getAttribute("username");
+        Employee adminEmployee =employeeService.findAdminUser(adminLogin);
+        if (adminEmployee==null) {
+            return"redirect:/personale";
         } else {
-            return "redirect:/menu"; // Redirect non-admin users to dashboard
+            employeeService.fireEmployee(username);
+            return "redirect:/personale";
+        }
+
+    }
+
+    @GetMapping("/opdaterPersonale/{username}")
+    public String findByUsername(@PathVariable("username") String username, Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)){
+            return "redirect:/";
+        }
+        Employee employee = employeeService.findByUsername(username);
+        model.addAttribute("employee", employee);
+        session.setAttribute("urlusername", employee.getUsername());
+        return "opdaterPersonale";
+    }
+
+
+
+    //opdaterer personale oplysninger
+
+    @PostMapping("/opdateretPersonale")
+    public String opdateretPersonal(Employee employee, int is_active, int is_admin,
+                                    HttpSession session, RedirectAttributes redirectAttributes) {
+        String usernames = (String) session.getAttribute("urlusername");
+
+        //hvis begge to felter ikke har rigtig inputs, skal der gives to fejl meddelelser,
+        if(is_active != 0 && is_active != 1 && is_admin != 0 && is_admin != 1  ){
+            redirectAttributes.addFlashAttribute("fejl", "Admin value should be 0 or 1");
+            redirectAttributes.addFlashAttribute("fejl2", "Active value should be 0 or 1");
+            return "redirect:/opdaterPersonale/" + usernames;
+        }
+        //hvis active felten ikke er korrect skal der gives en meddelse til dette
+        else if (is_active != 0 && is_active != 1) {
+            redirectAttributes.addFlashAttribute("fejl", "Active value should be 0 or 1");
+            return "redirect:/opdaterPersonale/" + usernames;
+        }
+        //hvis active felten ikke er korrect skal der gives en meddelse til dette
+        else if (is_admin != 0 && is_admin != 1) {
+            redirectAttributes.addFlashAttribute("fejl2", "Admin value should be 0 or 1");
+            return "redirect:/opdaterPersonale/" + usernames;
+        }else {
+            //hvis begge inputs er indtastet rigtigt skal update væres succesfuld og den skal refresh personale html siden
+
+            employeeService.updateEmployee(employee);
+            return "redirect:/personale";
         }
     }
-
-    @GetMapping("/deleteEmployee")
-    public String showAllEmployees(HttpSession session, Model model, Employee employee) {
-        employee = (Employee) session.getAttribute("employee");
-        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-         List<Employee> employees = employeeService.getEmployees();
-            model.addAttribute("employees", employees);
-            return "home/employeeList";
-        } else {
-            return "redirect:/menu";
-        }
-    }
-
-    @PostMapping("/deleteEmployee")
-    public String deleteEmployee(@RequestParam("id") int id, HttpSession session) {
-        Employee requestingEmployee = (Employee) session.getAttribute("employee");
-        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
-           System.out.println("Admin deleting employee with ID: " + id);
-            employeeService.delete(id);
-            return "redirect:/menu";
-        }
-            //System.out.println("Unauthorized deletion attempt by employee with ID: " + requestingEmployee.getId());
-
-        //ændret herunder 18:57
-        return "redirect:/menu"; // Redirect back to the employee list
-    }
-
-
-
-    @GetMapping("/employeeList")
-    public String showAllEmployees(Model model, HttpSession session) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        if (employee != null && employee.getUsertype() == Usertype.ADMIN) {
-            List<Employee> employees = employeeService.getEmployees();
-            model.addAttribute("employees", employees);
-            return "home/employeeList";
-        } else {
-            return "redirect:/menu";
-        }
-    }
-
-
-    @GetMapping("/updateEmployee")
-    public String showUpdateForm(@RequestParam("id") int id, Model model, HttpSession session) {
-        Employee requestingEmployee = (Employee) session.getAttribute("employee");
-        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
-            Employee employee = employeeService.getEmployee(id);
-            if (employee != null) {
-                model.addAttribute("employee", employee);
-                model.addAttribute("allUserTypes", Usertype.values());
-                return "home/updateEmployee";
-            }
-        }
-        return "redirect:/menu"; // Redirect non-admin users to dashboard
-    }
-
-
-    @PostMapping("/updateEmployee")
-    public String updateEmployee(@ModelAttribute("employee") Employee employee, @RequestParam("confirmPassword") String confirmPassword, Model model, HttpSession session) {
-        Employee requestingEmployee = (Employee) session.getAttribute("employee");
-        if (requestingEmployee != null && requestingEmployee.getUsertype() == Usertype.ADMIN) {
-            if (!employee.getUserPassword().equals(confirmPassword)) {
-                model.addAttribute("passwordError", "Passwords do not match.");
-                model.addAttribute("employee", employee);
-                model.addAttribute("allUserTypes", Usertype.values());
-                return "home/updateEmployee";
-            }
-            employeeService.saveEmployee(employee);
-            model.addAttribute("updateSuccess", "Employee updated successfully.");
-        }
-        return "redirect:/menu"; // Redirect non-admin users to dashboard
-    }
-
-
-
-    @PostMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/";
-    }
-
-
-    @GetMapping("/dataRegistration")
-    public String showDataRegistration(Model model, HttpSession session) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        if (employee != null && (employee.getUsertype() == Usertype.DATAREGISTRATOR || employee.getUsertype() == Usertype.ADMIN)) {
-            return "home/dataRegistration";
-        } else {
-            model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "redirect:/menu";
-        }
-    }
-
-
-    @GetMapping("/businessDevelopment")
-    public String showBusinessDevelopment(Model model, HttpSession session) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        if (employee != null && (employee.getUsertype() == Usertype.BUSINESSDEVELOPER || employee.getUsertype() == Usertype.ADMIN)) {
-            return "home/businessDevelopment";
-        } else {
-            model.addAttribute("accessDenied", "You dont have permission to acces this page. ");
-            return "redirect:/menu";
-        }
-    }
-
-
-
-
-
 }

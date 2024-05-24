@@ -4,6 +4,7 @@ import org.example.carrental.model.Employee;
 import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -15,90 +16,77 @@ import java.util.List;
 @Repository
 public class EmployeeRepository {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Employee> employeeRowMapper = new RowMapper<>() {
-        @Override
-        public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Employee employee = new Employee();
-            employee.setId(rs.getInt("id"));
-            employee.setUserName(rs.getString("username"));
-            employee.setUserPassword(rs.getString("userpassword"));
-
-            String userTypeString = rs.getString("usertype");
-            if (userTypeString != null && !userTypeString.isEmpty()) {
-                try {
-                    employee.setUsertype(Usertype.valueOf(userTypeString));
-                } catch (IllegalArgumentException e) {
-                    throw new SQLException("Invalid usertype value: " + userTypeString, e);
-                }
-            } else {
-                employee.setUsertype(null); // Handle null userTypeString
-            }
-            return employee;
-        }
-    };
-
     @Autowired
-    // constructor til at injicere JdbcTemplate-dependency
-    public EmployeeRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    JdbcTemplate template;
 
-    // finder alle employees
-    public List<Employee> getEmployees() {
-        String query = "SELECT * FROM employees;";
-        return jdbcTemplate.query(query, employeeRowMapper);
-    }
-
-    // finder employess via id
-    public Employee getEmployee(int id) {
-        String query = "SELECT * FROM employees WHERE id = ?;";
-        try {
-            return jdbcTemplate.queryForObject(query, employeeRowMapper, id);
-        } catch (EmptyResultDataAccessException e) {
+    //Find employee hvor username er ? og user_password er ?... Vi bruger den login
+    public Employee findByUserAndPassword(String username, String user_password) {
+        String sql = "SELECT * FROM Employee WHERE username=? AND user_password=?";
+        RowMapper rowMapper = new BeanPropertyRowMapper(Employee.class);
+        List<Employee> employees = template.query(sql, rowMapper, username, user_password);
+        if ((employees.size()) == 1) {
+            return employees.get(0);
+        } else {
             return null;
         }
+
     }
 
-    // sletter employees via id
-    public void delete(int id) {
-        String query = "DELETE FROM employees WHERE id = ?;";
-        jdbcTemplate.update(query, id);
+    // Returner en liste af alle Employees
+    public List<Employee> fetchAll() {
+        String sql = "SELECT * FROM Employee";
+        RowMapper<Employee> rowMapper = new BeanPropertyRowMapper<>(Employee.class);
+        return template.query(sql, rowMapper);
     }
 
+    //tilføj Employee
+    public void addEmployee(Employee employee) {
+        String sql = "INSERT INTO Employee (username, user_password, full_name, email, phone, is_active, is_admin) VALUES (?,?,?,?,?,?,?)";
+        template.update(sql, employee.getUsername(), employee.getUser_password(), employee.getFull_name(), employee.getEmail(), employee.getPhone(), employee.getIs_active(), employee.getIs_admin());
 
-    public Employee findByUserName(String userName) {
-        //Metode til at finde employees by username
-        // den bruger SQL query til at søge efter employees by username column
-        String query = "SELECT * FROM employees WHERE username = ?";
-        List<Employee> employees = jdbcTemplate.query(query, new Object[]{userName}, employeeRowMapper);
-        // Returnere den første employee hvis fundet,
-        // ellers returnere den null hvis listen er empty
-        return employees.isEmpty() ? null : employees.get(0);
     }
+    // input username for at finde en employee
+    public boolean doesTheUserExsit(String username){
+        String sql = "SELECT * FROM Employee WHERE Username=?";
+        RowMapper<Employee>rowMapper = new BeanPropertyRowMapper<>(Employee.class);
+        List<Employee>employees = template.query(sql,rowMapper,username);
+        return !employees.isEmpty();
+    }
+    // Fyr en Employee hvor username er ?
+    public void fireEmployee(String username){
+        String sql = "UPDATE employee SET is_active = 0 WHERE username = ?";
+        template.update(sql, username);
 
-   /* public void saveOrUpdate(Employee employee) {
-        if (employee.getId() == 0) {
-            String insertQuery = "INSERT INTO employees(username, userPassword, usertype) VALUES (?, ?, ?);";
-            jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword(), employee.getUsertype().name());
+    }
+    // Opdater Employee
+    public void updateEmployee(Employee employee){
+        String sql = "UPDATE employee SET user_password = ?, full_name= ?, email= ?, phone= ?, is_active= ?, is_admin = ? where username=?";
+        template.update(sql,employee.getUser_password(), employee.getFull_name(), employee.getEmail(), employee.getPhone(), employee.getIs_active(), employee.getIs_admin(), employee.getUsername());
+
+    }
+    // Find en Employee ved at kigge på username
+    public Employee findByUsername(String username){
+        String sql = "Select * FROM employee WHERE username = ?";
+        RowMapper<Employee> rowMapper = new BeanPropertyRowMapper<>(Employee.class);
+        List<Employee> users = template.query(sql, rowMapper, username);
+        if (users.size() == 1) {
+            return users.get(0);
         } else {
-            String updateQuery = "UPDATE employees SET username = ?, userpassword = ?, usertype = ? WHERE id = ?";
-            jdbcTemplate.update(updateQuery, employee.getUserName(), employee.getUserPassword(), employee.getUsertype().name(), employee.getId());
+            return null;
         }
-    }*/
 
-    // Gemmer eller opdaterer employee
-    public void saveOrUpdate(Employee employee) {
-        if (employee.getId() == 0) {
-            String insertQuery = "INSERT INTO employees(username, userPassword, usertype) VALUES (?, ?, ?);";
-            jdbcTemplate.update(insertQuery, employee.getUserName(), employee.getUserPassword(),
-                    employee.getUsertype() != null ? employee.getUsertype().name() : null);
-        } else {
-            String updateQuery = "UPDATE employees SET username = ?, userpassword = ?, usertype = ? WHERE id = ?";
-            jdbcTemplate.update(updateQuery, employee.getUserName(), employee.getUserPassword(),
-                    employee.getUsertype() != null ? employee.getUsertype().name() : null, employee.getId());
-        }
     }
 
+    // Find admin hvor username er ?
+    public Employee findAdmin(String username){
+        String sql = "SELECT * FROM employee WHERE is_admin=1 and username = ?";
+        RowMapper rowMapper = new BeanPropertyRowMapper<>(Employee.class);
+        List<Employee> users = template.query(sql, rowMapper, username);
+        if (users.size() == 1) {
+            return users.get(0);
+        } else {
+            return null;
+        }
 
+    }
 }

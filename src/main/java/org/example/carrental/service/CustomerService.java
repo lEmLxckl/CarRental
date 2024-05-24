@@ -13,35 +13,22 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Customer> getAllCustomers() {
-        return customerRepository.getAllCustomers();
-    }
-
-    public Customer getCustomerById(int id) {
-        return customerRepository.getCustomerById(id);
-    }
-
-    public Customer createCustomer(Customer customer) {
-        return customerRepository.save(customer);
-    }
-
-    public Customer updateCustomer(int id, Customer customer) {
-        Customer existingCustomer = customerRepository.getCustomerById(id);
-        if (existingCustomer != null) {
-            customerRepository.update(id, customer);
-            return customer;
-        } else {
-            return null; // Customer with given ID not found
+        public void createCustomer( Customer customer){
+            customerRepository.createCustomer(customer);
         }
-    }
-
-    public boolean deleteCustomer(int id) {
-        Customer existingCustomer = customerRepository.getCustomerById(id);
-        if (existingCustomer != null) {
-            customerRepository.deleteById(id);
-            return true; // Customer deleted successfully
-        } else {
-            return false; // Customer with given ID not found
+        public Customer findId(int id){
+            return customerRepository.findCustomerByid(id);
         }
+        public String findCustomerid(String email){
+            return customerRepository.findIdByEmail(email);
+        }
+
+        public List<Customer> fetchAll(){
+            return customerRepository.fetchAll();
+        }
+
+        public void updateCustomer(Customer customer, int customer_id){
+            customerRepository.updateCustomer(customer, customer_id);
+        }
+
     }
-}

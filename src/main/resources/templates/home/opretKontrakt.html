@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Leasing Contract</title>
+
+    <div th:include="navbar.html"></div>
+    <style>
+        table{
+            margin-top: 50px;
+            width: 60%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+            border: 1px solid #ddd;
+        }
+        th{
+            padding: 12px 15px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            width: 55%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            background-color: #ddd;
+
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .error {
+            color: #f00;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<h1>Oprettelse af en lejekontrakt</h1>
+<form method="post" action="/chooseCar">
+    <h2>Vælg en bil ud fra vognnummeret. Se nedenfor for ledig biler</h2>
+    <label for="vehicle_number">Vehicle Number:</label>
+    <input type="number" id="vehicle_number" name="vehicle_number" placeholder="indtast venligt vognnummeret" required>
+    <input type="submit" value="Choose Car">
+    <div class="error" th:text="${flowerror}"></div>
+    <div class="error" th:text="${error}"></div>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Vehicle Number</th>
+        <th>Frame Number</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Make</th>
+        <th>Color</th>
+        <th>Fuel Type</th>
+        <th>Gear Type</th>
+        <th>Moter</th>
+        <th>Price</th>
+        <th>Flow</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="car: ${available}">
+        <td th:text="${car.vehicle_number}"></td>
+        <td th:text="${car.frame_number}"></td>
+        <td th:text="${car.brand}"></td>
+        <td th:text="${car.model}"></td>
+        <td th:text="${car.make}"></td>
+        <td th:text="${car.color}"></td>
+        <td th:text="${car.fuel_type}"></td>
+        <td th:text="${car.gear_type}"></td>
+        <td th:text="${car.motor}"></td>
+        <td th:text="${car.price}"></td>
+        <td th:text="${car.flow}"></td>
+
+    </tr>
+    <br>
+    </tbody>
+</table>
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+</body>
+</html>

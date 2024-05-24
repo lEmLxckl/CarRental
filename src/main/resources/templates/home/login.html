@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Login</h1>
+    <form method="post" action="/login">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="user_password" required>
+
+        <button type="submit">Login</button>
+    </form>
+    <p th:text="${invalid}"></p>
+
+</div>
+
+<div class="footer">
+    <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+
+</body>
+</html>

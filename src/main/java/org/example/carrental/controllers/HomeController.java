@@ -16,104 +16,60 @@ import java.util.Map;
 
 @Controller
 public class HomeController {
-    private final Map<String, Integer> loginAttempts = new HashMap<>();
 
     @Autowired
     EmployeeService employeeService;
-
+    //Start page
     @GetMapping("/")
-    public String showLoginForm() {
-        return "home/index";
+    public String index() {
+        return "index";
+    }
+    //login
+    @GetMapping("/login")
+    public String login() {
+
+        return "login";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session){
         session.removeAttribute("adminlogin");
-        return "redirect:/";
+        return "redirect:/home";
     }
+
     //Homepage
-    @GetMapping("/Home")
+    @GetMapping("/home")
     public String home(HttpSession session, Model model) {
         String value = (String) session.getAttribute("username");
         model.addAttribute("username", value);
         if (!employeeService.checkSession(session)){
-            return "redirect:/";
+            return "redirect:/home";
         }
-        return "home/Home";
+        return "home";
     }
 
-    @GetMapping("/employeeLogin")
-    public String employeeLogin(HttpSession session, Model model) {
-        Employee employee = (Employee) session.getAttribute("employee");
-        return "home/employeeLogin";
-    }
-    @PostMapping("/employeeLogin")
-    public String login(@RequestParam String userName,
-                        @RequestParam String userPassword,
-                        Model model, HttpSession session) {
-        loginAttempts.put(userName, loginAttempts.getOrDefault(userName, 0) + 1);
+    // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
+    @PostMapping("/login")
+    public String loginAccount(String username, String user_password, Model model, HttpSession session) {
+        // Finder en medarbejder baseret på brugernavn og adgangskode.
+        Employee employee = employeeService.findbyuserandpassword(username,user_password);
+        // Gemmer den pågældende medarbejder i sessionen med nøgle "adminlogin".
+        session.setAttribute("adminlogin", employee);
+        // Udskriver resultatet af sessionens gyldighed til konsollen.
+        System.out.println(employeeService.checkSession(session));
 
-        Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
-
-        if (loggedInEmployee != null) {
-            session.setAttribute("employee", loggedInEmployee);
-            session.setAttribute("userType", loggedInEmployee.getUsertype());
-            // return "redirect:/dashboard";
-            loginAttempts.put(userName, 0); // Reset login attempts on successful login
-            return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
+        // Hvis medarbejderen eksisterer og er aktiv...
+        if (employee != null && employee.getIs_active()==1){
+            // Gemmer brugernavnet i sessionen med nøgle "username".
+            session.setAttribute("username", username);
+            // Omdirigerer brugeren til "/home"-siden.
+            return "redirect:/home";
         } else {
-            if (loginAttempts.get(userName) >= 3) {
-                model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
-            }
-            return "home/index";
+            // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
+            model.addAttribute("invalid", "bruger findes ikke");
+            // Returnerer login-siden.
+            return "login";
+
         }
-    }
-    private String redirectToUserSpecificPage(Usertype userType) {
-        return switch (userType) {
-            case DATAREGISTRATOR -> "redirect:/dataRegistration";
-            case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
-            case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
-            case ADMIN -> "redirect:menu";
-            //default -> "redirect:/dashboard";
-        };
     }
 }
-    /*@GetMapping("/")
-    public String showLoginForm(Model model) {
-        model.addAttribute("employee", new Employee());
-        return "home/employeeLogin";
-    }
-
-    @PostMapping("/employeeLogin")
-    public String login(@RequestParam String userName,
-                        @RequestParam String userPassword,
-                        Model model, HttpSession session) {
-        loginAttempts.put(userName, loginAttempts.getOrDefault(userName, 0) + 1);
-
-        Employee loggedInEmployee = employeeService.authenticate(userName, userPassword);
-
-        if (loggedInEmployee != null) {
-            session.setAttribute("employee", loggedInEmployee);
-            session.setAttribute("userType", loggedInEmployee.getUsertype());
-            // return "redirect:/dashboard";
-            loginAttempts.put(userName, 0); // Reset login attempts on successful login
-            return redirectToUserSpecificPage(loggedInEmployee.getUsertype()); // sender til dashboard, hvor man kan vælge en usertype
-        } else {
-            if (loginAttempts.get(userName) >= 3) {
-                model.addAttribute("loginError", "Error logging in. Please check your username and password. ");
-            }
-            return "home/employeeLogin";
-        }
-    }
-
-    private String redirectToUserSpecificPage(Usertype userType) {
-        return switch (userType) {
-            case DATAREGISTRATOR -> "redirect:/dataRegistration";
-            case DAMAGEREPORTER -> "redirect:/damageAndPickUp";
-            case BUSINESSDEVELOPER -> "redirect:/businessDevelopment";
-            case ADMIN -> "redirect:menu";
-            //default -> "redirect:/dashboard";
-        };
-    }
-    */
-

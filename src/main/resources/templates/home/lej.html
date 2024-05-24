@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Contract Details</title>
+    <link rel="stylesheet" href="table.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 50px;
+        }
+        form {
+            width: 50%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        input[type="date"],
+        input[type="number"],
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            background-color: #ddd;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        .error {
+            color: #f00;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Enter Contract Details</h1>
+
+<form method="post" action="/createLeasingContract">
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" required>
+
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" required>
+
+    <input type="hidden" id="price" name="price" th:value="${opdater.price}">
+    <input type="hidden" id="vehicle_number" name="vehicle_number" th:value="${opdater.vehicle_number}">
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:value="${username}">
+
+    <label for="customer_id">Customer ID:</label>
+    <input type="number" id="customer_id" name="customer_id" required>
+
+    <input type="submit" value="Create Leasing Contract">
+</form>
+<h1 th:text="${error}" class="error"></h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>fuld navn</th>
+        <th>Email</th>
+        <th>Telefon nr</th>
+        <th>Adresse</th>
+        <th>CPR</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each=" customer : ${customers}">
+        <td th:text="${customer.customer_id}"></td>
+        <td th:text="${customer.full_name}"></td>
+        <td th:text="${customer.email}"></td>
+        <td th:text="${customer.phone}"></td>
+        <td th:text="${customer.address}"></td>
+        <td th:text="${customer.cpr}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+
+</div>
+</body>
+</html>

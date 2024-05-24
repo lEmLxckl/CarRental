@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pris</title>
+    <div th:include="navbar.html"></div>
+    <link rel="stylesheet" href="table.css">
+
+
+    <style>
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+    </style>
+</head>
+<h1 th:if="${admin.getIs_admin()==0}">Kan kun ses af admin.</h1>
+<body th:if="${admin.getIs_admin()==1}" >
+<h1>
+    <p th:if="${admin.getIs_admin()==1}" >Sammenlagt totalpris for udlejet biler: <span th:text="${totalPrices}"></span> dkk</p>
+</h1>
+<h1>
+    <p th:if="${admin.getIs_admin()==1}" >Sammenlagt pris pr. måned for udlejet biler: <span th:text="${totalPrice}"></span> dkk</p>
+</h1>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Søg..." />
+
+</div>
+
+<h2 >Liste af udlejet biler:</h2>
+<h2 th:if="${admin.getIs_admin()==0}">Kan kun ses af admin:</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Vehicle Number</th>
+        <th>Frame Number</th>
+        <th>Brand</th>
+        <th>Flow</th>
+        <th>Contract ID</th>
+        <th>Username</th>
+        <th>Customer ID</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Car Price</th>
+        <th>Contract Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="rentedCars : ${rentedCars}">
+        <td th:text="${rentedCars['vehicle_number']}"></td>
+        <td th:text="${rentedCars['frame_number']}"></td>
+        <td th:text="${rentedCars['brand']}"></td>
+        <td th:text="${rentedCars['flow']}"></td>
+        <td th:text="${rentedCars['contract_id']}"></td>
+        <td th:text="${rentedCars['username']}"></td>
+        <td th:text="${rentedCars['customer_id']}"></td>
+        <td th:text="${rentedCars['start_date']}"></td>
+        <td th:text="${rentedCars['end_date']}"></td>
+        <td th:text="${rentedCars['car_price']}"></td>
+        <td th:text="${rentedCars['contract_price']}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+
+</body>
+</html>

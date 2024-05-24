@@ -1,6 +1,6 @@
 package org.example.carrental.repository;
 
-import org.example.carrental.model.Vehicle;
+import org.example.carrental.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,72 +16,83 @@ public class VehicleRepo {
     @Autowired
     JdbcTemplate template;
 
-    // Return a list of all vehicles
-    public List<Vehicle> fetchAll() {
-        String sql = "SELECT * FROM vehicle";
-        RowMapper<Vehicle> rowMapper = new BeanPropertyRowMapper<>(Vehicle.class);
+    // Returner en liste af  biler
+    public List<Car> fetchAll() {
+        String sql = "SELECT * FROM Car";
+        RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
         return template.query(sql, rowMapper);
     }
 
-    // Return a list of available vehicles
-    public List<Vehicle> fetchAvailable() {
-        String sql = "SELECT * FROM vehicle WHERE flow = 0";
-        RowMapper<Vehicle> rowMapper = new BeanPropertyRowMapper<>(Vehicle.class);
+    //returner en liste af ledig biler
+    public List<Car> fetchAvailable() {
+        String sql = "SELECT * FROM Car WHERE flow = 0";
+        RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
         return template.query(sql, rowMapper);
     }
 
-    // Add a vehicle
-    public void addVehicle(Vehicle v) {
-        String sql = "INSERT INTO vehicle (brand, releasedate, serialnumber, licenseplate, model, equipmentlevel, price, regtax, co2discharge, flow) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        template.update(sql, v.getBrand(), v.getReleaseDate(), v.getSerialNumber(), v.getLicensePlate(), v.getModel(), v.getEquipmentLevel(), v.getPrice(), v.getRegTax(), v.getCo2Discharge(), v.getFlow());
+    // Tilføj bil
+    public void addCar(Car c) {
+        String sql = "INSERT INTO car (vehicle_number,frame_number, " +
+                "brand, model, make, color, price, flow, odometer, fuel_type, motor, gear_type)" +
+                " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        template.update(sql, c.getVehicle_number(), c.getFrame_number(), c.getBrand(), c.getModel(), c.getMake(),
+                c.getColor(), c.getPrice(), c.getFlow(), c.getOdometer(), c.getFuel_type(), c.getMotor(), c.getGear_type());
     }
 
-    // Delete a vehicle
-    public Boolean deleteVehicle(int id) {
-        String sql = "DELETE FROM vehicle WHERE id = ?";
-        return template.update(sql, id) > 0;
+    //Slet bil
+    public Boolean deleteCar(int vehicle_number) {
+        String sql = "DELETE FROM car WHERE vehicle_number = ?";
+        return template.update(sql, vehicle_number) > 0;
     }
 
-    // Find a vehicle by id
-    public Vehicle findVehicleById(int id) {
-        String sql = "SELECT * FROM vehicle WHERE id = ?";
-        RowMapper<Vehicle> rowMapper = new BeanPropertyRowMapper<>(Vehicle.class);
-        List<Vehicle> vehicles = template.query(sql, rowMapper, id);
-        if (vehicles.size() == 1) {
-            return vehicles.get(0);
+    // find en bil hvor vehicle_number er ?
+    public Car findCarByid(int vehicle_number) {
+        String sql = "Select * FROM car WHERE vehicle_number = ?";
+        RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
+        List<Car> users = template.query(sql, rowMapper, vehicle_number);
+        if (users.size() == 1) {
+            return users.get(0);
         } else {
             return null;
         }
+
     }
 
-    // Update a vehicle
-    public void updateVehicle(Vehicle v, int id) {
-        String sql = "UPDATE vehicle SET brand = ?, releasedate = ?, serialnumber = ?, licenseplate = ?, model = ?, equipmentlevel = ?, price = ?, regtax = ?, co2discharge = ?, flow = ? WHERE id = ?";
-        template.update(sql, v.getBrand(), v.getReleaseDate(), v.getSerialNumber(), v.getLicensePlate(), v.getModel(), v.getEquipmentLevel(), v.getPrice(), v.getRegTax(), v.getCo2Discharge(), v.getFlow(), id);
+
+    // opdater bil
+    public void updateCar(Car c, int vehicle_number) {
+        String sql = "UPDATE car SET frame_number = ?, brand = ?, model = ?, make = ?, color = ?, price = ?, flow = ?, odometer = ?, fuel_type = ?, motor = ?, gear_type = ? WHERE vehicle_number = ?";
+        template.update(sql, c.getFrame_number(), c.getBrand(), c.getModel(), c.getMake(), c.getColor(), c.getPrice(), c.getFlow(), c.getOdometer(), c.getFuel_type(), c.getMotor(), c.getGear_type(), c.getVehicle_number());
     }
 
-    // Mark a vehicle as rented (flow = 1)
-    public void updateAfterContract(int id) {
-        String sql = "UPDATE vehicle SET flow = 1 WHERE id = ?";
-        template.update(sql, id);
+    //gør en bil til flow 1 altså en udlejet bil
+    public void updateAfterContract(int vehicle_number) {
+        String sql = "UPDATE car SET flow = 1 WHERE vehicle_number = ?";
+        template.update(sql, vehicle_number);
     }
 
-    // Fetch rented vehicles (flow = 1)
-    public List<Vehicle> fetchRentedVehicles() {
-        String sql = "SELECT * FROM vehicle WHERE flow = 1";
-        RowMapper<Vehicle> rowMapper = new BeanPropertyRowMapper<>(Vehicle.class);
+    //Hent udlejet biler (flow 1)
+    public List<Car> fetchRentedCars() {
+        String sql = "SELECT * FROM car WHERE flow = 1";
+        RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
         return template.query(sql, rowMapper);
     }
 
-    // Mark a vehicle after a damage report (flow = 2)
-    public void updateAfterDamageReport(int id) {
-        String sql = "UPDATE vehicle SET flow = 2 WHERE id = ?";
-        template.update(sql, id);
+    // Gør en bil til flow 2 når der er blevet lavet en skaderapport
+    public void updateAfterDamageReport(int vehicle_number) {
+        String sql = "UPDATE car SET flow = 2 WHERE vehicle_number = ?";
+        template.update(sql, vehicle_number);
     }
 
-    // Join table to get total prices data
+    // lav en join tabel til sammenlagt priser
     public List<Map<String, Object>> getTotalPricesData() {
-        String sql = "SELECT vehicle.id, vehicle.brand, vehicle.model, vehicle.flow, leasing_contract.contract_id, leasing_contract.username, leasing_contract.customer_id, leasing_contract.start_date, leasing_contract.end_date, vehicle.price AS vehicle_price, leasing_contract.price AS contract_price FROM vehicle JOIN leasing_contract ON vehicle.id = leasing_contract.vehicle_id WHERE vehicle.flow = 1";
+        String sql = "SELECT car.vehicle_number, car.frame_number, car.brand, car.flow, leasing_contract.contract_id," +
+                " leasing_contract.username, leasing_contract.customer_id, leasing_contract.start_date, leasing_contract.end_date, car.price" +
+                " AS car_price, leasing_contract.price AS contract_price " +
+                "FROM car " +
+                "JOIN leasing_contract ON car.vehicle_number = leasing_contract.vehicle_number WHERE flow = 1";
         return template.queryForList(sql);
     }
+
 }

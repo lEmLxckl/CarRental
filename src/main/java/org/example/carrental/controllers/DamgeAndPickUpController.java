@@ -1,14 +1,19 @@
 package org.example.carrental.controllers;
 
 import jakarta.servlet.http.HttpSession;
-import org.example.carrental.Service.DamageAndPickUpService;
-import org.example.carrental.model.DamageReport;
-import org.example.carrental.model.Employee;
-import org.example.carrental.model.Usertype;
+import org.example.carrental.Service.DamageService;
+import org.example.carrental.Service.Damage_reportService;
+import org.example.carrental.Service.EmployeeService;
+import org.example.carrental.model.Damage_category;
+import org.example.carrental.model.Damage_report;
+import org.example.carrental.model.Leasing_contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.example.carrental.service.VehicleService;
+import org.example.carrental.service.Leasing_contractService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -22,7 +27,7 @@ public class DamgeAndPickUpController {
     @Autowired
     Leasing_contractService leasing_contractService;
     @Autowired
-    CarService carService;
+     VehicleService carService;
 
     @Autowired
     EmployeeService employeeService;
@@ -158,7 +163,7 @@ public class DamgeAndPickUpController {
     // Slet skaderapporten
     @GetMapping("/deleteOneReport/{report_id}")
     public String deleteOneReport(@PathVariable("report_id") int report_id, HttpSession session){
-        boolean deleted = damage_reportService.de(report_id);
+        boolean deleted = damage_reportService.deleteReport(report_id);
         if (deleted){
             return "redirect:/skaderapport";
         }else {

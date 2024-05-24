@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Opdater bilen</title>
+    <link rel="stylesheet" href="home.css">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+
+
+        .dashboard-item:hover .dropdown {
+            display: flex;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: black;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        button:active {
+            background-color: #003d80;
+        }
+
+        /* Form styles */
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button[type="submit"]:focus {
+            outline: none;
+        }
+
+        button[type="submit"]:active {
+            background-color: #003d80;
+        }
+
+
+        .footer p {
+            margin: 0;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .footer p span {
+            color: #aaa;
+        }
+
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        form {
+            width: 55%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .updateSubmit{
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div class="opdater bil">
+    <h1>Opdater bil</h1>
+
+    <form action="/carupdate" method="post">
+        <input type="hidden" id="vehicle_number" name="vehicle_number" th:value="${opdater.vehicle_number}" ><br><br>
+
+        <label for="frame_number">Frame Number:</label>
+        <input type="text" id="frame_number" name="frame_number" th:value="${opdater.frame_number}" ><br><br>
+
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" name="brand" th:value="${opdater.brand}" ><br><br>
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" th:value="${opdater.model}" ><br><br>
+
+        <label for="make">Make:</label>
+        <input type="number" id="make" name="make" th:value="${opdater.make}" ><br><br>
+
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" th:value="${opdater.color}" ><br><br>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" th:value="${opdater.price}" ><br><br>
+
+        <label for="flow">Flow:</label>
+        <input type="number" id="flow" name="flow" th:value="${opdater.flow}" ><br><br>
+
+        <label for="odometer">Odometer:</label>
+        <input type="number" id="odometer" name="odometer" th:value="${opdater.odometer}"><br><br>
+
+        <label for="fuel_type">Fuel Type:</label>
+        <input type="text" id="fuel_type" name="fuel_type" th:value="${opdater.fuel_type}"><br><br>
+
+        <label for="motor">Motor:</label>
+        <input type="text" id="motor" name="motor" th:value="${opdater.motor}"><br><br>
+
+        <label for="gear_type">Gear Type:</label>
+        <input type="text" id="gear_type" name="gear_type" th:value="${opdater.gear_type}"><br><br>
+
+        <input class="updateSubmit" type="submit" value="Opdater">
+    </form>
+
+</div>
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+</body>
+</html>

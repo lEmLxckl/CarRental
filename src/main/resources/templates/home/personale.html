@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personale</title>
+    <div th:include="navbar.html"></div>
+    <link rel="stylesheet" href="table.css">
+
+
+
+    <style>
+        .search-container {
+            max-width: 300px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Personale</h1>
+
+<div class="create employee">
+    <a th:if="${admin.getIs_admin()==1}" href="/opretPersonale">
+        <button class="createEmployee">
+            Opret ny medarbejder
+        </button>
+        <h2 th:text="${Adminfeature}"> </h2>
+
+    </a>
+</div>
+
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Søg..." />
+</div>
+
+
+
+<table>
+    <thead>
+    <tr>
+        <th>Brugernavn</th>
+        <th>Adgangskode</th>
+        <th>Fuldenavn</th>
+        <th>Email</th>
+        <th>Telefon nr</th>
+        <th>Aktiv</th>
+        <th>Admin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the employees and populate the table rows -->
+    <tr th:each="employee:${employees}">
+        <td th:text="${employee.username}"></td>
+        <td>****</td>
+        <td th:text="${employee.full_name}"></td>
+        <td th:text="${employee.email}"></td>
+        <td th:text="${employee.phone}"></td>
+        <td th:text="${employee.is_active}"></td>
+        <td th:text="${employee.is_admin}"></td>
+        <td><a th:if="${admin.getIs_admin()==1}" th:href="@{'/personale/'+${employee.username}}"><button>gør bruger inaktiv</button></a></td>
+        <td><a th:if="${admin.getIs_admin()==1}" th:href="@{'/opdaterPersonale/'+${employee.username}}"><button>Opdater oplysninger</button></a></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<<div class="footer">
+    <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+
+</body>
+</html>
