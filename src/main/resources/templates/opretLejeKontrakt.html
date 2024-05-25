@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lejekontrakt</title>
+    <div th:include="navbar.html"></div>
+    <link rel="stylesheet" href="table.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+
+<h1> Oprettelsen af en lejekontrakt</h1>
+
+<h1>
+    <a href="/opretNyKunde">
+        <button> Opret ny kunde</button>
+    </a>
+    <a href="/opretKontrakt">
+        <button>
+            Eksisterende kunde
+        </button>
+    </a>
+</h1>
+
+<H1>Kunder</H1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>fuld navn</th>
+        <th>Email</th>
+        <th>Telefon nr</th>
+        <th>Adresse</th>
+        <th>CPR</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each=" customer : ${customers}">
+        <td th:text="${customer.customer_id}"></td>
+        <td th:text="${customer.full_name}"></td>
+        <td th:text="${customer.email}"></td>
+        <td th:text="${customer.phone}"></td>
+        <td th:text="${customer.address}"></td>
+        <td th:text="${customer.cpr}"></td>
+        <td>  <a th:href="@{'/opdaterkunde/'+${customer.customer_id}}">
+            <button class="btn-updateOne" id="btn-updateOne">Opdater</button>
+        </a></td>
+    </tr>
+    </tbody>
+</table>
+</table>
+</body>
+
+<div class="footer" style="margin-top: 600px">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+
+</html>

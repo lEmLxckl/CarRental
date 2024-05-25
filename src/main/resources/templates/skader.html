@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Skaderapport</title>
+
+    <div th:include="navbar.html"></div>
+    <link rel="stylesheet" href="table.css">
+
+    <style>
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+    </style>
+
+</head>
+
+<h1>Prisliste på skader</h1>
+<a href="tilføjSkade">
+    <button class="addCarButton" >
+        Tilføj skade
+    </button>
+</a>
+<div class="search-container">
+    <input type="text" id="search-input" placeholder="Søg...">
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Kategori</th>
+        <th>Skade</th>
+        <th>Pris</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each="damages:${category}">
+        <td th:text="${damages.category_id}"></td>
+        <td th:text="${damages.damage_name}"></td>
+        <td th:text="${damages.price}"></td>
+        <td>  <a th:href="@{'/deleteOneDamage/'+${damages.category_id}}">
+            <button class="btn-deleteOne" id="btn-deleteOne">Slet</button>
+        </a></td>
+        <td>  <a th:href="@{'/updateOneDamage/'+${damages.category_id}}">
+            <button class="btnOpdater">Opdater</button>
+        </a></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+<div class="footer">
+    <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+</body>
+</html>

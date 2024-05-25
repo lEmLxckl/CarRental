@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Create Leasing Contract</title>
+
+  <link rel="stylesheet" href="home.css">
+  <div th:include="navbar.html"></div>
+  <style>
+    table{
+      margin-top: 50px;
+      margin-left: 300px;
+      width: 60%;
+      border-collapse: collapse;
+      font-family: sans-serif;
+      border: 1px solid #ddd;
+    }
+    th{
+      padding: 12px 15px;
+      background-color: #333;
+      color: #fff;
+      text-align: left;
+    }
+    h1, h2 {
+      color: #333;
+      text-align: center;
+    }
+    form {
+      width: 55%;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+      background-color: #ddd;
+
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #3e8e41;
+    }
+    .error {
+      color: #f00;
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Oprettelse af skaderapport</h1>
+<form method="post" action="/oprettelseskaderapport">
+  <h2>Vælg en kontrakt. Se nedenfor for nuværende kontrakter</h2>
+  <label for="contract_id">Kontrakt id:</label>
+  <input type="number" id="contract_id" name="contract_id" placeholder="indtast venligt en kontrakt id" required>
+  <input type="submit" value="Indtast Contract ID">
+
+
+</form>
+<h2 th:text="${fejl}"style="color: red"></h2>
+
+<table>
+  <tr>
+    <th>Contract ID</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Price</th>
+    <th>Vehicle Number</th>
+    <th>Username</th>
+    <th>Customer ID</th>
+  </tr>
+  <tbody>
+  <tr th:each="leasingContract : ${contract}">
+    <td th:text="${leasingContract.contract_id}"></td>
+    <td th:text="${leasingContract.start_date}"></td>
+    <td th:text="${leasingContract.end_date}"></td>
+    <td th:text="${leasingContract.price}"></td>
+    <td th:text="${leasingContract.vehicle_number}"></td>
+    <td th:text="${leasingContract.username}"></td>
+    <td th:text="${leasingContract.customer_id}"></td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
+</div>
+</body>
+</html>

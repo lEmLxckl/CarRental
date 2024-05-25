@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        text-align: center;
+
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        background-color: #57a3ee;
+    }
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    td:first-child {
+        font-weight: bold;
+        text-align: right;
+        width: 40%;
+    }
+    td:last-child {
+        text-align: left;
+    }
+    form {
+        display: inline-block;
+        margin-top: 20px;
+    }
+    input[type="submit"] {
+        font-size: 1em;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<body>
+
+
+
+<h1>Skadesrapport Kvittering</h1>
+<p>Bekræft venligt detaljerne nedenfor:</p>
+<table>
+    <tr>
+        <td>contractid:</td>
+        <td th:text="${contractid}"></td>
+    </tr>
+    <tr>
+        <td>Totalpris:</td>
+        <td th:text="${totalprisen}"></td>
+    </tr>
+
+    <tr>
+        <td>Employee Username:</td>
+        <td th:text="${username}"></td>
+    </tr>
+
+
+
+
+</table>
+<form method="post" action="/Bekræftkvittering">
+    <input type="submit" value="Godkend">
+    <input type="hidden" name="contract_id" id="start_date" th:value="${contractid}"><br><br>
+    <input type="hidden" name="total_price" id="end_date" th:value="${totalprisen}"><br><br>
+    <input type="hidden" name="total_price" id="vehicle_number" th:value="${username}"><br><br>
+</form>
+
+</body>
+
+</html>>

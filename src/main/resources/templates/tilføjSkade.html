@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <div th:include="navbar.html"></div>
+  <style>
+    .updateSubmit{
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      color: #ffffff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="tilføj bil">
+  <h1>Tilføj skade</h1>
+  <form method="post" action="/createNewDamage">
+
+    <label for="damage_name">Skade:</label>
+    <input type="text" id="damage_name" name="damage_name" required><br><br>
+
+    <label for="price">Pris:</label>
+    <input type="text" id="price" name="price" required><br><br>
+
+    <input class="updateSubmit" type="submit" value="Tilføj">
+  </form>
+</div>
+</body>
+</html>
