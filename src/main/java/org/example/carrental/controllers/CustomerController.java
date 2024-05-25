@@ -23,7 +23,7 @@ public class CustomerController {
     EmployeeService employeeService;
 
     // Returnere liste af alle kunder
-    @GetMapping("/opretLejekontrakt")
+    @GetMapping("/opretlejekontrakt")
     public String lejekontrakt ( Model model, HttpSession session){
         if (!employeeService.checkSession(session)){
             return "redirect:/";
