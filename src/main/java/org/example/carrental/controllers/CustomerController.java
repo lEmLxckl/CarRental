@@ -24,16 +24,15 @@ public class CustomerController {
 
 
     // Returnere liste af alle kunder
-    @GetMapping("/opretlejekontrakt")
+    @GetMapping("/opretLejekontrakt")
     public String lejekontrakt ( Model model, HttpSession session){
         if (!employeeService.checkSession(session)){
             return "redirect:/";
         }
-
         List<Customer> customers = customerService.fetchAll();
         session.setAttribute("customersInLej", customers);
         model.addAttribute("customers", customers);
-        return "opretLejekontrakt";
+        return "opretLejeKontrakt";
     }
 
     // Opretter kunde, returnere bekræftelse ved oprettelse af kunde
