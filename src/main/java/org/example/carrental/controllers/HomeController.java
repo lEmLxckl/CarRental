@@ -1,5 +1,7 @@
 package org.example.carrental.controllers;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
@@ -14,22 +16,17 @@ public class HomeController {
 
     @Autowired
     EmployeeService employeeService;
+
     //Start page
     @GetMapping("/")
     public String index() {
         return "index";
     }
+
     //login
     @GetMapping("/login")
     public String login() {
-
         return "login";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.invalidate();
-        return "redirect:/";
     }
 
     //Homepage
@@ -43,28 +40,48 @@ public class HomeController {
         return "home";
     }
 
-    // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
+    // Handle login request
     @PostMapping("/login")
-    public String loginAccount(String username, String user_password, Model model, HttpSession session) {
-        // Finder en medarbejder baseret på brugernavn og adgangskode.
+    public String login(String username, String user_password, Model model, HttpSession session, HttpServletResponse response) {
+        // Find employee based on username and password
         Employee employee = employeeService.findbyuserandpassword(username,user_password);
-        // Gemmer den pågældende medarbejder i sessionen med nøgle "adminlogin".
+        // Save the employee in the session with key "adminlogin"
         session.setAttribute("adminlogin", employee);
-        // Udskriver resultatet af sessionens gyldighed til konsollen.
-        System.out.println(employeeService.checkSession(session));
 
-        // Hvis medarbejderen eksisterer og er aktiv...
+        // Check if employee exists and is active
         if (employee != null && employee.getIs_active()==1){
-            // Gemmer brugernavnet i sessionen med nøgle "username".
+            // Save the username in the session with key "username"
             session.setAttribute("username", username);
-            // Omdirigerer brugeren til "/home"-siden.
+
+            // Create a cookie to remember the user for 7 days
+            Cookie cookie = new Cookie("username", username);
+            cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            // Redirect user to the home page
             return "redirect:/home";
         } else {
-            // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
-            model.addAttribute("invalid", "bruger findes ikke");
-            // Returnerer login-siden.
+            // Add an error message to the model if the employee doesn't exist or is not active
+            model.addAttribute("invalid", "User not found");
+            // Return login page
             return "login";
-
         }
+    }
+
+    //logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session, HttpServletResponse response) {
+        // Invalidate the session
+        session.invalidate();
+
+        // Remove the cookie
+        Cookie cookie = new Cookie("username", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
+        // Redirect to login page
+        return "redirect:/";
     }
 }
