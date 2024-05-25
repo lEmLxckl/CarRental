@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
         @ExceptionHandler(Exception.class)
         public String handleException(Exception e, Model model) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "home/error";  // Ensure this is the correct path to your error view
+            return "error";  // Ensure this is the correct path to your error view
         }
     }
 
