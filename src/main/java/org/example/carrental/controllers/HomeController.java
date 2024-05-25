@@ -8,6 +8,7 @@ import org.example.carrental.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,17 +17,22 @@ public class HomeController {
 
     @Autowired
     EmployeeService employeeService;
-
     //Start page
     @GetMapping("/")
     public String index() {
         return "index";
     }
-
     //login
     @GetMapping("/login")
     public String login() {
+
         return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute("adminlogin");
+        return "redirect:/";
     }
 
     //Homepage
@@ -40,48 +46,67 @@ public class HomeController {
         return "home";
     }
 
-    // Handle login request
+    // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
     @PostMapping("/login")
-    public String login(String username, String user_password, Model model, HttpSession session, HttpServletResponse response) {
-        // Find employee based on username and password
+    public String loginAccount(String username, String user_password, Model model, HttpSession session) {
+        // Finder en medarbejder baseret på brugernavn og adgangskode.
         Employee employee = employeeService.findbyuserandpassword(username,user_password);
-        // Save the employee in the session with key "adminlogin"
+        // Gemmer den pågældende medarbejder i sessionen med nøgle "adminlogin".
         session.setAttribute("adminlogin", employee);
+        // Udskriver resultatet af sessionens gyldighed til konsollen.
+        System.out.println(employeeService.checkSession(session));
 
-        // Check if employee exists and is active
+        // Hvis medarbejderen eksisterer og er aktiv...
         if (employee != null && employee.getIs_active()==1){
-            // Save the username in the session with key "username"
+            // Gemmer brugernavnet i sessionen med nøgle "username".
             session.setAttribute("username", username);
-
-            // Create a cookie to remember the user for 7 days
-            Cookie cookie = new Cookie("username", username);
-            cookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            // Redirect user to the home page
+            // Omdirigerer brugeren til "/home"-siden.
             return "redirect:/home";
         } else {
-            // Add an error message to the model if the employee doesn't exist or is not active
-            model.addAttribute("invalid", "User not found");
-            // Return login page
+            // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
+            model.addAttribute("invalid", "bruger findes ikke");
+            // Returnerer login-siden.
             return "login";
+
         }
     }
-
-    //logout
-    @GetMapping("/logout")
-    public String logout(HttpSession session, HttpServletResponse response) {
-        // Invalidate the session
-        session.invalidate();
-
-        // Remove the cookie
-        Cookie cookie = new Cookie("username", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
+    @GetMapping("/set_session_cookie")
+    public String setSessionSookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("mySessionCookie", "Hello_Session_Cookie");
         response.addCookie(cookie);
+        return "redirect:/get_session_cookie";
+    }
 
-        // Redirect to login page
+    @GetMapping("/get_session_cookie")
+    public String getSessionCookie(@CookieValue(name = "mySessionCookie", defaultValue = "N/A") String cookieValue, Model model) {
+        model.addAttribute("cookieValue", cookieValue);
+        return "show_session_cookie";
+    }
+    @GetMapping("/delete_session_cookie")
+    public String deleteSessionCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("mySessionCookie", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/get_session_cookie";
+    }
+    @GetMapping("/update_session_cookie")
+    public String updateSessionCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("mySessionCookie", "Updated_information");
+        response.addCookie(cookie);
+        return "redirect:/get_session_cookie";
+    }
+
+    @GetMapping("/write_cookie")
+    public String writeCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("username", "admin");
+        cookie.setMaxAge(24 * 60 * 60);
+        response.addCookie(cookie);
+        System.out.printf("Cookie was set: %s = %s%n", cookie.getName(), cookie.getValue());
         return "redirect:/";
+    }
+    @GetMapping("/read_cookie")
+    public String readCookie(@CookieValue(name = "MyCookie", defaultValue = "N/A") String myCookie) {
+        System.out.printf("Cookie was set: %s = %s%n", "MyCookie", myCookie);
+        return "index";
     }
 }
