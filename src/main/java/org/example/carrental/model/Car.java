@@ -8,7 +8,7 @@ public class Car {
     private int make;
     private String color;
 
-    private  String fuel_type;
+    private String fuel_type;
 
     private String gear_type;
     private int odometer;
@@ -35,10 +35,11 @@ public class Car {
         this.odometer = odometer;
     }
 
-    public int getOdometer(){
+    public int getOdometer() {
         return odometer;
     }
-    public void setOdometer(int odometer){
+
+    public void setOdometer(int odometer) {
         this.odometer = odometer;
     }
 
