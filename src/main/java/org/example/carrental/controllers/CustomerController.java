@@ -3,7 +3,7 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Customer;
-import org.example.carrental.service.CustomerService;
+import org.example.carrental.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

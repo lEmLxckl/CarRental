@@ -1,4 +1,4 @@
-package org.example.carrental.repository;
+package org.example.carrental.Repository;
 
 import org.example.carrental.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.example.carrental.service.CustomerService;
+import org.example.carrental.Service.CustomerService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.example.carrental.service.Leasing_contractService;
+import org.example.carrental.Service.Leasing_contractService;
 import java.time.LocalDate;
-import org.example.carrental.service.VehicleService;
+import org.example.carrental.Service.VehicleService;
 import java.time.Period;
 import java.util.List;
 

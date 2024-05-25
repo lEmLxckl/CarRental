@@ -1,7 +1,8 @@
-package org.example.carrental.service;
+package org.example.carrental.Service;
 
+import org.example.carrental.Repository.CustomerRepository;
 import org.example.carrental.model.Customer;
-import org.example.carrental.repository.CustomerRepository;
+import org.example.carrental.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

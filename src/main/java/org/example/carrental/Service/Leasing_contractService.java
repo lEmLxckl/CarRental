@@ -1,4 +1,4 @@
-package org.example.carrental.service;
+package org.example.carrental.Service;
 
 import org.example.carrental.Repository.Leasing_contractRepo;
 import org.example.carrental.model.Leasing_contract;

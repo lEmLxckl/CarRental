@@ -5,7 +5,7 @@ import org.example.carrental.model.Employee;
 import org.example.carrental.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.example.carrental.service.VehicleService;
+import org.example.carrental.Service.VehicleService;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.example.carrental.service.Leasing_contractService;
+import org.example.carrental.Service.Leasing_contractService;
 
 @Controller
 public class VehicleController {
