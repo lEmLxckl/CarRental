@@ -2,6 +2,7 @@ package org.example.carrental.Repository;
 
 import org.example.carrental.model.Damage_category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -33,7 +34,7 @@ public class DamageRepo {
         String sql = "INSERT INTO damage_category (category_id, damage_name, price) VALUES (?,?,?)";
 
         // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og indsætter de nødvendige værdier.
-        template.update(sql, d.getCategory_id(),d.getDamage_name(),d.getPrice());
+        template.update(sql, d.getDamage_name(), d.getPrice());
     }
 
     // Metoden opdaterer en skadeskategori i databasen.
@@ -70,15 +71,16 @@ public class DamageRepo {
     }
 
 
-
     // Metoden finder prisen på en bestemt skadeskategori i databasen baseret på kategori-id.
-    public Double findSpecificDamagePrice(int category_id) {
+    public Double findSpecificDamagePrice(int id) {
         // Definerer en SQL-forespørgsel for at hente prisen på skadeskategorien med det angivne kategori-id.
-        String sql = "SELECT price FROM damage_category WHERE category_id = ?";
-
-        // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og returnerer prisen som et Double-objekt.
-        return template.queryForObject(sql, Double.class, category_id);
+        String sql = "SELECT price FROM damage_category WHERE id = ?";
+        try {
+            // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og returnerer prisen som et Double-objekt.
+            return template.queryForObject(sql, Double.class, id);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
-
 }
 

@@ -47,8 +47,6 @@ public class Damage_reportRepo {
 
     }
 
-
-
     // Sletter en skaderapport fra databasen baseret på report id, returnere en boolean værdi  der angiver det vellykket
     public boolean deleteReport(int report_id){
         String sql= "DELETE FROM damage_report WHERE report_id=?";

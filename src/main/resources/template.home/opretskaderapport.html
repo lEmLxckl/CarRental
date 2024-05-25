@@ -96,8 +96,8 @@
     <form method="post" action="/tilføjRapport">
         <label for="categoryid">Indtast skadeskategori:</label>
         <div style="display: flex; align-items: center;">
-            <input type="number" id="categoryid" name="category_id" style="margin-left: 310px;">
-            <input type="submit" class="totalpris" value="enter" style="margin-left: 10px;">
+            <input type="number" id="categoryid" name="category_id" style="margin-left: 10px;">
+            <input type="submit" class="totalpris" value="Enter" style="margin-left: 10px;">
         </div>
         <br><br>
         <label for="finish">Finish:</label>
@@ -115,13 +115,12 @@
         </tr>
         </thead>
         <tbody>
-
-        <tr th:each="damages:${category}">
-            <td th:text="${damages.category_id}"></td>
-            <td th:text="${damages.damage_name}"></td>
-            <td th:text="${damages.price}"></td>
-        </tr>
-        </tbody>
+    <tr th:each="damage : ${category}">
+        <td th:text="${damage.category_id}"></td>
+        <td th:text="${damage.damage_name}"></td>
+        <td th:text="${damage.price}"></td>
+    </tr>
+    </tbody>
     </table>
 </div>
 

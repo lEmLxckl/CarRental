@@ -30,7 +30,6 @@ public class EmployeeManagementController {
         }
         List<Employee> employees = employeeService.fetchAllEmployees();
         Employee adminLogin = (Employee) session.getAttribute("adminlogin");
-
         model.addAttribute("admin", adminLogin);
 
         /*     Derudover tilføjes en administratorkonto og en liste med medarbejdere til modellen,
@@ -51,12 +50,12 @@ public class EmployeeManagementController {
             return "redirect:/personale";
         } else {
 
-            return "opretPersonaler";
+            return "opretPersonale";
         }
 
     }
 
-    @PostMapping("/opretPersonaler")
+    @PostMapping("/opretPersonale")
     public String opretPersonaler(Employee employee, Model model, HttpSession session) {
         employeeService.createEmployee(employee);
         return "redirect:/personale";

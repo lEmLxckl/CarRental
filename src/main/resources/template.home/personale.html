@@ -31,12 +31,8 @@
 <h1>Personale</h1>
 
 <div class="create employee">
-    <a th:if="${admin.getIs_admin()==1}" href="/opretPersonale">
-        <button class="createEmployee">
-            Opret ny medarbejder
-        </button>
-        <h2 th:text="${Adminfeature}"> </h2>
-
+    <a th:if="${admin != null and admin.getIs_admin() == 1}" th:href="@{/opretPersonale}">
+        <button class="createEmployee">Opret ny medarbejder</button>
     </a>
 </div>
 

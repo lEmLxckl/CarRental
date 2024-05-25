@@ -98,7 +98,7 @@ public class DamgeAndPickUpController {
         }
 
         Double value = damageService.getSpecificDamagePrice(category_id);
-        totalPrice += value;
+        totalPrice += value.doubleValue();
 
         session.setAttribute("totalPrice", totalPrice);
 
