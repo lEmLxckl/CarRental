@@ -22,7 +22,6 @@ public class CustomerController {
     @Autowired
     EmployeeService employeeService;
 
-
     // Returnere liste af alle kunder
     @GetMapping("/opretLejekontrakt")
     public String lejekontrakt ( Model model, HttpSession session){
@@ -55,7 +54,6 @@ public class CustomerController {
     }
 
     // Returnere den oprettede kunde
-
     @GetMapping("/opretNyKundeConfirmed")
     public String newCustomerCreated(HttpSession session, Model model){
         if (!employeeService.checkSession(session)){
@@ -66,9 +64,7 @@ public class CustomerController {
         model.addAttribute("customer", c);
         model.addAttribute("customerid",value);
         return "opretNyKundeConfirmed";
-
     }
-
 
     // modtager customer object baseret på id, tilføjer kundeobjekt som attribut til modellen.
     @GetMapping("/opdaterkunde/{customer_id}")
@@ -87,5 +83,4 @@ public class CustomerController {
         customerService.updateCustomer(c, customer_id);
         return "redirect:/opretlejekontrakt";
     }
-
 }
