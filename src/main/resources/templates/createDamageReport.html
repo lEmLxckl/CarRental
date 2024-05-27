@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Damage Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-top: 100px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .total-price {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .submit {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .submit:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Create Damage Report</h1>
+    <form method="post" action="/submitDamageReport">
+        <label for="categoryid">Indtast skadeskategori:</label>
+        <div style="display: flex; align-items: center;">
+            <input type="number" id="categoryid" name="category_id" style="margin-left: 10px;">
+            <input type="submit" class="totalpris" value="Enter" style="margin-left: 10px;">
+        </div>
+        <br><br>
+        <label for="finish">Finish:</label>
+        <input type="checkbox" id="finish" name="finish" value="1"><br><br>
+        <input type="hidden" name="contract_id" th:value="${contractId}"><br><br>
+        <input type="submit" class="færdigknap" value="Når du er færdig, så check finish og tryk her">
+    </form>
+    <h1 th:text="${totalPrice}"></h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Kategori</th>
+            <th>Skade</th>
+            <th>Pris</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="damage : ${category}">
+            <td th:text="${damage.category_id}"></td>
+            <td th:text="${damage.damage_name}"></td>
+            <td th:text="${damage.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="footer">
+    <p>© 2024 BA - BilAbonnement.</p>
+</div>
+</body>
+</html>

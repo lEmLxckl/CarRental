@@ -25,7 +25,7 @@ public class CustomerRepository {
     }
 
     //Returner en liste af kunder
-    public List<Customer> fetchAll() {
+    public List<Customer> getAllCustomers() {
         String sql = "SELECT * FROM customer";
         RowMapper<Customer> rowMapper = new BeanPropertyRowMapper<>(Customer.class);
         return template.query(sql, rowMapper);

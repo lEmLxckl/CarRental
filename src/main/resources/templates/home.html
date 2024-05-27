@@ -1,58 +1,48 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>My Dashboard</title>
-    <link rel="stylesheet" href="home.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
-
-
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <style>
-    .footer {
-        background-color: ghostwhite;
-        color: black;
-        padding: 10px;
-        text-align: center;
-        margin-top: 800px;
-    }
+        .footer {
+            background-color: ghostwhite;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            margin-top: 800px;
+        }
 
-    .center {
-        text-align: center;
-        margin-top: 150px;
-    }
+        .center {
+            text-align: center;
+            margin-top: 150px;
+        }
 
-    h1 {
-        margin-bottom: 20px;
-    }
-
-    /* Tilpas størrelsen på billederne */
-    .center img {
-        max-width: 80%;
-        height: auto;
-    }
+        h1 {
+            margin-bottom: 20px;
+        }
+        /* Tilpas størrelsen på billederne */
+        .center img {
+            max-width: 80%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-<div th:include="navbar.html"></div>
-
-
+<div th:insert="~{navbar.html}"></div>
 
 <div class="center">
     <h1>Welcome, <span th:text="${username}">Guest</span>!</h1>
     <p>Choose one of the options above to get started!</p>
 </div>
-
 <div class="center">
-    <img src="images/entrance.jpg" alt="Beskrivelse af billedet">
-    <img src="images/car-dealer-logo-design-template-e6b3d98024d9551a9de4a9e2c5f1a9dd_screen.jpg" alt="Dit logo">
+    <img src="/images/entrance.jpg" alt="Description of the image">
+    <img src="/images/car-dealer-logo-design-template-e6b3d98024d9551a9de4a9e2c5f1a9dd_screen.jpg" alt="Your logo">
 </div>
-
 <div class="footer">
     <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
 </div>
-
 </body>
-
 </html>

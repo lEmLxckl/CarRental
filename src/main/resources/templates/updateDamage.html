@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Opdater personale</title>
-
+    <title>Title</title>
     <style>
 
         * {
@@ -178,33 +177,26 @@
 
 </head>
 <body>
-<form action="/opdateretPersonale" method="post">
-    <input type="hidden" name="username" th:value="${employee.username}" ><br><br>
+<div class="tilføj bil">
+    <h1>Opdater skade</h1>
 
-    <label for="user_password">Kodeord:</label>
-    <input type="text" id="user_password" name="user_password" th:value="${employee.user_password}" ><br><br>
+    <form action="/damageUpdate" method="post">
+        <input type="hidden" id="category_id" name="category_id" th:value="${update.category_id}" ><br><br>
 
-    <label for="full_name">Fuld navn:</label>
-    <input type="text" id="full_name" name="full_name" th:value="${employee.full_name}" ><br><br>
+        <label for="damage_name">Skade:</label>
+        <input type="text" id="damage_name" name="damage_name" th:value="${update.damage_name}" ><br><br>
 
-    <label for="email">Email:</label>
-    <input type="text" id="email" name="email" th:value="${employee.email}" ><br><br>
-
-    <label for="phone">Telefonnummer:</label>
-    <input type="text" id="phone" name="phone" th:value="${employee.phone}" ><br><br>
-
-    <label for="is_active">Aktiv bruger:</label>
-    <input type="number" id="is_active" name="is_active" th:value="${employee.is_active}" ><br><br>
-
-    <label for="is_admin">Admin:</label>
-    <input type="number" id="is_admin" name="is_admin" th:value="${employee.is_admin}" ><br><br>
+        <label for="price">Pris:</label>
+        <input type="text" id="price" name="price" th:value="${update.price}" ><br><br>
 
 
+        <input class="updateSubmit" type="submit" value="Opdater">
+    </form>
 
-    <input class="updateSubmit" type="submit" value="Opdater">
-    <h1 th:text="${fejl}"></h1>
-    <h1 th:text="${fejl2}"></h1>
-</form>
+</div>
 
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
 </body>
 </html>

@@ -24,8 +24,8 @@ public class CustomerService {
             return customerRepository.findIdByEmail(email);
         }
 
-        public List<Customer> fetchAll(){
-            return customerRepository.fetchAll();
+        public List<Customer> getAllCustomers(){
+            return customerRepository.getAllCustomers();
         }
 
         public void updateCustomer(Customer customer, int customer_id){

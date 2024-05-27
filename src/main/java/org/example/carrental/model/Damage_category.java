@@ -38,5 +38,14 @@ public class Damage_category {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "Damage_category{" +
+                "category_id=" + category_id +
+                ", damage_name='" + damage_name + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
 

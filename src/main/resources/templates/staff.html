@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Personale</title>
-    <div th:include="navbar.html"></div>
-    <link rel="stylesheet" href="table.css">
-
-
-
+    <div th:insert="~{navbar.html}"></div>
+    <title>Staff</title>
+    <link rel="stylesheet" href="/table.css">
     <style>
         .search-container {
             max-width: 300px;
@@ -24,40 +20,36 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-
     </style>
 </head>
 <body>
-<h1>Personale</h1>
 
+<h1>Staff</h1>
 <div class="create employee">
-    <a th:if="${admin != null and admin.getIs_admin() == 1}" th:href="@{/opretPersonale}">
-        <button class="createEmployee">Opret ny medarbejder</button>
+    <a th:if="${admin != null and admin.getIs_admin() == 1}" th:href="@{/createStaff}">
+        <button class="createEmployee">Create New Staff</button>
     </a>
 </div>
-
-
 <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Søg..." />
+    <input type="text" id="searchInput" placeholder="Search...">
 </div>
-
-
 
 <table>
     <thead>
     <tr>
-        <th>Brugernavn</th>
-        <th>Adgangskode</th>
-        <th>Fuldenavn</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Full Name</th>
         <th>Email</th>
-        <th>Telefon nr</th>
-        <th>Aktiv</th>
+        <th>Phone</th>
+        <th>Active</th>
         <th>Admin</th>
+        <th>User Type</th>
     </tr>
     </thead>
     <tbody>
     <!-- Loop through the employees and populate the table rows -->
-    <tr th:each="employee:${employees}">
+    <tr th:each="employee : ${employees}">
         <td th:text="${employee.username}"></td>
         <td>****</td>
         <td th:text="${employee.full_name}"></td>
@@ -65,17 +57,15 @@
         <td th:text="${employee.phone}"></td>
         <td th:text="${employee.is_active}"></td>
         <td th:text="${employee.is_admin}"></td>
-        <td><a th:if="${admin.getIs_admin()==1}" th:href="@{'/personale/'+${employee.username}}"><button>gør bruger inaktiv</button></a></td>
-        <td><a th:if="${admin.getIs_admin()==1}" th:href="@{'/opdaterPersonale/'+${employee.username}}"><button>Opdater oplysninger</button></a></td>
+        <td th:text="${employee.usertype}"></td>
+        <td><a th:if="${admin.getIs_admin() == 1}" th:href="@{'/staff/' + ${employee.username}}"><button>Make User Inactive</button></a></td>
+        <td><a th:if="${admin.getIs_admin() == 1}" th:href="@{'/updateStaff/' + ${employee.username}}"><button>Update Details</button></a></td>
     </tr>
     </tbody>
 </table>
 
-
-
-<<div class="footer">
+<div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
 </div>
-
 </body>
 </html>

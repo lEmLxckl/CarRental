@@ -37,4 +37,13 @@ public class Specific_damage {
     public void setCategory_id(int category_id) {
         this.category_id = category_id;
     }
+
+    @Override
+    public String toString() {
+        return "Specific_damage{" +
+                "specific_damage_id=" + specific_damage_id +
+                ", report_id=" + report_id +
+                ", category_id=" + category_id +
+                '}';
+    }
 }

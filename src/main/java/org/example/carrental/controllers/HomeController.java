@@ -17,61 +17,56 @@ public class HomeController {
 
     @Autowired
     EmployeeService employeeService;
-    //Start page
+
+    // Start page
     @GetMapping("/")
     public String index() {
         return "index";
     }
-    //login
+
+    // Login
     @GetMapping("/login")
     public String login() {
-
         return "login";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session){
+    public String logout(HttpSession session) {
         session.removeAttribute("adminlogin");
         return "redirect:/";
     }
 
-    //Homepage
+    // Homepage
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
-        String value = (String) session.getAttribute("username");
-        model.addAttribute("username", value);
-        if (!employeeService.checkSession(session)){
-            return "redirect:/home";
+        String username = (String) session.getAttribute("username");
+        model.addAttribute("username", username);
+        if (!employeeService.checkSession(session)) {
+            return "redirect:/";
         }
         return "home";
     }
 
-    // Metoden håndterer en POST-anmodning til "/login" -ruten. PostMapping("/login")
+    // Handle a POST request to "/login" route
     @PostMapping("/login")
     public String loginAccount(String username, String user_password, Model model, HttpSession session) {
-        // Finder en medarbejder baseret på brugernavn og adgangskode.
-        Employee employee = employeeService.findbyuserandpassword(username,user_password);
-        // Gemmer den pågældende medarbejder i sessionen med nøgle "adminlogin".
+        // Find an employee based on username and password
+        Employee employee = employeeService.findByUserAndPassword(username, user_password);
         session.setAttribute("adminlogin", employee);
-        // Udskriver resultatet af sessionens gyldighed til konsollen.
         System.out.println(employeeService.checkSession(session));
 
-        // Hvis medarbejderen eksisterer og er aktiv...
-        if (employee != null && employee.getIs_active()==1){
-            // Gemmer brugernavnet i sessionen med nøgle "username".
+        // If the employee exists and is active...
+        if (employee != null && employee.getIs_active() == 1) {
             session.setAttribute("username", username);
-            // Omdirigerer brugeren til "/home"-siden.
             return "redirect:/home";
         } else {
-            // Tilføjer en fejlbesked til modellen, hvis medarbejderen ikke eksisterer eller ikke er aktiv.
-            model.addAttribute("invalid", "bruger findes ikke");
-            // Returnerer login-siden.
+            model.addAttribute("invalid", "User does not exist");
             return "login";
-
         }
     }
+
     @GetMapping("/set_session_cookie")
-    public String setSessionSookie(HttpServletResponse response) {
+    public String setSessionCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("mySessionCookie", "Hello_Session_Cookie");
         response.addCookie(cookie);
         return "redirect:/get_session_cookie";
@@ -82,6 +77,7 @@ public class HomeController {
         model.addAttribute("cookieValue", cookieValue);
         return "show_session_cookie";
     }
+
     @GetMapping("/delete_session_cookie")
     public String deleteSessionCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("mySessionCookie", null);
@@ -89,6 +85,7 @@ public class HomeController {
         response.addCookie(cookie);
         return "redirect:/get_session_cookie";
     }
+
     @GetMapping("/update_session_cookie")
     public String updateSessionCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("mySessionCookie", "Updated_information");
@@ -104,9 +101,10 @@ public class HomeController {
         System.out.printf("Cookie was set: %s = %s%n", cookie.getName(), cookie.getValue());
         return "redirect:/";
     }
+
     @GetMapping("/read_cookie")
     public String readCookie(@CookieValue(name = "MyCookie", defaultValue = "N/A") String myCookie) {
-        System.out.printf("Cookie was set: %s = %s%n", "MyCookie", myCookie);
+        System.out.printf("Cookie was read: %s = %s%n", "MyCookie", myCookie);
         return "index";
     }
 }

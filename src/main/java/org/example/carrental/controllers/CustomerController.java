@@ -23,64 +23,64 @@ public class CustomerController {
     EmployeeService employeeService;
 
     // Returnere liste af alle kunder
-    @GetMapping("/opretlejekontrakt")
-    public String lejekontrakt ( Model model, HttpSession session){
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/createLeaseContract")
+    public String createLeaseContract(Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        List<Customer> customers = customerService.fetchAll();
-        session.setAttribute("customersInLej", customers);
+        List<Customer> customers = customerService.getAllCustomers();
+        session.setAttribute("customersInLease", customers);
         model.addAttribute("customers", customers);
-        return "opretLejeKontrakt";
+        return "createLeaseContract";
     }
 
     // Opretter kunde, returnere bekræftelse ved oprettelse af kunde
-    @PostMapping("/opretenkunde")
-    public String createCustomer (Customer c, Model model, HttpSession session){
+    @PostMapping("/createCustomer")
+    public String createCustomer(Customer c, Model model, HttpSession session) {
         customerService.createCustomer(c);
-        model.addAttribute("kunde", "Kunde tilføjet");
-        session.setAttribute("kundeoprettet", c);
+        model.addAttribute("customer", "Customer added");
+        session.setAttribute("customerCreated", c);
         System.out.println(c.getCustomer_id());
-        return "redirect:/opretNyKundeConfirmed";
+        return "redirect:/createCustomerConfirmed";
     }
 
     // HttpSession check
-    @GetMapping("/opretNyKunde")
-    public String CreateNewCustomer(HttpSession session){
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/createNewCustomer")
+    public String createNewCustomer(HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        return "opretNyKunde";
+        return "createCustomer";
     }
 
     // Returnere den oprettede kunde
-    @GetMapping("/opretNyKundeConfirmed")
-    public String newCustomerCreated(HttpSession session, Model model){
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/createCustomerConfirmed")
+    public String customerCreated(HttpSession session, Model model) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        Customer c = (Customer) session.getAttribute("kundeoprettet");
+        Customer c = (Customer) session.getAttribute("customerCreated");
         String value = customerService.findCustomerid(c.getEmail());
         model.addAttribute("customer", c);
-        model.addAttribute("customerid",value);
-        return "opretNyKundeConfirmed";
+        model.addAttribute("customerId", value);
+        return "createCustomerConfirmed";
     }
 
     // modtager customer object baseret på id, tilføjer kundeobjekt som attribut til modellen.
-    @GetMapping("/opdaterkunde/{customer_id}")
-    public String updateCustomer(@PathVariable("customer_id") int customer_id, Model model, HttpSession session){
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/updateCustomer/{customer_id}")
+    public String updateCustomer(@PathVariable("customer_id") int customer_id, Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        Customer customer=customerService.findId(customer_id);
-        model.addAttribute("opdater", customer);
-        return "opdaterKunde";
+        Customer customer = customerService.findId(customer_id);
+        model.addAttribute("update", customer);
+        return "updateCustomer";
     }
 
     // Modtager opdateret kundeinfo, kalder opdatermetode og redirecter til opretlejekontrakt ved udførelse
-    @PostMapping("/opdaterkunden")
-    public String updateTheCustomer(Customer c,int customer_id){
+    @PostMapping("/updateCustomerInfo")
+    public String updateCustomerInfo(Customer c, int customer_id) {
         customerService.updateCustomer(c, customer_id);
-        return "redirect:/opretlejekontrakt";
+        return "redirect:/createLeaseContract";
     }
 }

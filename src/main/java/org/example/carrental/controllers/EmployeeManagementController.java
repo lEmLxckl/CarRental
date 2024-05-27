@@ -3,6 +3,7 @@ package org.example.carrental.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
+import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,114 +12,129 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-
 @Controller
 public class EmployeeManagementController {
     @Autowired
     EmployeeService employeeService;
 
-    /* Denne metode bruges til at håndtere en GET-anmodning til "/personale" -ruten,
-     og den returnerer en visningsside kaldet "personale", der viser alle medarbejdere.
-    */
-    @GetMapping("/personale")
+    @GetMapping("/staff")
     public String getAllEmployees(Model model, HttpSession session) {
-        if (!employeeService.checkSession(session)){
-
-            /* Før visningen kontrolleres sessionen for at sikre, at den er gyldig.
-      Hvis sessionen ikke er gyldig, omdirigeres brugeren til startsiden ("/").*/
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        List<Employee> employees = employeeService.fetchAllEmployees();
+        List<Employee> employees = employeeService.getAllEmployees();
         Employee adminLogin = (Employee) session.getAttribute("adminlogin");
         model.addAttribute("admin", adminLogin);
-
-        /*     Derudover tilføjes en administratorkonto og en liste med medarbejdere til modellen,
-       som bruges til at opdatere visningen.*/
         model.addAttribute("employees", employees);
-
-        return "personale";
+        return "staff";
     }
 
-    @GetMapping("/opretPersonaler")
-    public String opretPersonale(HttpSession session) {
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/createStaff")
+    public String createStaff(HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
         String adminLogin = (String) session.getAttribute("username");
         Employee adminEmployee = employeeService.findAdminUser(adminLogin);
         if (adminEmployee == null) {
-            return "redirect:/personale";
+            return "redirect:/staff";
         } else {
+            return "createStaff";
+        }
+    }
 
-            return "opretPersonale";
+    @PostMapping("/createStaff")
+    public String createNewStaff(@RequestParam String username,
+                                 @RequestParam String user_password,
+                                 @RequestParam String full_name,
+                                 @RequestParam String email,
+                                 @RequestParam String phone,
+                                 @RequestParam String usertype,
+                                 HttpSession session) {
+        if (!employeeService.checkSession(session)) {
+            return "redirect:/";
         }
 
-    }
+        Employee employee = new Employee();
+        employee.setUsername(username);
+        employee.setUser_password(user_password);
+        employee.setFull_name(full_name);
+        employee.setEmail(email);
+        employee.setPhone(phone);
+        employee.setIs_active(1);
+        employee.setIs_admin(0);
+        employee.setUsertype(Usertype.fromString(usertype));
 
-    @PostMapping("/opretPersonale")
-    public String opretPersonaler(Employee employee, Model model, HttpSession session) {
-        model.addAttribute("employees", employee);
         employeeService.createEmployee(employee);
-        return "redirect:/personale";
-
+        return "redirect:/staff";
     }
 
-    @GetMapping("/personale/{username}")
-    public String fireEmployee(@PathVariable("username") String username,  HttpSession session){
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/staff/{username}")
+    public String deactivateEmployee(@PathVariable("username") String username, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
         String adminLogin = (String) session.getAttribute("username");
-        Employee adminEmployee =employeeService.findAdminUser(adminLogin);
-        if (adminEmployee==null) {
-            return"redirect:/personale";
+        Employee adminEmployee = employeeService.findAdminUser(adminLogin);
+        if (adminEmployee == null) {
+            return "redirect:/staff";
         } else {
-            employeeService.fireEmployee(username);
-            return "redirect:/personale";
+            employeeService.deleteEmployee(username);
+            return "redirect:/staff";
         }
-
     }
 
-    @GetMapping("/opdaterPersonale/{username}")
-    public String findByUsername(@PathVariable("username") String username, Model model, HttpSession session) {
-        if (!employeeService.checkSession(session)){
+    @GetMapping("/updateStaff/{username}")
+    public String findEmployeeByUsername(@PathVariable("username") String username, Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
         Employee employee = employeeService.findByUsername(username);
         model.addAttribute("employee", employee);
-        session.setAttribute("urlusername", employee.getUsername());
-        return "opdaterPersonale";
+        session.setAttribute("urlUsername", employee.getUsername());
+        return "updateStaff";
     }
 
+    @PostMapping("/updateEmployee")
+    public String updateEmployee(@RequestParam String username,
+                                 @RequestParam String user_password,
+                                 @RequestParam String full_name,
+                                 @RequestParam String email,
+                                 @RequestParam String phone,
+                                 @RequestParam int is_active,
+                                 @RequestParam int is_admin,
+                                 @RequestParam String usertype,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
 
-
-    //opdaterer personale oplysninger
-
-    @PostMapping("/opdateretPersonale")
-    public String opdateretPersonal(Employee employee, int is_active, int is_admin,
-                                    HttpSession session, RedirectAttributes redirectAttributes) {
-        String usernames = (String) session.getAttribute("urlusername");
-
-        //hvis begge to felter ikke har rigtig inputs, skal der gives to fejl meddelelser,
-        if(is_active != 0 && is_active != 1 && is_admin != 0 && is_admin != 1  ){
-            redirectAttributes.addFlashAttribute("fejl", "Admin value should be 0 or 1");
-            redirectAttributes.addFlashAttribute("fejl2", "Active value should be 0 or 1");
-            return "redirect:/opdaterPersonale/" + usernames;
+        if (!employeeService.checkSession(session)) {
+            return "redirect:/";
         }
-        //hvis active felten ikke er korrect skal der gives en meddelse til dette
-        else if (is_active != 0 && is_active != 1) {
-            redirectAttributes.addFlashAttribute("fejl", "Active value should be 0 or 1");
-            return "redirect:/opdaterPersonale/" + usernames;
-        }
-        //hvis active felten ikke er korrect skal der gives en meddelse til dette
-        else if (is_admin != 0 && is_admin != 1) {
-            redirectAttributes.addFlashAttribute("fejl2", "Admin value should be 0 or 1");
-            return "redirect:/opdaterPersonale/" + usernames;
-        }else {
-            //hvis begge inputs er indtastet rigtigt skal update væres succesfuld og den skal refresh personale html siden
 
-            employeeService.updateEmployee(employee);
-            return "redirect:/personale";
+        Employee employee = employeeService.findByUsername(username);
+        if (employee == null) {
+            return "redirect:/staff";
         }
+
+        if (is_active != 0 && is_active != 1) {
+            redirectAttributes.addFlashAttribute("error", "Active value should be 0 or 1");
+            return "redirect:/updateStaff/" + username;
+        }
+
+        if (is_admin != 0 && is_admin != 1) {
+            redirectAttributes.addFlashAttribute("error2", "Admin value should be 0 or 1");
+            return "redirect:/updateStaff/" + username;
+        }
+
+        employee.setUser_password(user_password);
+        employee.setFull_name(full_name);
+        employee.setEmail(email);
+        employee.setPhone(phone);
+        employee.setIs_active(is_active);
+        employee.setIs_admin(is_admin);
+        employee.setUsertype(Usertype.fromString(usertype));
+
+        employeeService.updateEmployee(employee);
+        return "redirect:/staff";
     }
 }

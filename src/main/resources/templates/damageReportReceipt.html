@@ -2,21 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Damage Report Receipt</title>
 </head>
-
-
 <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f2f2f2;
         text-align: center;
-
     }
 
     p {
         margin-bottom: 10px;
     }
+
     table {
         border-collapse: collapse;
         width: 100%;
@@ -25,22 +23,27 @@
         margin-bottom: 20px;
         background-color: #57a3ee;
     }
+
     td {
         padding: 10px;
         border: 1px solid #ddd;
     }
+
     td:first-child {
         font-weight: bold;
         text-align: right;
         width: 40%;
     }
+
     td:last-child {
         text-align: left;
     }
+
     form {
         display: inline-block;
         margin-top: 20px;
     }
+
     input[type="submit"] {
         font-size: 1em;
         padding: 10px 20px;
@@ -51,43 +54,33 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
     }
+
     input[type="submit"]:hover {
         background-color: #0056b3;
     }
 </style>
-
 <body>
-
-
-
-<h1>Skadesrapport Kvittering</h1>
-<p>Bekræft venligt detaljerne nedenfor:</p>
+<h1>Damage Report Receipt</h1>
+<p>Please confirm the details below:</p>
 <table>
     <tr>
-        <td>contractid:</td>
-        <td th:text="${contractid}"></td>
+        <td>Contract ID:</td>
+        <td th:text="${contractId}"></td>
     </tr>
     <tr>
-        <td>Totalpris:</td>
-        <td th:text="${totalprisen}"></td>
+        <td>Total Price:</td>
+        <td th:text="${totalPrice}"></td>
     </tr>
-
     <tr>
         <td>Employee Username:</td>
         <td th:text="${username}"></td>
     </tr>
-
-
-
-
 </table>
-<form method="post" action="/Bekræftkvittering">
-    <input type="submit" value="Godkend">
-    <input type="hidden" name="contract_id" id="start_date" th:value="${contractid}"><br><br>
-    <input type="hidden" name="total_price" id="end_date" th:value="${totalprisen}"><br><br>
-    <input type="hidden" name="total_price" id="vehicle_number" th:value="${username}"><br><br>
+<form method="post" action="/confirmReceipt">
+    <input type="submit" value="Confirm">
+    <input type="hidden" name="contract_id" id="contract_id" th:value="${contractId}">
+    <input type="hidden" name="total_price" id="total_price" th:value="${totalPrice}">
+    <input type="hidden" name="username" id="username" th:value="${username}">
 </form>
-
 </body>
-
-</html>>
+</html>

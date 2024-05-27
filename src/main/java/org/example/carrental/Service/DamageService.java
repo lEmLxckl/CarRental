@@ -12,8 +12,8 @@ public class DamageService {
     @Autowired
     DamageRepo damageRepo;
 
-    public List<Damage_category> fetchAllDamageCategories(){
-        return damageRepo.fetchAll();
+    public List<Damage_category> getAllDamageCategories(){
+        return damageRepo.getAllDamageCategories();
     }
 
     public void addDamage(Damage_category damage_category){
@@ -27,12 +27,12 @@ public class DamageService {
         return damageRepo.deleteDamage(category_id);
     }
 
-    public Damage_category findSpecifikDamage(int category_id){
+    public Damage_category findExactDamage(int category_id){
         return damageRepo.findDamageByid(category_id);
     }
 
-    public Double getSpecificDamagePrice(int category_id) {
-        return damageRepo.findSpecificDamagePrice(category_id);
+    public Double getDamagePrice(int category_id) {
+        return damageRepo.getDamagePrice(category_id);
     }
 
 

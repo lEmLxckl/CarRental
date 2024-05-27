@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Valgt Bil</title>
+    <title>Selected Car</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
-            margin-top: 175px
+            margin-top: 175px;
         }
+
         h1, h2 {
             color: #333;
             text-align: center;
         }
+
         h2 span {
             color: #4CAF50;
             font-weight: bold;
         }
+
         button {
             background-color: #4CAF50;
             color: #fff;
@@ -27,32 +30,30 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         button:hover {
             background-color: #3e8e41;
         }
+
         .btn-group {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
+
         .btn-group a {
             margin: 0 10px;
         }
     </style>
 </head>
 <body>
-<h1>Du har valgt følgende bil</h1>
-
-<h2 th:text="${opdater.getBrand() + ' ' + opdater.getModel() +' ' + opdater.getMake()}"></h2>
-
-<h2>Prisen på bilen pr. måned er: <span th:text="${opdater.getPrice()}"> </span> DKK</h2>
-
-<h2>Vil du gerne fortsætte?</h2>
-
+<h1>You have selected the following car</h1>
+<h2 th:text="${update.getBrand() + ' ' + update.getModel() + ' ' + update.getMake()}"></h2>
+<h2>The price of the car per month is: <span th:text="${update.getPrice()}"></span> DKK</h2>
+<h2>Would you like to continue?</h2>
 <div class="btn-group">
-    <a href="lej"><button>Ja</button></a>
-    <a href="home"><button>Nej</button></a>
+    <a href="/lease"><button>Yes</button></a>
+    <a href="/home"><button>No</button></a>
 </div>
-
 </body>
 </html>

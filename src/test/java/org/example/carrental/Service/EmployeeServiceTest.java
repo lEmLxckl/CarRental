@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void testFetchAllEmployees() {
+    void testGetAllEmployees() {
         // Given
         Employee employee1 = new Employee();
         employee1.setIs_admin(1);
@@ -46,11 +46,11 @@ public class EmployeeServiceTest {
         List<Employee> expectedEmployees = Arrays.asList(employee1, employee2);
 
         // When
-        when(employeeRepo.fetchAll()).thenReturn(expectedEmployees);
-        List<Employee> actualEmployees = employeeService.fetchAllEmployees();
+        when(employeeRepo.getAllEmployees()).thenReturn(expectedEmployees);
+        List<Employee> actualEmployees = employeeService.getAllEmployees();
 
         // Then
-        verify(employeeRepo).fetchAll();
+        verify(employeeRepo).getAllEmployees();
         assertThat(actualEmployees).isEqualTo(expectedEmployees);
     }
 }

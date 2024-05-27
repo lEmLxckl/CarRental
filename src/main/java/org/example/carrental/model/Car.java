@@ -130,4 +130,22 @@ public class Car {
     public void setFlow(int flow) {
         this.flow = flow;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "vehicle_number=" + vehicle_number +
+                ", frame_number='" + frame_number + '\'' +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", make=" + make +
+                ", color='" + color + '\'' +
+                ", fuel_type='" + fuel_type + '\'' +
+                ", gear_type='" + gear_type + '\'' +
+                ", odometer=" + odometer +
+                ", motor='" + motor + '\'' +
+                ", price=" + price +
+                ", flow=" + flow +
+                '}';
+    }
 }

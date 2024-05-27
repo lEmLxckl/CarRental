@@ -46,4 +46,14 @@ public class Damage_report {
     public void setContract_id(int contract_id) {
         this.contract_id = contract_id;
     }
+
+    @Override
+    public String toString() {
+        return "Damage_report{" +
+                "report_id=" + report_id +
+                ", total_price=" + total_price +
+                ", contract_id=" + contract_id +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

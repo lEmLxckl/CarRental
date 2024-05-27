@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+
 @Controller
 public class DamageController {
 
@@ -21,63 +23,61 @@ public class DamageController {
     @Autowired
     EmployeeService employeeService;
 
-    // metode som hiver fat i damagekategorier
-    @GetMapping("/skader")
-    public String skaddeRapportListe(Model model, HttpSession session){
-        if (!employeeService.checkSession(session)){
+    // Method to fetch damage categories
+    @GetMapping("/viewDamagePrices")
+    public String viewDamagePrices(Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        List<Damage_category> damage_category =  damageService.fetchAllDamageCategories();
-        model.addAttribute("category", damage_category);
-
-        return "skader";
+        List<Damage_category> damageCategories = damageService.getAllDamageCategories();
+        model.addAttribute("category", damageCategories);
+        return "viewDamagesPrices";
     }
 
-    // metode som anvendes til at tilføje en ekstra skade
-    @GetMapping("/tilføjSkade")
+    // Method to add a new damage
+    @GetMapping("/addDamage")
     public String addDamage(HttpSession session) {
-        if (!employeeService.checkSession(session)){
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        return "tilføjSkade";
+        return "addDamage";
     }
-    // en fortsættelse og af overnævnte tilføje metode, hvor en html login forum displays
+
+    // Method to add a new damage, continuation
     @PostMapping("/createNewDamage")
-    public String addDamagetoList( Damage_category d, HttpSession session) {
-        damageService.addDamage(d);
-        return "redirect:/skader";
-    }
-
-    //metode som opdaterer en kategori, hvor vi først tager fat i id'en.
-    @GetMapping("/updateOneDamage/{category_id}")
-    public String updateDamage(@PathVariable("category_id") int category_id, Model model, HttpSession session) {
-        if (!employeeService.checkSession(session)){
+    public String addDamageToList(@ModelAttribute Damage_category d, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
-        Damage_category damage = damageService.findSpecifikDamage(category_id);
-        model.addAttribute("opdater", damage);
-        return "opdaterSkade";
+        damageService.addDamage(d);
+        return "redirect:/viewDamagePrices";
     }
 
-    //fortsættelse af overstående metode, hvor man ajourføre oplysningerne af den tildelte kategori.
-    @PostMapping("/damageUpdate")
-    public String updateDamageToList(Damage_category damage_category, int category_id) {
-        damageService.updateCategory(damage_category, category_id);
-        return "redirect:/skader";
-    }
-
-    //metode til at slette en kategori i tilfælde af overflødighedhed eller lignende
-    @GetMapping("/deleteOneDamage/{category_id}")
-    public String deleteOne(@PathVariable("category_id") int category_id, HttpSession session){
-        boolean deleted = damageService.deleteDamage(category_id);
-        if (deleted){
-            return "redirect:/skader";
-        }else {
-            return "redirect:/skader";
+    // Method to update a category, fetching the id first
+    @GetMapping("/updateDamage/{category_id}")
+    public String updateDamage(@PathVariable("category_id") int category_id, Model model, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
+            return "redirect:/";
         }
+        Damage_category damage = damageService.findExactDamage(category_id);
+        model.addAttribute("update", damage);
+        return "updateDamage";
     }
 
+    // Continuation of the update method, updating the category details
+    @PostMapping("/damageUpdate")
+    public String updateDamageToList(@ModelAttribute Damage_category damageCategory, int category_id) {
+        damageService.updateCategory(damageCategory, category_id);
+        return "redirect:/viewDamagePrices";
+    }
 
-
+    // Method to delete a category
+    @GetMapping("/deleteDamage/{category_id}")
+    public String deleteDamage(@PathVariable("category_id") int category_id, HttpSession session) {
+        if (!employeeService.checkSession(session)) {
+            return "redirect:/";
+        }
+        boolean deleted = damageService.deleteDamage(category_id);
+        return "redirect:/viewDamagePrices";
+    }
 }
-

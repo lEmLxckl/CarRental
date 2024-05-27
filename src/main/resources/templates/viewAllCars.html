@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Alle biler</title>
-    <div th:include="navbar.html"></div>
-    <link rel="stylesheet" href="table.css">
+    <title>All Cars</title>
+    <div th:insert="~{navbar.html}"></div>
 
-
+    <link rel="stylesheet" href="/table.css">
     <style>
-
         .search-container {
             max-width: 600px;
             margin: 0 auto;
@@ -25,47 +22,34 @@
             box-sizing: border-box;
         }
     </style>
-
-
 </head>
 <body>
 
-
-<h1>Alle biler</h1>
-
-<a href="tilføjBiler">
-    <button class="addCarButton">
-        Tilføj bil
-    </button>
+<h1>All Cars</h1>
+<a href="/addCar">
+    <button class="addCarButton">Add Car</button>
 </a>
-
 <div class="search-container">
     <input type="text" id="search-input" placeholder="Search...">
 </div>
-
-
-
-
 <table>
     <thead>
     <tr>
-        <th>bil nr</th>
-        <th>stel nr</th>
+        <th>Vehicle Number</th>
+        <th>Frame Number</th>
         <th>Brand</th>
         <th>Model</th>
-        <th>Årgang</th>
-        <th>Farve</th>
-        <th>Brændstof type</th>
+        <th>Year</th>
+        <th>Color</th>
+        <th>Fuel Type</th>
         <th>Gear Type</th>
         <th>Motor</th>
-        <th>Pris</th>
+        <th>Price</th>
         <th>Odometer</th>
         <th>Flow</th>
-
     </tr>
     </thead>
     <tbody>
-    <!-- Loop through the cars and populate the table rows -->
     <tr th:each="car : ${cars}">
         <td th:text="${car.vehicle_number}"></td>
         <td th:text="${car.frame_number}"></td>
@@ -79,17 +63,11 @@
         <td th:text="${car.price}"></td>
         <td th:text="${car.odometer}"></td>
         <td th:text="${car.flow}"></td>
-        <td>  <a th:href="@{'/deleteOne/'+${car.vehicle_number}}">
-            <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
-        </a></td>
-        <td>  <a th:href="@{'/opdaterBilen/'+${car.vehicle_number}}">
-            <button class="btnOpdater">Opdater bil</button>
-        </a></td>
-
+        <td><a th:href="@{'/deleteCar/'+${car.vehicle_number}}"><button class="btn-deleteOne" id="btn-deleteOne">Delete Car</button></a></td>
+        <td><a th:href="@{'/updateCar/'+${car.vehicle_number}}"><button class="btnOpdater">Update Car</button></a></td>
     </tr>
     </tbody>
 </table>
-
 <div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
 </div>

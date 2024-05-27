@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Tilføj bil</title>
+    <div th:insert="~{navbar.html}"></div>
 
     <link rel="stylesheet" href="home.css">
-    <div th:include="navbar.html"></div>
 
 </head>
 
 <style>
-    .AddCarSubmit{
+    .AddCarSubmit {
         display: block;
         width: 100%;
         padding: 10px;
@@ -31,7 +31,7 @@
 
 <div class="tilføj bil">
     <h1>Tilføj bil</h1>
-    <form method="post" action="/createNew">
+    <form method="post" action="/createCar">
         <label for="frame_number">Frame Number:</label>
         <input type="text" id="frame_number" name="frame_number" required><br><br>
 
@@ -67,13 +67,8 @@
 
         <input class="AddCarSubmit" type="submit" value="tilføj en bil">
     </form>
-
-
 </div>
 
-
-</div>
-</div>
 <div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
 </div>

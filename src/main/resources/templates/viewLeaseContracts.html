@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Se lejekontrakt</title>
-    <link rel="stylesheet" href="home.css">
-    <div th:include="navbar.html"></div>
-    <link rel="stylesheet" href="table.css">
+    <div th:insert="~{navbar.html}"></div>
 
+    <title>View Lease Contracts</title>
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/table.css">
     <style>
         .search-container {
             max-width: 600px;
@@ -24,13 +23,12 @@
             box-sizing: border-box;
         }
     </style>
-
 </head>
 <body>
 
-<h1>Lejekontrakter</h1>
+<h1>Lease Contracts</h1>
 <div class="search-container">
-    <input type="text" id="search-input" placeholder="Søg...">
+    <input type="text" id="search-input" placeholder="Search...">
 </div>
 <table>
     <thead>
@@ -56,12 +54,7 @@
     </tr>
     </tbody>
 </table>
-
-
-
 <h1 th:text="${username}"></h1>
-
-
 <div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
 </div>

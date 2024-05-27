@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="home.css">
+    <div th:insert="~{navbar.html}"></div>
+
+    <title>Customer Created</title>
+</head>
+<style>
+.back-button {
+display: block;
+width: 200px;
+margin: 20px auto;
+padding: 15px 20px;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+text-transform: uppercase;
+color: #ffffff;
+background-color: #28a745;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+text-decoration: none; /* Remove underline from link */
+}
+</style>
+<body>
+
+<h1>Customer has been created! See summary below:</h1>
+<table>
+    <tr>
+        <td>Full Name:</td>
+        <td th:text="${customer.getFull_name()}"></td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td th:text="${customer.getEmail()}"></td>
+    </tr>
+    <tr>
+        <td>Phone:</td>
+        <td th:text="${customer.getPhone()}"></td>
+    </tr>
+    <tr>
+        <td>Address:</td>
+        <td th:text="${customer.getAddress()}"></td>
+    </tr>
+    <tr>
+        <td>CPR:</td>
+        <td th:text="${customer.getCpr()}"></td>
+    </tr>
+    <tr>
+        <td>Customer Number:</td>
+        <td th:text="${customerId}"></td>
+    </tr>
+</table>
+<a href="/createLeaseContract" class="back-button">Back to Create Lease Contract</a>
+
+
+</body>
+</html>

@@ -21,7 +21,7 @@
 
         /* Header style */
         .header {
-            background-image: url('images/entrance.jpg');
+            background-image: url('/images/entrance.jpg');
             background-size: cover;
             background-position: center;
             color: #fff;
@@ -37,7 +37,7 @@
             height: auto;
         }
 
-        .dashboard {
+        .home {
             display: flex;
             align-items: center;
         }
@@ -69,6 +69,7 @@
             padding: 10px 0;
             border-radius: 5px;
             display: none;
+            z-index: 1000;
         }
 
         .dashboard-item:hover .dropdown {
@@ -107,53 +108,58 @@
     </style>
 </head>
 <body>
-
 <div class="header">
-    <div class="dashboard">
-        <a href="home">
-            <img class="logo" src="images/car-dealer-logo-design-template-e6b3d98024d9551a9de4a9e2c5f1a9dd_screen.jpg" alt="Logo">
-        </a>
+    <a href="/home">
+        <img class="logo" src="/images/car-dealer-logo-design-template-e6b3d98024d9551a9de4a9e2c5f1a9dd_screen.jpg" alt="Logo">
+    </a>
+    <div class="home">
         <div class="dashboard-item">
             <button class="dashboard-button">Dataregistrering</button>
             <div class="dropdown">
-                <a href="opretlejekontrakt">Opret lejekontrakt</a>
-                <a href="selejekontrakt">Se lejekontrakt</a>
+                <a href="/createLeaseContract">Opret lejekontrakt</a>
+                <a href="/viewLeaseContracts">Se lejekontrakt</a>
             </div>
         </div>
         <div class="dashboard-item">
             <button class="dashboard-button">Skader</button>
             <div class="dropdown">
-                <a href="skaderapport">Skaderapport</a>
-                <a href="skader">Se priser på skader</a>
+                <a href="/damageReport">Skaderapport</a>
+                <a href="/viewDamagePrices">Se priser på skader</a>
             </div>
         </div>
         <div class="dashboard-item">
             <button class="dashboard-button">Rapportering og overvågning</button>
             <div class="dropdown">
-                <a href="seallebiler">Se alle biler</a>
-                <a href="ledigbiler">Se ledige biler</a>
-                <a href="sammenlagtpris">Sammenlagt pris på nuværende udlejede biler</a>
+                <a href="/viewAllCars">Se alle biler</a>
+                <a href="/availableCars">Se ledige biler</a>
+                <a href="/totalPrice">Sammenlagt pris på nuværende udlejede biler</a>
             </div>
         </div>
         <div class="dashboard-item">
             <button class="dashboard-button">Personale</button>
             <div class="dropdown">
-                <a href="personale">Se ansatte</a>
+                <a href="/staff">Se ansatte</a>
             </div>
         </div>
-        <a href="/logout"> <button class="dashboard-button custom-button">Log ud</button></a>
+        <div class="dashboard-item">
+            <button class="dashboard-button">Lease Types</button>
+            <div class="dropdown">
+                <a href="/leaseTypes">Se Typer af lejekontrakter</a>
+            </div>
+        </div>
+        <a href="/logout">
+            <button class="dashboard-button custom-button">Log ud</button>
+        </a>
     </div>
 </div>
 
-<nav th:fragment="nav">
+<nav th:fragment="navbar">
     <ul>
-        <li><a href="set_session_cookie">Set Session Cookie</a></li>
-        <li><a href="get_session_cookie">Get Session Cookie</a></li>
-        <li><a href="update_session_cookie">Update Session Cookie</a></li>
-        <li><a href="delete_session_cookie">Delete Session Cookie</a></li>
+        <li><a href="/set_session_cookie">Set Session Cookie</a></li>
+        <li><a href="/get_session_cookie">Get Session Cookie</a></li>
+        <li><a href="/update_session_cookie">Update Session Cookie</a></li>
+        <li><a href="/delete_session_cookie">Delete Session Cookie</a></li>
     </ul>
 </nav>
-
 </body>
-
 </html>

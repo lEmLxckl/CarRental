@@ -84,5 +84,16 @@ public class Leasing_contract {
                 this.customer_id = customer_id;
         }
 
-
+        @Override
+        public String toString() {
+                return "Leasing_contract{" +
+                        "contract_id=" + contract_id +
+                        ", start_date=" + start_date +
+                        ", end_date=" + end_date +
+                        ", price=" + price +
+                        ", vehicle_number=" + vehicle_number +
+                        ", username='" + username + '\'' +
+                        ", customer_id=" + customer_id +
+                        '}';
+        }
 }

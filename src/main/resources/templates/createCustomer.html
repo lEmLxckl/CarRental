@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Opret ny kunde</title>
-    <link rel="stylesheet" href="home.css">
-    <div th:include="navbar.html"></div>
+    <title>Create Customer</title>
+    <div th:insert="~{navbar.html}"></div>
+
+    <link rel="stylesheet" href="/home.css">
 </head>
 <style>
     .updateSubmit{
@@ -23,31 +23,33 @@
         border-radius: 4px;
         cursor: pointer;
     }
-</style>
 
+</style>
 <body>
 
-<h1>Opret kunde</h1>
-<div class="opret kunde">
-    <form method="post" action="/opretenkunde">
+<h1>Create Customer</h1>
+<div class="create-customer">
+    <form method="post" action="/createCustomer">
         <label for="full_name">Fullname:</label>
         <input type="text" id="full_name" name="full_name" required><br><br>
 
-        <label for="email">email:</label>
+        <label for="email">Email:</label>
         <input type="text" id="email" name="email" required><br><br>
 
-        <label for="phone">phone:</label>
+        <label for="phone">Phone:</label>
         <input type="number" id="phone" name="phone" required><br><br>
 
-        <label for="address">address:</label>
+        <label for="address">Address:</label>
         <input type="text" id="address" name="address" required><br><br>
 
-        <label for="cpr">cpr:</label>
+        <label for="cpr">CPR:</label>
         <input type="number" id="cpr" name="cpr" required><br><br>
 
-        <input class="updateSubmit" type="submit" value="opret kunde">
+        <input class="updateSubmit" type="submit" value="Create Customer">
     </form>
 </div>
+
+
 
 <div class="footer">
     <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>

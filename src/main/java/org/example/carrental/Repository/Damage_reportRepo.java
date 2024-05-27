@@ -15,10 +15,12 @@ public class Damage_reportRepo {
     JdbcTemplate template;
 
 
+    private final RowMapper rowMapper = new BeanPropertyRowMapper<>(Damage_report.class);
+
+
     // Hente alle skaderapporter fra databasen.
-    public List <Damage_report> fetchAll(){
+    public List <Damage_report> getAllReports(){
         String sql = "SELECT * FROM damage_report";
-        RowMapper rowMapper = new BeanPropertyRowMapper<>(Damage_report.class);
         return template.query(sql, rowMapper);
     }
 

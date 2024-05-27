@@ -12,8 +12,8 @@ public class Damage_reportService {
     @Autowired
     Damage_reportRepo damage_reportRepo;
 
-    public List<Damage_report> showReport() {
-        return damage_reportRepo.fetchAll();
+    public List<Damage_report> getAllReports() {
+        return damage_reportRepo.getAllReports();
     }
     public void addDamage_report(Damage_report damage_report){
         damage_reportRepo.CreateDamage_report(damage_report);
@@ -23,7 +23,7 @@ public class Damage_reportService {
         damage_reportRepo.updateDamageReport(damageReport, report_id);
     }
 
-    public Damage_report findSpecifikReport(int report_id){
+    public Damage_report findExactReport(int report_id){
         return damage_reportRepo.findDamageReportByid(report_id);
     }
     public boolean deleteReport(int report_id){

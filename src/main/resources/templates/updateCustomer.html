@@ -179,23 +179,23 @@
 <h1> opdater kunde </h1>
 
 <div class="opret kunde">
-    <form method="post" action="/opdaterkunden">
+    <form method="post" action="/updateCustomerInfo">
         <label for="full_name">Fullname:</label>
-        <input type="text" id="full_name" name="full_name"  th:value="${opdater.getFull_name()}"><br><br>
+        <input type="text" id="full_name" name="full_name"  th:value="${update.getFull_name()}"><br><br>
 
-        <input type="hidden"  name="customer_id"  th:value="${opdater.getCustomer_id()}">
+        <input type="hidden"  name="customer_id"  th:value="${update.getCustomer_id()}">
 
         <label for="email">email:</label>
-        <input type="text" id="email" name="email" th:value="${opdater.getEmail()}" ><br><br>
+        <input type="text" id="email" name="email" th:value="${update.getEmail()}" ><br><br>
 
         <label for="phone">phone:</label>
-        <input type="number" id="phone" name="phone" th:value="${opdater.getPhone()}"><br><br>
+        <input type="number" id="phone" name="phone" th:value="${update.getPhone()}"><br><br>
 
         <label for="address">address:</label>
-        <input type="text" id="address" name="address" th:value="${opdater.getAddress()}"><br><br>
+        <input type="text" id="address" name="address" th:value="${update.getAddress()}"><br><br>
 
         <label for="cpr">cpr:</label>
-        <input type="number" id="cpr" name="cpr" th:value="${opdater.getCpr()}"><br><br>
+        <input type="number" id="cpr" name="cpr" th:value="${update.getCpr()}"><br><br>
 
         <input class="updateSubmit" type="submit" value="opdater kunde">
     </form>

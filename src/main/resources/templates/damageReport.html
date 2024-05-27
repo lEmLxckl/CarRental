@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Opret skaderapport</title>
-    <div th:include="navbar.html"></div>
-    <link rel="stylesheet" href="table.css">
+    <div th:insert="~{navbar.html}"></div>
 
+    <link rel="stylesheet" href="table.css">
 </head>
 <body>
 
+
 <h1>Skadesrapport</h1>
-<a href="skaderapportopret">
+<a href="/createDamageReportSelect">
     <button class="createDamageRep">
         Opret en skadesrapport
     </button>
@@ -26,21 +27,24 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Loop through the cars and populate the table rows -->
-    <tr th:each="damage_report : ${damage_report}">
+    <!-- Loop through the damage reports and populate the table rows -->
+    <tr th:each="damage_report : ${damageReport}">
         <td th:text="${damage_report.report_id}"></td>
         <td th:text="${damage_report.total_price}"></td>
         <td th:text="${damage_report.contract_id}"></td>
-        <td>  <a th:href="@{'/deleteOneReport/'+${damage_report.report_id}}">
-            <button class="btn-deleteOne" id="btn-deleteOne">Slet</button>
-        </a></td>
-        <td>  <a th:href="@{'/updateOneDamageReport/'+${damage_report.report_id}}">
-            <button class="btnOpdater">Opdater</button>
-        </a></td>
+        <td>
+            <a th:href="@{'/deleteDamageReport/'+${damage_report.report_id}}">
+                <button class="btn-deleteOne" id="btn-deleteOne">Slet</button>
+            </a>
+        </td>
+        <td>
+            <a th:href="@{'/updateDamageReport/'+${damage_report.report_id}}">
+                <button class="btnOpdater">Opdater</button>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>
-
 
 <div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>

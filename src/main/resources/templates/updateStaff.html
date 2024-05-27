@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opdater personale</title>
+    <style>
+        /* Add your CSS styles */
+    </style>
+</head>
+<body>
+<form action="/updateEmployee" method="post">
+    <input type="hidden" name="username" th:value="${employee.username}"><br><br>
+
+    <label for="user_password">Kodeord:</label>
+    <input type="text" id="user_password" name="user_password" th:value="${employee.user_password}"><br><br>
+
+    <label for="full_name">Fuld navn:</label>
+    <input type="text" id="full_name" name="full_name" th:value="${employee.full_name}"><br><br>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email" th:value="${employee.email}"><br><br>
+
+    <label for="phone">Telefonnummer:</label>
+    <input type="text" id="phone" name="phone" th:value="${employee.phone}"><br><br>
+
+    <label for="is_active">Aktiv bruger:</label>
+    <input type="number" id="is_active" name="is_active" th:value="${employee.is_active}"><br><br>
+
+    <label for="is_admin">Admin:</label>
+    <input type="number" id="is_admin" name="is_admin" th:value="${employee.is_admin}"><br><br>
+
+    <label for="usertype">User Type:</label>
+    <select id="usertype" name="usertype" th:value="${employee.usertype}">
+        <option value="DATAREGISTRERING">Data Registrering</option>
+        <option value="SKADE OG UDBEREDNING">Skade og Udbederedning</option>
+        <option value="FORRETNINGSUDVIKLERE">Forretningsudviklere</option>
+        <option value="ADMIN">Admin</option>
+    </select><br><br>
+
+    <button type="submit">Opdater</button>
+    <h1 th:text="${error}"></h1>
+    <h1 th:text="${error2}"></h1>
+</form>
+</body>
+</html>

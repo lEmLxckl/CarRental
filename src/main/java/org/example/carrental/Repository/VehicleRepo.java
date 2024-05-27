@@ -17,14 +17,14 @@ public class VehicleRepo {
     JdbcTemplate template;
 
     // Returner en liste af  biler
-    public List<Car> fetchAll() {
+    public List<Car> getAllCars() {
         String sql = "SELECT * FROM Car";
         RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
         return template.query(sql, rowMapper);
     }
 
     //returner en liste af ledig biler
-    public List<Car> fetchAvailable() {
+    public List<Car> getAvailable() {
         String sql = "SELECT * FROM Car WHERE flow = 0";
         RowMapper<Car> rowMapper = new BeanPropertyRowMapper<>(Car.class);
         return template.query(sql, rowMapper);

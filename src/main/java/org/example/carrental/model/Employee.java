@@ -8,11 +8,13 @@ public class Employee {
     private String phone;
     private int is_active;
     private int is_admin;
+    private Usertype usertype;
+
 
     public Employee() {
     }
 
-    public Employee(String username, String user_password, String full_name, String email, String phone, int is_active, int is_admin) {
+    public Employee(String username, String user_password, String full_name, String email, String phone, int is_active, int is_admin, Usertype usertype) {
         this.username = username;
         this.user_password = user_password;
         this.full_name = full_name;
@@ -20,6 +22,7 @@ public class Employee {
         this.phone = phone;
         this.is_active = is_active;
         this.is_admin = is_admin;
+        this.usertype = usertype;
     }
 
     public String getUsername() {
@@ -76,5 +79,27 @@ public class Employee {
 
     public void setIs_admin(int is_admin) {
         this.is_admin = is_admin;
+    }
+
+    public Usertype getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(Usertype usertype) {
+        this.usertype = usertype;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "username='" + username + '\'' +
+                ", user_password='" + user_password + '\'' +
+                ", full_name='" + full_name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", is_active=" + is_active +
+                ", is_admin=" + is_admin +
+                ", usertype=" + usertype +
+                '}';
     }
 }

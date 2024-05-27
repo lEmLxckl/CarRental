@@ -13,12 +13,12 @@ public class VehicleService {
     @Autowired
     private VehicleRepo carRepo;
 
-    public List<Car> fetchAll() {
-        return carRepo.fetchAll();
+    public List<Car> getAllCars() {
+        return carRepo.getAllCars();
     }
 
-    public List<Car>fetchAvailable(){
-        return carRepo.fetchAvailable();
+    public List<Car>getAvailable(){
+        return carRepo.getAvailable();
     }
     public void addCar( Car car){
         carRepo.addCar(car);

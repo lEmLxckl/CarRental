@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Lease Contract</title>
+    <div th:insert="~{navbar.html}"></div>
+
+    <link rel="stylesheet" href="/home.css">
+    <style>
+        .footer {
+            background-color: ghostwhite;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .center {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .center img {
+            max-width: 80%;
+            height: auto;
+        }
+
+        .customer-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-updateOne {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-updateOne:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Oprettelsen af en lejekontrakt</h1>
+
+<div class="center">
+    <a href="/createNewCustomer">
+        <button class="btn">Opret ny kunde</button>
+    </a>
+    <a href="/createContract">
+        <button class="btn">Eksisterende kunde</button>
+    </a>
+</div>
+
+<h1>Kunder</h1>
+<div class="customer-box">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fuld navn</th>
+            <th>Email</th>
+            <th>Telefon nr</th>
+            <th>Adresse</th>
+            <th>CPR</th>
+            <th>Handling</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.customer_id}"></td>
+            <td th:text="${customer.full_name}"></td>
+            <td th:text="${customer.email}"></td>
+            <td th:text="${customer.phone}"></td>
+            <td th:text="${customer.address}"></td>
+            <td th:text="${customer.cpr}"></td>
+            <td>
+                <a th:href="@{'/updateCustomer/'+${customer.customer_id}}">
+                    <button class="btn-updateOne" id="btn-updateOne">Opdater</button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="footer">
+    <p>© 2024 BA - Bil Abonnementen. All rights reserved.</p>
+</div>
+
+</body>
+</html>
