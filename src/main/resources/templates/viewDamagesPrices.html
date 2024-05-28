@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Damage Prices</title>
-    <div th:insert="~{navbar.html}"></div>
     <link rel="stylesheet" href="/table.css">
     <style>
         .search-container {
@@ -19,6 +18,22 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+        .homeButton {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            color: #ffffff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -36,20 +51,25 @@
         <th>Category</th>
         <th>Damage</th>
         <th>Price</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="damages : ${category}">
-        <td th:text="${damages.category_id}"></td>
-        <td th:text="${damages.damage_name}"></td>
+        <td th:text="${damages.id}"></td>
+        <td th:text="${damages.name}"></td>
         <td th:text="${damages.price}"></td>
-        <td><a th:href="@{'/deleteDamage/'+${damages.category_id}}"><button class="btn-deleteOne" id="btn-deleteOne">Delete</button></a></td>
-        <td><a th:href="@{'/updateDamage/'+${damages.category_id}}"><button class="btnOpdater">Update</button></a></td>
+        <td>
+            <a th:href="@{'/deleteDamage/'+${damages.id}}"><button class="btn-deleteOne" id="btn-deleteOne">Delete</button></a>
+            <a th:href="@{'/updateDamage/'+${damages.id}}"><button class="btnOpdater">Update</button></a>
+        </td>
     </tr>
     </tbody>
 </table>
 <div class="footer">
     <p>© 2024 BA - BilAbonnement. All rights reserved.</p>
 </div>
+<a class="homeButton" href="/home">Gå tilbage til hjem</a>
+
 </body>
 </html>

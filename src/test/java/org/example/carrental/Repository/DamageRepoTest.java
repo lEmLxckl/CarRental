@@ -42,8 +42,8 @@ public class DamageRepoTest {
 
         // Then
         assertThat(damageCategory).isNotNull();
-        assertThat(damageCategory.getCategory_id()).isEqualTo(1);
-        assertThat(damageCategory.getDamage_name()).isEqualTo("Scratch");
+        assertThat(damageCategory.getId()).isEqualTo(1);
+        assertThat(damageCategory.getName()).isEqualTo("Scratch");
         assertThat(damageCategory.getPrice()).isEqualTo(100.0);
     }
 
@@ -60,17 +60,17 @@ public class DamageRepoTest {
     void testUpdateDamage() {
         // Given
         Damage_category updatedCategory = new Damage_category();
-        updatedCategory.setCategory_id(1);
-        updatedCategory.setDamage_name("Updated Scratch");
+        updatedCategory.setId(1);
+        updatedCategory.setName("Updated Scratch");
         updatedCategory.setPrice(150.0);
 
         // When
-        damageCategoryRepository.updateDamage(updatedCategory, 1);
+        damageCategoryRepository.updateDamage(updatedCategory);
 
         // Then
         Damage_category retrievedCategory = damageCategoryRepository.findDamageByid(1);
         assertThat(retrievedCategory).isNotNull();
-        assertThat(retrievedCategory.getDamage_name()).isEqualTo("Updated Scratch");
+        assertThat(retrievedCategory.getName()).isEqualTo("Updated Scratch");
         assertThat(retrievedCategory.getPrice()).isEqualTo(150.0);
     }
 }

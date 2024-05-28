@@ -16,37 +16,30 @@ public class DamageRepo {
 
     // Metoden returnerer en liste over alle skadeskategorier.
     public List<Damage_category> getAllDamageCategories() {
-        // Definerer en SQL-forespørgsel for at hente alle poster fra skadeskategoritabellen.
-        String sql = "SELECT * FROM damage_category";
+            String sql = "SELECT * FROM damage_category";
+            RowMapper<Damage_category> rowMapper = new BeanPropertyRowMapper<>(Damage_category.class);
+            return template.query(sql, rowMapper);
+        }
 
-        // Opretter en RowMapper til at mappe rækkerne fra resultatet af SQL-forespørgslen til skadeskategoriklassen.
-        RowMapper<Damage_category> rowMapper = new BeanPropertyRowMapper<>(Damage_category.class);
-
-        // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og returnerer resultatet som en liste af skadeskategorier.
-        return template.query(sql, rowMapper);
-    }
 
     // Metoden tilføjer en skadeskategori til databasen.
-    public void AddDamage(Damage_category d) {
-        // Definerer en SQL-forespørgsel for at indsætte en ny skadeskategori med de tilhørende værdier.
-        String sql = "INSERT INTO damage_category (name, price) VALUES (?,?)";
-
-        // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og indsætter de nødvendige værdier.
-        template.update(sql, d.getDamage_name(), d.getPrice());
+    public void AddDamage(Damage_category damageCategory) {
+        String sql = "INSERT INTO damage_category (name, price) VALUES (?, ?)";
+        template.update(sql, damageCategory.getName(), damageCategory.getPrice());
     }
 
     // Metoden opdaterer en skadeskategori i databasen.
-    public void updateDamage(Damage_category damage_category, int category_id) {
+    public void updateDamage(Damage_category damage_category) {
         // Definerer en SQL-forespørgsel for at opdatere skadeskategorien med de nye værdier.
         String sql = "UPDATE damage_category SET name= ?, price= ? where id=?";
 
         // Udfører SQL-forespørgslen ved hjælp af JdbcTemplate-objektet og opdaterer skadeskategorien med de angivne værdier.
-        template.update(sql, damage_category.getDamage_name(), damage_category.getPrice(), category_id);
+        template.update(sql, damage_category.getName(), damage_category.getPrice(), damage_category.getId());
     }
 
-    public Boolean deleteDamage(int category_id) {
+    public Boolean deleteDamage(Damage_category category_id) {
         String sql = "DELETE FROM damage_category WHERE id = ?";
-        return template.update(sql, category_id) > 0;
+        return template.update(sql, category_id.getId()) > 0;
     }
 
     // Metoden finder en skadeskategori i databasen baseret på kategori-id.

@@ -30,6 +30,7 @@ public class DamageController {
             return "redirect:/";
         }
         List<Damage_category> damageCategories = damageService.getAllDamageCategories();
+        damageCategories.forEach(System.out::println); // Print to console for debugging
         model.addAttribute("category", damageCategories);
         return "viewDamagesPrices";
     }
@@ -43,15 +44,7 @@ public class DamageController {
         return "addDamage";
     }
 
-    // Method to add a new damage, continuation
-    @PostMapping("/createNewDamage")
-    public String addDamageToList(@ModelAttribute Damage_category d, HttpSession session) {
-        if (!employeeService.checkSession(session)) {
-            return "redirect:/";
-        }
-        damageService.addDamage(d);
-        return "redirect:/viewDamagePrices";
-    }
+
 
     // Method to update a category, fetching the id first
     @GetMapping("/updateDamage/{category_id}")
@@ -66,14 +59,14 @@ public class DamageController {
 
     // Continuation of the update method, updating the category details
     @PostMapping("/damageUpdate")
-    public String updateDamageToList(@ModelAttribute Damage_category damageCategory, int category_id) {
-        damageService.updateCategory(damageCategory, category_id);
+    public String updateDamageToList(@ModelAttribute Damage_category damageCategory) {
+        damageService.updateCategory(damageCategory);
         return "redirect:/viewDamagePrices";
     }
 
     // Method to delete a category
     @GetMapping("/deleteDamage/{category_id}")
-    public String deleteDamage(@PathVariable("category_id") int category_id, HttpSession session) {
+    public String deleteDamage(@PathVariable("category_id") Damage_category category_id, HttpSession session) {
         if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }

@@ -3,62 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Damage Report Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            background-color: #57a3ee;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        td:first-child {
+            font-weight: bold;
+            text-align: right;
+            width: 40%;
+        }
+
+        td:last-child {
+            text-align: left;
+        }
+
+        form {
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        input[type="submit"] {
+            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-        text-align: center;
-    }
-
-    p {
-        margin-bottom: 10px;
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        margin-bottom: 20px;
-        background-color: #57a3ee;
-    }
-
-    td {
-        padding: 10px;
-        border: 1px solid #ddd;
-    }
-
-    td:first-child {
-        font-weight: bold;
-        text-align: right;
-        width: 40%;
-    }
-
-    td:last-child {
-        text-align: left;
-    }
-
-    form {
-        display: inline-block;
-        margin-top: 20px;
-    }
-
-    input[type="submit"] {
-        font-size: 1em;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #0056b3;
-    }
-</style>
 <body>
 <h1>Damage Report Receipt</h1>
 <p>Please confirm the details below:</p>
@@ -78,9 +78,9 @@
 </table>
 <form method="post" action="/confirmReceipt">
     <input type="submit" value="Confirm">
-    <input type="hidden" name="contract_id" id="contract_id" th:value="${contractId}">
-    <input type="hidden" name="total_price" id="total_price" th:value="${totalPrice}">
-    <input type="hidden" name="username" id="username" th:value="${username}">
+    <input type="hidden" name="contract_id" th:value="${contractId}">
+    <input type="hidden" name="total_price" th:value="${totalPrice}">
+    <input type="hidden" name="username" th:value="${username}">
 </form>
 </body>
 </html>

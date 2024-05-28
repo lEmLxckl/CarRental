@@ -58,39 +58,37 @@
 <body>
 <div class="container">
     <h1>Create Damage Report</h1>
-    <form method="post" action="/submitDamageReport">
-        <label for="categoryid">Indtast skadeskategori:</label>
+    <form method="post" action="/addDamageReport">
+        <label for="Id">Indtast skadeskategori:</label>
         <div style="display: flex; align-items: center;">
-            <input type="number" id="categoryid" name="category_id" style="margin-left: 10px;">
+            <input type="number" id="Id" name="Id" style="margin-left: 10px;">
             <input type="submit" class="totalpris" value="Enter" style="margin-left: 10px;">
         </div>
         <br><br>
         <label for="finish">Finish:</label>
         <input type="checkbox" id="finish" name="finish" value="1"><br><br>
-        <input type="hidden" name="contract_id" th:value="${contractId}"><br><br>
-        <input type="submit" class="færdigknap" value="Når du er færdig, så check finish og tryk her">
+        <input type="hidden" name="contract_id" th:value="${contractId}">
+        <input type="hidden" name="total_price" th:value="${totalPrice}"><!-- Hidden field to pass total_price -->
+        <input type="submit" class="færdig" value="Enter">
     </form>
-    <h1 th:text="${totalPrice}"></h1>
+    <h2 class="total-price">Totalpris: <span th:text="${totalPrice}"></span></h2>
+    <h2>Available Damage Categories:</h2>
     <table>
         <thead>
         <tr>
-            <th>Kategori</th>
-            <th>Skade</th>
-            <th>Pris</th>
+            <th>Damage ID</th>
+            <th>Damage Name</th>
+            <th>Price</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="damage : ${category}">
-            <td th:text="${damage.category_id}"></td>
-            <td th:text="${damage.damage_name}"></td>
-            <td th:text="${damage.price}"></td>
+            <td th:text="${damage_category.id}"></td>
+            <td th:text="${damage_category.name}"></td>
+            <td th:text="${damage_category.price}"></td>
         </tr>
         </tbody>
     </table>
-</div>
-
-<div class="footer">
-    <p>© 2024 BA - BilAbonnement.</p>
 </div>
 </body>
 </html>

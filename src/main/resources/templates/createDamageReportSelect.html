@@ -9,18 +9,26 @@
   <style>
     table {
       margin-top: 50px;
-      margin-left: 300px;
+      margin-left: auto;
+      margin-right: auto;
       width: 60%;
       border-collapse: collapse;
       font-family: sans-serif;
       border: 1px solid #ddd;
     }
 
-    th {
+    th, td {
       padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
       background-color: #333;
       color: #fff;
-      text-align: left;
+    }
+
+    td {
+      background-color: #fff;
     }
 
     h1, h2 {
@@ -47,11 +55,10 @@
       padding: 10px;
       font-size: 18px;
       border-radius: 5px;
-      border: none;
+      border: 1px solid #ccc;
       width: 100%;
       box-sizing: border-box;
       margin-bottom: 20px;
-      background-color: #ddd;
     }
 
     input[type="submit"] {
@@ -86,8 +93,9 @@
   <input type="number" id="contract_id" name="contract_id" placeholder="Please enter a contract ID" required>
   <input type="submit" value="Enter Contract ID">
 </form>
-<h2 th:text="${error}" style="color: red"></h2>
+<h2 th:if="${error}" th:text="${error}" class="error"></h2>
 <table>
+  <thead>
   <tr>
     <th>Contract ID</th>
     <th>Start Date</th>
@@ -97,6 +105,7 @@
     <th>Username</th>
     <th>Customer ID</th>
   </tr>
+  </thead>
   <tbody>
   <tr th:each="leasingContract : ${contract}">
     <td th:text="${leasingContract.contract_id}"></td>

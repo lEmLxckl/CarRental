@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.carrental.Service.EmployeeService;
 import org.example.carrental.model.Employee;
+import org.example.carrental.model.Usertype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +39,14 @@ public class HomeController {
 
     // Homepage
     @GetMapping("/home")
-    public String home(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model, Employee employee) {
         String username = (String) session.getAttribute("username");
-        model.addAttribute("username", username);
+        Usertype usertype = (Usertype) session.getAttribute("usertype");
         if (!employeeService.checkSession(session)) {
             return "redirect:/";
         }
+        model.addAttribute("username", username);
+        model.addAttribute("usertype", usertype);
         return "home";
     }
 
@@ -57,7 +60,9 @@ public class HomeController {
 
         // If the employee exists and is active...
         if (employee != null && employee.getIs_active() == 1) {
+            session.setAttribute("adminlogin", employee);
             session.setAttribute("username", username);
+            session.setAttribute("usertype", employee.getUsertype());
             return "redirect:/home";
         } else {
             model.addAttribute("invalid", "User does not exist");
